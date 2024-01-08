@@ -1,8 +1,9 @@
 import { Pokemon } from '@/Domain/Model/Pokemon';
 import PokemonDataSource from '../PokemonDataSource';
 
-type PokemonApiResponse = {
-  results: Pokemon[],
+type PokemonApiResult = {
+  name: string,
+  url: string,
 };
 
 export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
@@ -13,8 +14,15 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
       if (!res.ok) {
         resolve([]);
       }
-      const data: PokemonApiResponse = await res.json();
-      resolve(data.results);
+      const { results }: { results: PokemonApiResult[]} = await res.json();
+      resolve(results.map(p => ({
+        id: p.url.split('/')[6],
+        name: p.name,
+        nameSlug: p.name,
+        get sprite() {
+          return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${this.id}.png`;
+        },
+      })));
     });
     return resHandle;
   }
