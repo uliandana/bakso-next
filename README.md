@@ -1,3 +1,4 @@
+# Next.js Bootstrap
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -34,3 +35,16 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+# Architecture
+
+## Domain Layer
+
+## Data Layer
+
+## Presentation Layer
+This layer lays in `./app` as in Next.js default routing on its current version.
+
+Route path is automatically mapped from sub-directories in `./app`. Eg `./app/page/subpage` is mapped to `http://host.com/page/subpage`. More information of the rules in Next.js documentation page.
+
+Expanding Next.js routing structure, each `page.tsx` file will have its corresponding `viewmodel.tsx`. Both of these files separate the role of View and ViewModel in the MVVM architecture. Using React, ViewModel is exported into a custom hook to be imported and integrated in View.
