@@ -2,7 +2,7 @@ import { Pokemon } from '@/Domain/Model/Pokemon';
 import { PokemonRepository } from '@/Domain/Repository/PokemonRepository';
 
 export interface GetPokemonUseCase {
-  invoke: () => Promise<Pokemon[]>,
+  invoke: (offset: number) => Promise<Pokemon[]>,
 }
 
 export class GetPokemon implements GetPokemonUseCase {
@@ -12,7 +12,7 @@ export class GetPokemon implements GetPokemonUseCase {
     this.pokemonRepo = _pokemonRepo;
   }
 
-  async invoke() {
-    return this.pokemonRepo.getPokemon();
+  async invoke(offset: number) {
+    return this.pokemonRepo.getPokemon(offset);
   }
 }

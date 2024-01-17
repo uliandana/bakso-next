@@ -7,9 +7,9 @@ type PokemonApiResult = {
 };
 
 export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
-  async getPokemon() {
-    const offset = Math.floor(Math.random() * 1000);
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=50&offset=${offset}`);
+  async getPokemon(offset: number) {
+    const query = offset >= 1000 ? `limit=10&offset=${offset}` : `limit=100&offset=${offset}`
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon?${query}`);
     const resHandle: Promise<Pokemon[]> = new Promise(async resolve => {
       if (!res.ok) {
         resolve([]);
@@ -22,6 +22,11 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
         get sprite() {
           return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${this.id}.png`;
         },
+        stats: [],
+        types: [],
+        baseWeight: 10,
+        weight: 10,
+        evolvesTo: [],
       })));
     });
     return resHandle;

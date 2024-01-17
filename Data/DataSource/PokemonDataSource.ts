@@ -1,5 +1,5 @@
 import { Pokemon } from '@/Domain/Model/Pokemon';
 
 export default interface PokemonDataSource {
-  getPokemon(): Promise<Pokemon[]>,
+  getPokemon(offset: number): Promise<Pokemon[]>,
 }
