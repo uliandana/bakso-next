@@ -9,6 +9,7 @@ export default function RootViewModel() {
   const [observer, setObserver] = useState<IntersectionObserver | null>(null);
   const [indexPage, setIndexPage] = useState<number>(0);
   const [offset, setOffset] = useState<number>(0);
+  const [isFetching, setIsFetching] = useState<Boolean>(true);
 
   const pokemonDataSourceImpl = new PokemonAPIDataSourceImpl();
   const pokemonRepositoryImpl = new PokemonRepositoryImpl(pokemonDataSourceImpl);
@@ -17,10 +18,13 @@ export default function RootViewModel() {
 
   const fetchPokemon = async (offset: number) => {
     try {
+      setIsFetching(true)
       const data = await getPokemonUseCase.invoke(offset);
       setPokemons([...pokemons, ...data]);
+      setIsFetching(false);
     } catch(e) {
       setPokemons([...pokemons]);
+      setIsFetching(false);
     }
   };
 
@@ -70,5 +74,6 @@ export default function RootViewModel() {
 
   return {
     pokemons,
+    isFetching
   };
 }
