@@ -1,5 +1,5 @@
 const CACHE = 'v1';
-const POKEMON_LIMIT = 1010;
+const POKEMON_LIMIT = 100;
 
 const pokemonSprites = Array.apply(null, { length: POKEMON_LIMIT });
 const precachedResources = [
