@@ -20,12 +20,23 @@ type PokemonApiDetailResult = {
 type PokemonApiSpeciesResult = {
   id: number,
   name: string,
+  evolution_chain: { url: string },
   names: {
     language: {
       name: string,
     },
     name: string,
   }[],
+};
+
+type PokemonApiEvolutionResult = {
+  chain: {
+    evolves_to: PokemonApiEvolutionResult['chain'][],
+    species: {
+      name: string,
+      url: string,
+    },
+  },
 };
 
 const urlSprite: (id: string) => string = (id) => `
@@ -58,12 +69,29 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
     return resHandle;
   }
 
-  async getPokemonByName(name: string) {
+  async getPokemonByName(name: string, statOnly: boolean = false) {
     const resSpecies = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${name}`);
     const species: PokemonApiSpeciesResult = await resSpecies.json();
 
     const resDetail = await fetch(`https://pokeapi.co/api/v2/pokemon/${species.id}`);
     const detail: PokemonApiDetailResult = await resDetail.json();
+
+    let evolvesTo: Pokemon['evolvesTo'] = [];
+
+    if (!statOnly) {
+      const resEvolution = await fetch(species.evolution_chain.url);
+      const evolution: PokemonApiEvolutionResult = await resEvolution.json();
+      
+      const rcvEvolution: (chain: PokemonApiEvolutionResult['chain']) => string[] = (chain) => {
+        if (chain.species.name === species.name) {
+          return chain.evolves_to.map(i => i.species.name);
+        } else {
+          return chain.evolves_to.map(i => rcvEvolution(i)).flat();
+        }
+      };
+      const strEvolvesTo = rcvEvolution(evolution.chain);
+      evolvesTo = await Promise.all(strEvolvesTo.map(async i => await this.getPokemonByName(i, true)));
+    }
 
     const resHandle: Promise<Pokemon | null> = new Promise(async resolve => {
       if (!resDetail.ok || !resSpecies.ok) {
@@ -80,7 +108,7 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
         types: detail.types.map(i => i.type.name),
         baseWeight: detail.weight,
         weight: detail.weight,
-        evolvesTo: [],
+        evolvesTo,
       });
     });
     return resHandle;
