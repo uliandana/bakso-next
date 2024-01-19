@@ -10,7 +10,9 @@ export default function Root() {
       <h1 className="text-[3rem] font-bold text-center mb-[3rem]">Choose Your Pokemon</h1>
       <section className="flex flex-wrap items-center justify-between">
         {pokemons.map((poke, idx) => (
-          <a data-pokemon={idx + 1} className="block w-[10rem] p-[1rem] mb-[1rem] text-center" key={idx} href={`/${poke.name}`}>
+          <a data-pokemon={idx + 1} key={idx} href={`/${poke.name}`}
+            className="w-[10rem] h-[13rem] p-[1rem] mb-[1rem] text-center flex flex-col items-center justify-between" 
+          >
             <img src={poke.sprite} />
             <p className="text-[1rem] mt-[1rem]">{poke.name}</p>
           </a>
