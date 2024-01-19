@@ -1,5 +1,5 @@
 const CACHE = 'v1';
-const POKEMON_LIMIT = 10;
+const POKEMON_LIMIT = 1010;
 
 const pokemonSprites = Array.apply(null, { length: POKEMON_LIMIT });
 const precachedResources = [
@@ -46,7 +46,7 @@ async function cacheFirst(request) {
 }
 
 self.addEventListener('fetch', (event) => {
-  if (precachedResources.includes(url.pathname)) {
+  if (precachedResources.includes(event.request)) {
     event.respondWith(cacheFirst(event.request));
   }
 });
