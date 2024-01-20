@@ -9,5 +9,5 @@ export interface Pokemon {
   types: string[],
   baseWeight: number,
   weight: number,
-  evolvesTo: Pokemon[],
+  evolvesTo: (Pokemon | null)[],
 }

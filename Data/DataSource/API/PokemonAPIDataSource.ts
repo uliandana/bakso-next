@@ -76,7 +76,7 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
     const resDetail = await fetch(`https://pokeapi.co/api/v2/pokemon/${species.id}`);
     const detail: PokemonApiDetailResult = await resDetail.json();
 
-    let evolvesTo: Pokemon['evolvesTo'] = [];
+    let evolvesTo: (Pokemon | null)[] = [];
 
     if (!statOnly) {
       const resEvolution = await fetch(species.evolution_chain.url);

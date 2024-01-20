@@ -30,8 +30,8 @@ export default function PokemonByName({ params }: { params: Params }) {
         <div className="flex items-center gap-[2rem]">
           {pokemon?.evolvesTo.map((i, idx) => (
             <div key={idx}>
-              <img className="w-[5rem]" src={i.sprite} />
-              <p>{i.name}</p>
+              <img className="w-[5rem]" src={i?.sprite} />
+              <p>{i?.name}</p>
             </div>
           ))}
         </div>
