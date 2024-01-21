@@ -15,10 +15,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const env = process.env.NODE_ENV;
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
-      <Script src="/sw-install.js" />
+      {(env === 'production') && (<Script src="/sw-install.js" />)}
     </html>
   )
 }
