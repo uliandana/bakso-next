@@ -7,6 +7,7 @@ import { Pokemon } from '@/Domain/Model/Pokemon';
 import { GetBerry } from '@/Domain/UseCase/Berry/GetBerry';
 import { GetPokemonByName } from '@/Domain/UseCase/Pokemon/GetPokemonByName';
 import { useEffect, useState } from 'react';
+import { getStoredBerry, storeBerry } from './indexeddb';
 
 export default function NameViewModel(name: string) {
   const [pokemon, setPokemon] = useState<Pokemon>();
@@ -41,6 +42,7 @@ export default function NameViewModel(name: string) {
       const data = await getBerryUseCase.invoke();
       if (data) {
         setBerries(data);
+        storeBerry(data);
       }
     } catch(e) {
       setBerries([]);
@@ -51,6 +53,13 @@ export default function NameViewModel(name: string) {
     fetchPokemon();
     fetchBerry();
   }, []);
+
+  useEffect(() => {
+    if (berries.length) {
+      const cb: (b:Berry[]) => Berry[] = b => b;
+      getStoredBerry(cb);
+    }
+  }, [berries]);
 
   return {
     pokemon,

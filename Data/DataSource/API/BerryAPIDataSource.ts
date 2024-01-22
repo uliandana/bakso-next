@@ -6,8 +6,8 @@ type BerryApiListResult = {
   url: string,
 };
 
-const urlSprite: (id: string) => string = (id) => `
-  https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/berries/${id}-berry.png
+const urlSprite: (name: string) => string = (name) => `
+  https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/berries/${name}-berry.png
 `
 
 export default class BerryAPIDataSourceImpl implements BerryDataSource {
@@ -24,7 +24,7 @@ export default class BerryAPIDataSourceImpl implements BerryDataSource {
         get sprite() {
           return urlSprite(this.name)
         },
-        type: '',
+        firmness: '',
       })));
     });
     return resHandle;
