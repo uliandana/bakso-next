@@ -12,7 +12,7 @@ import { getStoredBerry, storeBerry } from './indexeddb';
 export default function NameViewModel(name: string) {
   const [pokemon, setPokemon] = useState<Pokemon>();
   const [berries, setBerries] = useState<Berry[]>([]);
-  const [iseFetching, setIsFetching] = useState<Boolean>(true);
+  const [isFetching, setIsFetching] = useState<Boolean>(true);
 
   const pokemonDataSourceImpl = new PokemonAPIDataSourceImpl();
   const pokemonRepositoryImpl = new PokemonRepositoryImpl(pokemonDataSourceImpl);
@@ -64,6 +64,6 @@ export default function NameViewModel(name: string) {
   return {
     pokemon,
     berries,
-    iseFetching,
+    isFetching,
   };
 }
