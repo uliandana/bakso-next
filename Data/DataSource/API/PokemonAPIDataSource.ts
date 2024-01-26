@@ -69,6 +69,30 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
     return resHandle;
   }
 
+  async getAllPokemon() {
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon-species?limit=1500`);
+    const resHandle: Promise<Pokemon[]> = new Promise(async resolve => {
+      if (!res.ok) {
+        resolve([]);
+      }
+      const { results }: { results: PokemonApiListResult[]} = await res.json();
+      resolve(results.map(p => ({
+        id: p.url.split('/')[6],
+        name: p.name,
+        nameSlug: p.name,
+        get sprite() {
+          return urlSprite(this.id)
+        },
+        stats: [],
+        types: [],
+        baseWeight: 10,
+        weight: 10,
+        evolvesTo: [],
+      })));
+    });
+    return resHandle;
+  }
+
   async getPokemonByName(name: string, statOnly: boolean = false) {
     const resSpecies = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${name}`);
     const species: PokemonApiSpeciesResult = await resSpecies.json();

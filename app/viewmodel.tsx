@@ -1,27 +1,35 @@
 import { useEffect, useState } from 'react';
 import PokemonAPIDataSourceImpl from '@/Data/DataSource/API/PokemonAPIDataSource';
 import { PokemonRepositoryImpl } from '@/Data/Repository/PokemonRepositoryImpl';
-import { GetPokemon } from '@/Domain/UseCase/Pokemon/GetPokemon';
+import { GetAllPokemon } from '@/Domain/UseCase/Pokemon/GetAllPokemon';
 import { Pokemon } from '@/Domain/Model/Pokemon';
 
 export default function RootViewModel() {
+  const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [observer, setObserver] = useState<IntersectionObserver | null>(null);
-  const [indexPage, setIndexPage] = useState<number>(0);
-  const [offset, setOffset] = useState<number>(0);
-  const [isFetching, setIsFetching] = useState<Boolean>(true);
+  const [indexPage, setIndexPage] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [isFetching, setIsFetching] = useState(true);
+
+  const [search, setSearch] = useState('');
 
   const pokemonDataSourceImpl = new PokemonAPIDataSourceImpl();
   const pokemonRepositoryImpl = new PokemonRepositoryImpl(pokemonDataSourceImpl);
   
-  const getPokemonUseCase = new GetPokemon(pokemonRepositoryImpl);
+  const getAllPokemonUseCase = new GetAllPokemon(pokemonRepositoryImpl);
 
   const fetchPokemon = async (offset: number) => {
     try {
-      setIsFetching(true)
-      const data = await getPokemonUseCase.invoke(offset);
-      setPokemons([...pokemons, ...data]);
-      setIsFetching(false);
+      if (allPokemons.length) {
+        setPokemons([...pokemons, ...allPokemons.slice(offset, offset + 100)]);
+      } else {
+        setIsFetching(true)
+        const data = await getAllPokemonUseCase.invoke();
+        setAllPokemons(data);
+        setPokemons([...pokemons, ...data.slice(offset, offset + 100)]);
+        setIsFetching(false);
+      }
     } catch(e) {
       setPokemons([...pokemons]);
       setIsFetching(false);
@@ -68,12 +76,25 @@ export default function RootViewModel() {
   }, [pokemons]);
 
   useEffect(() => {
+    if (search) {
+      setPokemons([]);
+      setAllPokemons(allPokemons.filter(i => i.name.match(search)));
+      setOffset(0);
+      fetchPokemon(0);
+    }
+  }, [search]);
+
+  useEffect(() => {
     fetchPokemon(0);
     initializeObserver();
   }, []);
 
   return {
     pokemons,
-    isFetching
+    isFetching,
+    search: {
+      value: search,
+      setSearch,
+    },
   };
 }

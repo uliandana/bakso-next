@@ -3,17 +3,7 @@ const POKEMON_LIMIT = 30;
 
 const pokemonSprites = Array.apply(null, { length: POKEMON_LIMIT });
 const precachedResources = [
-  'https://pokeapi.co/api/v2/pokemon?limit=100&offset=0',
-  'https://pokeapi.co/api/v2/pokemon?limit=100&offset=100',
-  'https://pokeapi.co/api/v2/pokemon?limit=100&offset=200',
-  'https://pokeapi.co/api/v2/pokemon?limit=100&offset=300',
-  'https://pokeapi.co/api/v2/pokemon?limit=100&offset=400',
-  'https://pokeapi.co/api/v2/pokemon?limit=100&offset=500',
-  'https://pokeapi.co/api/v2/pokemon?limit=100&offset=600',
-  'https://pokeapi.co/api/v2/pokemon?limit=100&offset=700',
-  'https://pokeapi.co/api/v2/pokemon?limit=100&offset=800',
-  'https://pokeapi.co/api/v2/pokemon?limit=100&offset=900',
-  'https://pokeapi.co/api/v2/pokemon?limit=10&offset=1000',
+  'https://pokeapi.co/api/v2/pokemon?limit=1500',
   ...pokemonSprites.map((_, idx) => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${idx + 1}.png`),
 ];
 
