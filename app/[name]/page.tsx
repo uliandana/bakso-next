@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link';
 import CloseIcon from '@/app/.elements/CloseIcon';
 import Spinner from '@/app/.elements/Spinner';
 import useViewModel from './viewmodel';
@@ -42,19 +43,19 @@ export default function PokemonByName({ params }: { params: Params }) {
 
   if (isFetching) {
     return (
-      <main className="flex flex-col h-[100vh] overflow-x-hidden overflow-y-auto items-center justify-between p-24">
+      <main className="m-auto max-w-screen-md flex flex-col h-[100vh] overflow-x-hidden overflow-y-auto items-center justify-between p-24">
         <Spinner />
       </main>
     );
   }
 
   return (
-    <main className="flex flex-col gap-[1rem] h-[100vh] overflow-y-auto justify-between p-24">
+    <main className="m-auto max-w-screen-md flex flex-col gap-[1rem] h-[100vh] overflow-y-auto justify-between p-24">
       <header className="flex items-center justify-center">
         <h1 className="text-[3rem] font-[700] mr-[-3rem] flex-1 text-center">{pokemon?.name}</h1>
-        <a href="/" className="h-[3rem] w-[3rem] p-[0.5rem] rounded-full bg-red-700">
+        <Link href="/" className="h-[3rem] w-[3rem] p-[0.5rem] rounded-full bg-red-700">
           <CloseIcon />
-        </a>
+        </Link>
       </header>
       <img className="h-[25vh] self-center" src={pokemon?.sprite} />
       <div className="flex items-center justify-center gap-[1rem]">

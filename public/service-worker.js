@@ -20,7 +20,9 @@ self.addEventListener('install', (event) => {
 
 async function cacheFirst(request) {
   const cachedResponse = await caches.match(request);
-  if (cachedResponse) {
+  const { host } = new URL(request.url);
+  const isHost = ['pokeapp-next-eta.vercel.app'].includes(host);
+  if (cachedResponse && !isHost) {
     return cachedResponse;
   }
   try {

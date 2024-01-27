@@ -6,7 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  font-size: 16px;
+  font-size: calc(768px * 16 / 375);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -43,11 +43,11 @@ body {
 @media only screen and (max-width: 1440px) {
   :root {
     font-size: calc(100vw * 16 / 1440);
-  }  
+  }
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 768px) {
   :root {
-    font-size: calc(100vw * 16 / 720);
+    font-size: calc(100vw * 16 / 768);
   }
 }
