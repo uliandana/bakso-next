@@ -5,6 +5,7 @@ import { GetAllPokemon } from '@/Domain/UseCase/Pokemon/GetAllPokemon';
 import { Pokemon } from '@/Domain/Model/Pokemon';
 
 export default function RootViewModel() {
+  const [listPokemons, setListPokemons] = useState<Pokemon[]>([]);
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [observer, setObserver] = useState<IntersectionObserver | null>(null);
@@ -26,6 +27,7 @@ export default function RootViewModel() {
       } else {
         setIsFetching(true)
         const data = await getAllPokemonUseCase.invoke();
+        setListPokemons(data);
         setAllPokemons(data);
         setPokemons([...pokemons, ...data.slice(offset, offset + 100)]);
         setIsFetching(false);
@@ -76,13 +78,14 @@ export default function RootViewModel() {
   }, [pokemons]);
 
   useEffect(() => {
-    if (search) {
-      setPokemons([]);
-      setAllPokemons(allPokemons.filter(i => i.name.match(search)));
-      setOffset(0);
-      fetchPokemon(0);
-    }
+    setPokemons([]);
+    setAllPokemons(listPokemons.filter(i => i.name.includes(search)));
   }, [search]);
+
+  useEffect(() => {
+    setOffset(0);
+    fetchPokemon(0);
+  }, [allPokemons]);
 
   useEffect(() => {
     fetchPokemon(0);
