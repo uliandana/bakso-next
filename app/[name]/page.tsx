@@ -41,7 +41,7 @@ const TYPES: { [key: string]: string } = {
 export default function PokemonByName({ params }: { params: Params }) {
   const { pokemon, berries, feed, isFetchingPokemon, isFetchingEvolution, isFetchingBerry } = useViewModel(params.name);
   return (
-    <main className="m-auto max-w-screen-md flex flex-col gap-[1rem] h-[100vh] overflow-y-auto justify-between p-24">
+    <main className="m-auto max-w-screen-md flex flex-col gap-[1rem] h-dvh overflow-y-auto justify-between p-24">
       {isFetchingPokemon ? <Spinner /> : (
         <>
           <header className="flex items-center justify-center">
