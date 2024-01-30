@@ -46,7 +46,7 @@ export default function PokemonByName({ params }: { params: Params }) {
         <>
           <header className="flex items-center justify-center">
             <h1 className="text-[3rem] font-[700] mr-[-3rem] flex-1 text-center">{pokemon?.name}</h1>
-            <Link href="/" className="h-[3rem] w-[3rem] p-[0.5rem] rounded-full bg-red-700">
+            <Link href="/" className="size-[3rem] p-[0.5rem] rounded-full bg-red-700 text-white">
               <CloseIcon />
             </Link>
           </header>
@@ -78,7 +78,7 @@ export default function PokemonByName({ params }: { params: Params }) {
         <section className="flex gap-[1rem] items-center">
           <p className="w-[16rem] text-[1.5rem]">Evolves to</p>
           <div className="h-[5rem] mb-[1rem] overflow-y-hidden overflow-x-auto p-[1rem] whitespace-nowrap">
-            {pokemon?.evolvesTo.map(i => <img key={i?.id} src={i?.sprite} className="h-[4rem] mx-[1rem] inline-block" />)}
+            {pokemon?.evolvesTo.map(i => <img key={i?.id} src={i?.sprite} className="h-[6rem] mx-[1rem] inline-block" />)}
           </div>
         </section>
       )}
@@ -86,7 +86,7 @@ export default function PokemonByName({ params }: { params: Params }) {
         {isFetchingBerry ? <Spinner /> : (
           <div className="h-[5rem] mb-[1rem] overflow-y-hidden overflow-x-auto rounded-[1rem] border-solid border-[0.125rem] border-white whitespace-nowrap bg-slate-200">
             {berries.map(i => i.id && (
-              <label htmlFor={`berry-${i.id}`} key={i.id} className="inline-block rounded-[1rem] cursor-pointer" style={feed.selected === i.id ? { backgroundColor: 'lightblue' } : {}}>
+              <label htmlFor={`berry-${i.id}`} key={i.id} className="inline-block rounded-[1rem] cursor-pointer has-[:checked]:bg-cyan-400">
                 <input id={`berry-${i.id}`} type="radio" name="berry" value={i.id} className="hidden" onChange={feed.select} />
                 <img src={i.sprite} title={i.name} className="h-[3rem] m-[1rem]" />
               </label>
