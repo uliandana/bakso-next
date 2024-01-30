@@ -64,6 +64,7 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
         baseWeight: 10,
         weight: 10,
         evolvesTo: [],
+        bgColor: `hsl(${Math.random() * 360}, ${(Math.random() * 70) + 5}%, ${(Math.random() * 10) + 25}%)`,
       })));
     });
     return resHandle;
@@ -88,6 +89,7 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
         baseWeight: 10,
         weight: 10,
         evolvesTo: [],
+        bgColor: `hsl(${Math.random() * 360}, ${(Math.random() * 70) + 5}%, ${(Math.random() * 10) + 25}%)`,
       })));
     });
     return resHandle;
@@ -133,6 +135,7 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
         baseWeight: detail.weight,
         weight: detail.weight,
         evolvesTo,
+        bgColor: `hsl(${Math.random() * 360}, ${(Math.random() * 70) + 5}%, ${(Math.random() * 10) + 25}%)`,
       });
     });
     return resHandle;

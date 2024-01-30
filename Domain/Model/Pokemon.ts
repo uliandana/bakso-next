@@ -10,4 +10,5 @@ export interface Pokemon {
   baseWeight: number,
   weight: number,
   evolvesTo: (Pokemon | null)[],
+  bgColor: string,
 }

@@ -7,7 +7,7 @@ export default function Root() {
   const { pokemons, isFetching, search } = useViewModel();
 
   return (
-    <main className="m-auto max-w-screen-md min-h-screen px-[4rem] py-[6rem]">
+    <main className="m-auto min-h-screen">
       <h1 className="text-[3rem] font-bold text-center mb-[3rem]">Choose Your Pokemon</h1>
       <input
         value={search.value}
@@ -17,10 +17,11 @@ export default function Root() {
       <section className="grid grid-cols-4">
         {pokemons.map((poke, idx) => (
           <Link data-pokemon={idx + 1} key={idx} href={`/${poke.name}`}
-            className="h-[13rem] p-[1rem] mb-[1rem] text-center flex flex-col items-center justify-between" 
+            className="h-[25vw] text-center flex flex-col items-center justify-between overflow-hidden relative"
+            style={{ backgroundColor: poke.bgColor }} 
           >
-            <img className="block w-full" src={poke.sprite} alt={poke.name} />
-            <p className="text-[1rem] mt-[1rem]">{poke.name}</p>
+            <img className="block w-full transition-all hover:drop-shadow-xl hover:rotate-3" src={poke.sprite} alt={poke.name} />
+            <p className="text-[2rem] uppercase text-white font-[700] absolute bottom-1">{poke.name}</p>
           </Link>
         ))}
         {isFetching && (
