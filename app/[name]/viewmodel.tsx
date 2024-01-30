@@ -6,13 +6,16 @@ import { Berry } from '@/Domain/Model/Berry';
 import { Pokemon } from '@/Domain/Model/Pokemon';
 import { GetBerry } from '@/Domain/UseCase/Berry/GetBerry';
 import { GetPokemonByName } from '@/Domain/UseCase/Pokemon/GetPokemonByName';
-import { useEffect, useState } from 'react';
+import { ChangeEventHandler, useEffect, useState } from 'react';
 import { getStoredBerry, storeBerry } from './indexeddb';
 
 export default function NameViewModel(name: string) {
   const [pokemon, setPokemon] = useState<Pokemon>();
   const [berries, setBerries] = useState<Berry[]>([]);
-  const [isFetching, setIsFetching] = useState<Boolean>(true);
+  const [selectBerry, setSelectBerry] = useState<Berry['id']>('');
+  const [isFetchingPokemon, setIsFetchingPokemon] = useState<Boolean>(true);
+  const [isFetchingEvolution, setIsFetchingEvolution] = useState<Boolean>(true);
+  const [isFetchingBerry, setIsFetchingBerry] = useState<Boolean>(true);
 
   const pokemonDataSourceImpl = new PokemonAPIDataSourceImpl();
   const pokemonRepositoryImpl = new PokemonRepositoryImpl(pokemonDataSourceImpl);
@@ -26,27 +29,39 @@ export default function NameViewModel(name: string) {
 
   const fetchPokemon = async () => {
     try {
-      setIsFetching(true);
+      setIsFetchingPokemon(true);
       const data = await getPokemonUseCase.invoke(name);
-      setIsFetching(false);
+      setIsFetchingPokemon(false);
+      setIsFetchingEvolution(false);
       if (data) {
         setPokemon(data);
       }
     } catch(e) {
-      setIsFetching(false);
+      setIsFetchingPokemon(false);
+      setIsFetchingEvolution(false);
     }
   };
 
   const fetchBerry = async () => {
     try {
+      setIsFetchingBerry(true);
       const data = await getBerryUseCase.invoke();
+      setIsFetchingBerry(false);
       if (data) {
         setBerries(data);
         storeBerry(data);
       }
     } catch(e) {
-      setBerries([]);
+      setIsFetchingBerry(false);
     }
+  };
+
+  const onSelectBerry:ChangeEventHandler<HTMLInputElement> = e => {
+    setSelectBerry(e.target.value);
+  };
+
+  const onFeedBerry = () => {
+
   };
 
   useEffect(() => {
@@ -64,6 +79,13 @@ export default function NameViewModel(name: string) {
   return {
     pokemon,
     berries,
-    isFetching,
+    feed: {
+      selected: selectBerry,
+      select: onSelectBerry,
+    },
+    onFeedBerry,
+    isFetchingPokemon,
+    isFetchingEvolution,
+    isFetchingBerry,
   };
 }

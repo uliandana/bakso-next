@@ -39,47 +39,42 @@ const TYPES: { [key: string]: string } = {
 };
 
 export default function PokemonByName({ params }: { params: Params }) {
-  const { pokemon, berries, isFetching } = useViewModel(params.name);
-
-  if (isFetching) {
-    return (
-      <main className="m-auto max-w-screen-md flex flex-col h-[100vh] overflow-x-hidden overflow-y-auto items-center justify-between p-24">
-        <Spinner />
-      </main>
-    );
-  }
-
+  const { pokemon, berries, feed, isFetchingPokemon, isFetchingEvolution, isFetchingBerry } = useViewModel(params.name);
   return (
     <main className="m-auto max-w-screen-md flex flex-col gap-[1rem] h-[100vh] overflow-y-auto justify-between p-24">
-      <header className="flex items-center justify-center">
-        <h1 className="text-[3rem] font-[700] mr-[-3rem] flex-1 text-center">{pokemon?.name}</h1>
-        <Link href="/" className="h-[3rem] w-[3rem] p-[0.5rem] rounded-full bg-red-700">
-          <CloseIcon />
-        </Link>
-      </header>
-      <img className="h-[25vh] self-center" src={pokemon?.sprite} />
-      <div className="flex items-center justify-center gap-[1rem]">
-        {pokemon?.types.map(i => (
-          <span className="py-[0.25rem] px-[1rem] text-[1.5rem] text-white uppercase rounded-[0.5rem] font-mono" style={{ backgroundColor: TYPES[i] || 'grey' }} key={i}>
-            {i}
-          </span>
-        ))}
-      </div>
-      <table className="text-[1.5rem] w-8/12 mx-auto">
-        <tbody>
-          {pokemon?.stats.map((i, idx) => (
-            <tr key={idx}>
-              <td className="pr-[2rem]">{STATS[i.name]}</td>
-              <td>{i.value}</td>
-            </tr>
-          ))}
-          <tr>
-            <td className="pr-[2rem]">Weight</td>
-            <td>{pokemon?.weight}</td>
-          </tr>
-        </tbody>
-      </table>
-      {pokemon?.evolvesTo?.length! > 0 && (
+      {isFetchingPokemon ? <Spinner /> : (
+        <>
+          <header className="flex items-center justify-center">
+            <h1 className="text-[3rem] font-[700] mr-[-3rem] flex-1 text-center">{pokemon?.name}</h1>
+            <Link href="/" className="h-[3rem] w-[3rem] p-[0.5rem] rounded-full bg-red-700">
+              <CloseIcon />
+            </Link>
+          </header>
+          <img className="h-[25vh] self-center" src={pokemon?.sprite} />
+          <div className="flex items-center justify-center gap-[1rem]">
+            {pokemon?.types.map(i => (
+              <span className="py-[0.25rem] px-[1rem] text-[1.5rem] text-white uppercase rounded-[0.5rem] font-mono" style={{ backgroundColor: TYPES[i] || 'grey' }} key={i}>
+                {i}
+              </span>
+            ))}
+          </div>
+          <table className="text-[1.5rem] w-8/12 mx-auto">
+            <tbody>
+              {pokemon?.stats.map((i, idx) => (
+                <tr key={idx}>
+                  <td className="pr-[2rem]">{STATS[i.name]}</td>
+                  <td>{i.value}</td>
+                </tr>
+              ))}
+              <tr>
+                <td className="pr-[2rem]">Weight</td>
+                <td>{pokemon?.weight}</td>
+              </tr>
+            </tbody>
+          </table>
+        </>
+      )}
+      {isFetchingEvolution ? <Spinner /> : pokemon?.evolvesTo?.length! > 0 && (
         <section className="flex gap-[1rem] items-center">
           <p className="w-[16rem] text-[1.5rem]">Evolves to</p>
           <div className="h-[5rem] mb-[1rem] overflow-y-hidden overflow-x-auto p-[1rem] whitespace-nowrap">
@@ -88,9 +83,16 @@ export default function PokemonByName({ params }: { params: Params }) {
         </section>
       )}
       <footer className="sticky bottom-[-3rem] mb-[-3rem]">
-        <div className="h-[5rem] mb-[1rem] overflow-y-hidden overflow-x-auto p-[1rem] rounded-[1rem] border-solid border-[0.125rem] border-white whitespace-nowrap">
-          {berries.map(i => <img key={i.id} src={i.sprite} title={i.name} className="h-[3rem] mx-[1rem] inline-block" />)}
-        </div>
+        {isFetchingBerry ? <Spinner /> : (
+          <div className="h-[5rem] mb-[1rem] overflow-y-hidden overflow-x-auto rounded-[1rem] border-solid border-[0.125rem] border-white whitespace-nowrap bg-slate-200">
+            {berries.map(i => i.id && (
+              <label htmlFor={`berry-${i.id}`} key={i.id} className="inline-block rounded-[1rem] cursor-pointer" style={feed.selected === i.id ? { backgroundColor: 'lightblue' } : {}}>
+                <input id={`berry-${i.id}`} type="radio" name="berry" value={i.id} className="hidden" onChange={feed.select} />
+                <img src={i.sprite} title={i.name} className="h-[3rem] m-[1rem]" />
+              </label>
+            ))}
+          </div>
+        )}
         <button className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-[green] font-[700] tracking-[0.125rem]">Feed Pokemon</button>
       </footer>
     </main>

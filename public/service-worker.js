@@ -1,9 +1,12 @@
 const CACHE = 'v1';
 const POKEMON_LIMIT = 30;
+const BERRY_LIMIT = 64;
 
 const pokemonSprites = Array.apply(null, { length: POKEMON_LIMIT });
+const berryData = Array.apply(null, { length: BERRY_LIMIT });
 const precachedResources = [
   'https://pokeapi.co/api/v2/pokemon?limit=1500',
+  ...berryData.map((_, idx) => `https://pokeapi.co/api/v2/berry/${idx + 1 }`),
   ...pokemonSprites.map((_, idx) => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${idx + 1}.png`),
 ];
 
