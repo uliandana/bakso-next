@@ -8,6 +8,11 @@ type Params = {
   name: string,
 }
 
+const EVOLUTION = [
+  'This pokemon has no evolution',
+  'This pokemon can evolve',
+];
+
 const STATS: { [key: string]: string } = {
   'hp': 'HP',
   'attack': 'Attack',
@@ -42,18 +47,27 @@ export default function PokemonByName({ params }: { params: Params }) {
   const { pokemon, berries, feed, isFetchingPokemon, isFetchingEvolution, isFetchingBerry } = useViewModel(params.name);
   return (
     <main className="m-auto max-w-screen-md flex flex-col gap-[1rem] h-dvh overflow-y-auto justify-between p-24">
-      {isFetchingPokemon ? <Spinner /> : (
+      {(isFetchingPokemon || !pokemon) ? <Spinner /> : (
         <>
           <header className="flex items-center justify-center">
             <h1 className="text-[3rem] font-[700] mr-[-3rem] flex-1 text-center">{pokemon?.name}</h1>
-            <Link href="/" className="size-[3rem] p-[0.5rem] rounded-full bg-red-700 text-white">
+            <Link href="/" className="size-[3rem] p-[0.5rem] rounded-full bg-neutral-100 text-red-600">
               <CloseIcon />
             </Link>
           </header>
-          <img className="h-[25vh] self-center" src={pokemon?.sprite} />
+          <div className="relative self-center">
+            <img className="bg-neutral-100 rounded-[1rem] h-[30vh]" src={pokemon?.sprite} />
+            <button className="size-[5rem] bg-red-500 text-[2rem] font-[700] shadow-xl rounded-full absolute bottom-[-1rem] right-[-1rem]">
+              {pokemon?.evolvesTo.length}
+            </button>
+            <p className="text-[1.5rem] bg-neutral-800 shadow-xl absolute bottom-[5.25rem] right-[-4rem] py-[0.25rem] px-[1rem] rounded-[0.5rem] animate-fade-out">
+              {EVOLUTION[pokemon?.evolvesTo.length] || `This pokemon has ${pokemon.evolvesTo.length} evolutions!`}
+              <span className="absolute bottom-[-1rem] right-[4.5rem] border-solid border-t-neutral-800 border-t-[1rem] border-x-transparent border-x-[1rem] border-b-0" />
+            </p>
+          </div>
           <div className="flex items-center justify-center gap-[1rem]">
             {pokemon?.types.map(i => (
-              <span className="py-[0.25rem] px-[1rem] text-[1.5rem] text-white uppercase rounded-[0.5rem] font-mono" style={{ backgroundColor: TYPES[i] || 'grey' }} key={i}>
+              <span className="py-[0.25rem] px-[1rem] text-[1.5rem] uppercase rounded-[0.5rem] font-mono" style={{ backgroundColor: TYPES[i] || 'grey' }} key={i}>
                 {i}
               </span>
             ))}
@@ -74,17 +88,9 @@ export default function PokemonByName({ params }: { params: Params }) {
           </table>
         </>
       )}
-      {isFetchingEvolution ? <Spinner /> : pokemon?.evolvesTo?.length! > 0 && (
-        <section className="flex gap-[1rem] items-center">
-          <p className="w-[16rem] text-[1.5rem]">Evolves to</p>
-          <div className="h-[5rem] mb-[1rem] overflow-y-hidden overflow-x-auto p-[1rem] whitespace-nowrap">
-            {pokemon?.evolvesTo.map(i => <img key={i?.id} src={i?.sprite} className="h-[6rem] mx-[1rem] inline-block" />)}
-          </div>
-        </section>
-      )}
       <footer className="sticky bottom-[-3rem] mb-[-3rem]">
         {isFetchingBerry ? <Spinner /> : (
-          <div className="h-[5rem] mb-[1rem] overflow-y-hidden overflow-x-auto rounded-[1rem] border-solid border-[0.125rem] border-white whitespace-nowrap bg-slate-200">
+          <div className="h-[5rem] mb-[1rem] overflow-y-hidden overflow-x-auto rounded-[1rem] border-solid border-[0.125rem] border-white whitespace-nowrap bg-neutral-100">
             {berries.map(i => i.id && (
               <label htmlFor={`berry-${i.id}`} key={i.id} className="inline-block rounded-[1rem] cursor-pointer has-[:checked]:bg-cyan-400">
                 <input id={`berry-${i.id}`} type="radio" name="berry" value={i.id} className="hidden" onChange={feed.select} />
@@ -93,7 +99,7 @@ export default function PokemonByName({ params }: { params: Params }) {
             ))}
           </div>
         )}
-        <button className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-[green] font-[700] tracking-[0.125rem]">Feed Pokemon</button>
+        <button className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-neutral-100 text-red-600 font-[700] tracking-[0.125rem]">Feed Pokemon</button>
       </footer>
     </main>
   )

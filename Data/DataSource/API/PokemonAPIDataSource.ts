@@ -102,7 +102,7 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
     const resDetail = await fetch(`https://pokeapi.co/api/v2/pokemon/${species.id}`);
     const detail: PokemonApiDetailResult = await resDetail.json();
 
-    let evolvesTo: (Pokemon | null)[] = [];
+    let evolvesTo: Pokemon['name'][] = [];
 
     if (!statOnly) {
       const resEvolution = await fetch(species.evolution_chain.url);
@@ -115,8 +115,7 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
           return chain.evolves_to.map(i => rcvEvolution(i)).flat();
         }
       };
-      const strEvolvesTo = rcvEvolution(evolution.chain);
-      evolvesTo = await Promise.all(strEvolvesTo.map(async i => await this.getPokemonByName(i, true)));
+      evolvesTo = rcvEvolution(evolution.chain);
     }
 
     const resHandle: Promise<Pokemon | null> = new Promise(async resolve => {
@@ -128,7 +127,7 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
         name: species.names.filter(i => i.language.name === 'en')[0].name,
         nameSlug: species.name,
         get sprite() {
-          return urlSprite(this.id)
+          return urlSprite(species.id.toString())
         },
         stats: detail.stats.map(i => ({ name: i.stat.name, value: i.base_stat })),
         types: detail.types.map(i => i.type.name),

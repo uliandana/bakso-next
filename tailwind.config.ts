@@ -8,6 +8,21 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      animation: {
+        'fade-out': 'fade-out 3s ease-in-out forwards',
+      },
+      keyframes: {
+        'fade-out': {
+          '67%': {
+            visibility: 'visible',
+            opacity: '1',
+          },
+          '100%': {
+            visibility: 'hidden',
+            opacity: '0',
+          },
+        },
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':

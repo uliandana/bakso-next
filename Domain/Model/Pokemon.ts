@@ -9,6 +9,6 @@ export interface Pokemon {
   types: string[],
   baseWeight: number,
   weight: number,
-  evolvesTo: (Pokemon | null)[],
+  evolvesTo: Pokemon['name'][],
   bgColor: string,
 }
