@@ -118,9 +118,20 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
       evolvesTo = rcvEvolution(evolution.chain);
     }
 
-    const resHandle: Promise<Pokemon | null> = new Promise(async resolve => {
+    const resHandle: Promise<Pokemon> = new Promise(async resolve => {
       if (!resDetail.ok || !resSpecies.ok) {
-        resolve(null);
+        resolve({
+          id: '',
+          name: '',
+          nameSlug: '',
+          sprite: '',
+          stats: [],
+          baseWeight: 0,
+          types: [],
+          weight: 0,
+          evolvesTo: [],
+          bgColor: '',
+        });
       }
       resolve({
         id: species.id.toString(),

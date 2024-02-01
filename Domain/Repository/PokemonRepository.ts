@@ -2,6 +2,6 @@ import { Pokemon } from '../Model/Pokemon';
 
 export interface PokemonRepository {
   getPokemon(offset: number): Promise<Pokemon[]>,
-  getPokemonByName(name: string): Promise<Pokemon | null>,
+  getPokemonByName(name: string, statOnly?: Boolean): Promise<Pokemon>,
   getAllPokemon(): Promise<Pokemon[]>,
 }

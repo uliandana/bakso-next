@@ -12,8 +12,8 @@ export class PokemonRepositoryImpl implements PokemonRepository {
     return this.dataSource.getPokemon!(offset);
   }
 
-  async getPokemonByName(name: string) {
-    return this.dataSource.getPokemonByName!(name);
+  async getPokemonByName(name: string, statOnly?: Boolean) {
+    return this.dataSource.getPokemonByName!(name, statOnly);
   }
 
   async getAllPokemon() {

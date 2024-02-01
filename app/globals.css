@@ -17,6 +17,24 @@
   }
 }
 
+@layer utilities {
+  .card-flip {
+    position: absolute;
+    backface-visibility: hidden;
+    transform: rotateY(0);
+    transition: transform 0.5s ease-in-out;
+  }
+  .card-flipped {
+    position: absolute;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+    transition: transform 0.5s ease-in-out;
+  }
+  .silhouette {
+    filter: brightness(0) drop-shadow(0.0625rem 0.125rem 0.25rem rgb(var(--background-start-rgb)));
+  }
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(

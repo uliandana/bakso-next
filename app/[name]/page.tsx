@@ -17,8 +17,6 @@ const STATS: { [key: string]: string } = {
   'hp': 'HP',
   'attack': 'Attack',
   'defense': 'Defense',
-  'special-attack': 'Special Attack',
-  'special-defense': 'Special Defense',
   'speed': 'Speed',
 };
 
@@ -44,7 +42,13 @@ const TYPES: { [key: string]: string } = {
 };
 
 export default function PokemonByName({ params }: { params: Params }) {
-  const { pokemon, berries, feed, isFetchingPokemon, isFetchingEvolution, isFetchingBerry } = useViewModel(params.name);
+  const { pokemon, evolutions, berries, sprite, feed, isFetchingPokemon, isFetchingEvolution, isFetchingBerry } = useViewModel(params.name);
+  const clsSprite = sprite.cardSprite < 0 ?
+    'bg-neutral-100 rounded-[1rem] h-[30vh] card-flip':
+    'bg-neutral-100 rounded-[1rem] h-[30vh] card-flipped';
+  const clsSpriteBack = sprite.cardSprite < 0 ?
+    'bg-neutral-100 rounded-[1rem] h-[30vh] card-flipped':
+    'bg-neutral-100 rounded-[1rem] h-[30vh] card-flip';
   return (
     <main className="m-auto max-w-screen-md flex flex-col gap-[1rem] h-dvh overflow-y-auto justify-between p-24">
       {(isFetchingPokemon || !pokemon) ? <Spinner /> : (
@@ -56,8 +60,17 @@ export default function PokemonByName({ params }: { params: Params }) {
             </Link>
           </header>
           <div className="relative self-center">
-            <img className="bg-neutral-100 rounded-[1rem] h-[30vh]" src={pokemon?.sprite} />
-            <button className="size-[5rem] bg-red-500 text-[2rem] font-[700] shadow-xl rounded-full absolute bottom-[-1rem] right-[-1rem]">
+            <div className="relative size-[30vh]">
+              <div className={clsSprite}>
+                <img src={pokemon?.sprite} />
+              </div>
+              {evolutions[0] && (
+                <div className={clsSpriteBack}>
+                  <img className="silhouette" src={evolutions[0].sprite} />
+                </div>
+              )}
+            </div>
+            <button onClick={sprite.onFlipSprite} className="size-[5rem] bg-red-500 text-[2rem] font-[700] shadow-xl rounded-full absolute bottom-[-1rem] right-[-1rem]">
               {pokemon?.evolvesTo.length}
             </button>
             <p className="text-[1.5rem] bg-neutral-800 shadow-xl absolute bottom-[5.25rem] right-[-4rem] py-[0.25rem] px-[1rem] rounded-[0.5rem] animate-fade-out">
@@ -74,7 +87,7 @@ export default function PokemonByName({ params }: { params: Params }) {
           </div>
           <table className="text-[1.5rem] w-8/12 mx-auto">
             <tbody>
-              {pokemon?.stats.map((i, idx) => (
+              {pokemon?.stats.map((i, idx) => STATS[i.name] && (
                 <tr key={idx}>
                   <td className="pr-[2rem]">{STATS[i.name]}</td>
                   <td>{i.value}</td>

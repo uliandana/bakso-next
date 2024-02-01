@@ -11,11 +11,14 @@ import { getStoredBerry, storeBerry } from './indexeddb';
 
 export default function NameViewModel(name: string) {
   const [pokemon, setPokemon] = useState<Pokemon>();
+  const [evolutions, setEvolutions] = useState<Pokemon[]>([]);
   const [berries, setBerries] = useState<Berry[]>([]);
   const [selectBerry, setSelectBerry] = useState<Berry['id']>('');
   const [isFetchingPokemon, setIsFetchingPokemon] = useState<Boolean>(true);
   const [isFetchingEvolution, setIsFetchingEvolution] = useState<Boolean>(true);
   const [isFetchingBerry, setIsFetchingBerry] = useState<Boolean>(true);
+
+  const [cardSprite, setCardSprite] = useState(-1);
 
   const pokemonDataSourceImpl = new PokemonAPIDataSourceImpl();
   const pokemonRepositoryImpl = new PokemonRepositoryImpl(pokemonDataSourceImpl);
@@ -32,12 +35,24 @@ export default function NameViewModel(name: string) {
       setIsFetchingPokemon(true);
       const data = await getPokemonUseCase.invoke(name);
       setIsFetchingPokemon(false);
-      setIsFetchingEvolution(false);
       if (data) {
         setPokemon(data);
+        fetchEvolutions(data.evolvesTo);
       }
     } catch(e) {
       setIsFetchingPokemon(false);
+    }
+  };
+
+  const fetchEvolutions = async (evolvesTo:Pokemon['name'][]) => {
+    try {
+      setIsFetchingEvolution(true);
+      const data = await Promise.all(evolvesTo.map(i => getPokemonUseCase.invoke(i, true)));
+      setIsFetchingEvolution(false);
+      if (data) {
+        setEvolutions(data);
+      }
+    } catch(e) {
       setIsFetchingEvolution(false);
     }
   };
@@ -54,6 +69,13 @@ export default function NameViewModel(name: string) {
     } catch(e) {
       setIsFetchingBerry(false);
     }
+  };
+
+  const onFlipSprite = () => {
+    if (!evolutions.length) {
+      return;
+    }
+    setCardSprite(cardSprite < 0 ? 0 : -1);
   };
 
   const onSelectBerry:ChangeEventHandler<HTMLInputElement> = e => {
@@ -78,7 +100,12 @@ export default function NameViewModel(name: string) {
 
   return {
     pokemon,
+    evolutions,
     berries,
+    sprite: {
+      cardSprite,
+      onFlipSprite,
+    },
     feed: {
       selected: selectBerry,
       select: onSelectBerry,
