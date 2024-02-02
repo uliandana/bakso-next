@@ -42,7 +42,7 @@ const TYPES: { [key: string]: string } = {
 };
 
 export default function PokemonByName({ params }: { params: Params }) {
-  const { pokemon, evolutions, berries, sprite, feed, isFetchingPokemon, isFetchingEvolution, isFetchingBerry } = useViewModel(params.name);
+  const { pokemon, evolutions, berries, sprite, feed, onFeedBerry, isFetchingPokemon, isFetchingEvolution, isFetchingBerry } = useViewModel(params.name);
   const clsSprite = sprite.cardSprite < 0 ?
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flip':
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flipped';
@@ -85,6 +85,11 @@ export default function PokemonByName({ params }: { params: Params }) {
               </span>
             ))}
           </div>
+          {(pokemon.weight >= evolutions[0]?.weight) && (
+            <Link href={`/${evolutions[0].nameSlug}`} className="py-[1rem] px-[3rem] self-center rounded-[3rem] text-[1.5rem] uppercase bg-red-600 text-neutral-100 font-[700] tracking-[0.125rem]">
+              Evolve
+            </Link>
+          )}
           <table className="text-[1.5rem] w-8/12 mx-auto">
             <tbody>
               {pokemon?.stats.map((i, idx) => STATS[i.name] && (
@@ -112,7 +117,9 @@ export default function PokemonByName({ params }: { params: Params }) {
             ))}
           </div>
         )}
-        <button className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-neutral-100 text-red-600 font-[700] tracking-[0.125rem]">Feed Pokemon</button>
+        <button disabled={!feed.selected} onClick={onFeedBerry} className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-neutral-100 text-red-600 font-[700] tracking-[0.125rem]">
+          Feed Pokemon
+        </button>
       </footer>
     </main>
   )

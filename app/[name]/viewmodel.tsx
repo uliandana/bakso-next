@@ -13,12 +13,14 @@ export default function NameViewModel(name: string) {
   const [pokemon, setPokemon] = useState<Pokemon>();
   const [evolutions, setEvolutions] = useState<Pokemon[]>([]);
   const [berries, setBerries] = useState<Berry[]>([]);
-  const [selectBerry, setSelectBerry] = useState<Berry['id']>('');
   const [isFetchingPokemon, setIsFetchingPokemon] = useState<Boolean>(true);
   const [isFetchingEvolution, setIsFetchingEvolution] = useState<Boolean>(true);
   const [isFetchingBerry, setIsFetchingBerry] = useState<Boolean>(true);
 
   const [cardSprite, setCardSprite] = useState(-1);
+
+  const [selectBerry, setSelectBerry] = useState<Berry['id']>('');
+  const [firmnessFed, setFirmnessFed] = useState<Berry['firmness']>('');
 
   const pokemonDataSourceImpl = new PokemonAPIDataSourceImpl();
   const pokemonRepositoryImpl = new PokemonRepositoryImpl(pokemonDataSourceImpl);
@@ -83,7 +85,23 @@ export default function NameViewModel(name: string) {
   };
 
   const onFeedBerry = () => {
-
+    const WEIGHT: Record<Berry['firmness'], number[]> = {
+      'very-soft': [2, -4],
+      'soft': [3, -6],
+      'hard': [5, -10],
+      'very-hard': [8, -16],
+      'super-hard': [10, -20],
+    };
+    const { firmness } = berries.filter(i => i.id === selectBerry)[0];
+    if (pokemon && firmness) {
+      const [plus, min] = WEIGHT[firmness] || [1, 1];
+      const newWeight = (firmness === firmnessFed) ? (pokemon.weight + min) : (pokemon.weight + plus);
+      setPokemon({
+        ...pokemon,
+        weight: newWeight < 0 ? 0 : newWeight,
+      });
+      setFirmnessFed(firmness);
+    }
   };
 
   useEffect(() => {
