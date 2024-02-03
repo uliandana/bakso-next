@@ -49,6 +49,7 @@ export default function PokemonByName({ params }: { params: Params }) {
   const clsSpriteBack = sprite.cardSprite < 0 ?
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flipped':
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flip';
+  const evolutionProgress = (evolutions[0] && pokemon) ? (pokemon?.weight * 100 / evolutions[0].baseWeight) : 0;
   return (
     <main className="m-auto max-w-screen-md flex flex-col gap-[1rem] h-dvh overflow-y-auto justify-between p-24">
       {(isFetchingPokemon || !pokemon) ? <Spinner /> : (
@@ -70,9 +71,14 @@ export default function PokemonByName({ params }: { params: Params }) {
                 </div>
               )}
             </div>
-            <button onClick={sprite.onFlipSprite} className="size-[5rem] bg-red-500 text-[2rem] font-[700] shadow-xl rounded-full absolute bottom-[-1rem] right-[-1rem]">
-              {pokemon?.evolvesTo.length}
-            </button>
+            <div
+              className="size-[6rem] rounded-full shadow-xl absolute bottom-[-2rem] right-[-2rem] flex items-center justify-center"
+              style={{ background: `conic-gradient(#84b7f2 0 ${evolutionProgress}%, transparent 0 100%)` }}
+            >
+              <button onClick={sprite.onFlipSprite} className="size-[5rem] bg-red-500 text-[2rem] font-[700] rounded-full">
+                {pokemon?.evolvesTo.length}
+              </button>
+            </div>
             <p className="text-[1.5rem] bg-neutral-800 shadow-xl absolute bottom-[5.25rem] right-[-4rem] py-[0.25rem] px-[1rem] rounded-[0.5rem] animate-fade-out">
               {EVOLUTION[pokemon?.evolvesTo.length] || `This pokemon has ${pokemon.evolvesTo.length} evolutions!`}
               <span className="absolute bottom-[-1rem] right-[4.5rem] border-solid border-t-neutral-800 border-t-[1rem] border-x-transparent border-x-[1rem] border-b-0" />
