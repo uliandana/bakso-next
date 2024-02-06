@@ -38,6 +38,10 @@ export default function RootViewModel() {
     }
   };
 
+  const onChoosePokemon = () => {
+    console.log('choosed');
+  };
+
   const initializeObserver = () => {
     const options = {
       threshold: 1,
@@ -99,5 +103,6 @@ export default function RootViewModel() {
       value: search,
       setSearch,
     },
+    onChoosePokemon,
   };
 }

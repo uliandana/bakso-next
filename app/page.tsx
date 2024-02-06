@@ -4,10 +4,10 @@ import useViewModel from './viewmodel';
 import Spinner from '@/app/.elements/Spinner';
 
 export default function Root() {
-  const { pokemons, isFetching, search } = useViewModel();
+  const { pokemons, onChoosePokemon, isFetching, search } = useViewModel();
 
   return (
-    <main className="m-auto min-h-screen">
+    <main className="m-auto h-dvh overflow-y-auto">
       <header className="p-[2rem] px-[6rem]">
         <h1 className="text-[3rem] font-bold text-center mb-[2rem]">Choose Your Pokemon</h1>
         <input
@@ -33,6 +33,11 @@ export default function Root() {
           </div>
         )}
       </section>
+      <footer className="sticky bottom-[-3rem] mb-[-3rem] p-[6rem]">
+        <button onClick={onChoosePokemon} className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-neutral-100 text-red-600 font-[700] tracking-[0.125rem] shadow-2xl">
+          I Choose You!
+        </button>
+      </footer>
     </main>
   )
 }

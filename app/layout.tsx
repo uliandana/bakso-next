@@ -6,8 +6,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Pokemon',
-  description: 'Choose your pokemon',
+  title: 'PokeDiet',
+  description: 'Feed your pokemon',
 }
 
 export default function RootLayout({

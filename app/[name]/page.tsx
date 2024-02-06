@@ -51,7 +51,7 @@ export default function PokemonByName({ params }: { params: Params }) {
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flip';
   const evolutionProgress = (evolutions[0] && pokemon) ? (pokemon?.weight * 100 / evolutions[0].baseWeight) : 0;
   return (
-    <main className="m-auto max-w-screen-md flex flex-col gap-[1rem] h-dvh overflow-y-auto justify-between p-24">
+    <main className="m-auto max-w-screen-md flex flex-col gap-[1rem] h-dvh overflow-y-auto justify-between p-[6rem]">
       {(isFetchingPokemon || !pokemon) ? <Spinner /> : (
         <>
           <header className="flex items-center justify-center">
@@ -123,7 +123,7 @@ export default function PokemonByName({ params }: { params: Params }) {
             ))}
           </div>
         )}
-        <button disabled={!feed.selected} onClick={onFeedBerry} className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-neutral-100 text-red-600 font-[700] tracking-[0.125rem]">
+        <button disabled={!feed.selected} onClick={onFeedBerry} className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-neutral-100 text-red-600 font-[700] tracking-[0.125rem] shadow-2xl">
           Feed Pokemon
         </button>
       </footer>
