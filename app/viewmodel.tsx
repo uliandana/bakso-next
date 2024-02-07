@@ -8,6 +8,9 @@ export default function RootViewModel() {
   const [listPokemons, setListPokemons] = useState<Pokemon[]>([]);
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+
+  const [selected, setSelected] = useState<Pokemon['id']>('');
+
   const [observer, setObserver] = useState<IntersectionObserver | null>(null);
   const [indexPage, setIndexPage] = useState(0);
   const [offset, setOffset] = useState(0);
@@ -38,8 +41,12 @@ export default function RootViewModel() {
     }
   };
 
+  const onSelectCard = (id: Pokemon['id']) => {
+    setSelected(id);
+  };
+
   const onChoosePokemon = () => {
-    console.log('choosed');
+    console.log(selected);
   };
 
   const initializeObserver = () => {
@@ -102,6 +109,10 @@ export default function RootViewModel() {
     search: {
       value: search,
       setSearch,
+    },
+    select: {
+      value: selected,
+      onSelectCard,
     },
     onChoosePokemon,
   };

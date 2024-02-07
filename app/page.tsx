@@ -1,10 +1,9 @@
 'use client'
-import Link from 'next/link';
 import useViewModel from './viewmodel';
 import Spinner from '@/app/.elements/Spinner';
 
 export default function Root() {
-  const { pokemons, onChoosePokemon, isFetching, search } = useViewModel();
+  const { pokemons, select, onChoosePokemon, isFetching, search } = useViewModel();
 
   return (
     <main className="m-auto h-dvh overflow-y-auto">
@@ -17,27 +16,30 @@ export default function Root() {
           className="block w-full text-[2rem] text-black p-[1rem] bg-white rounded-[1rem] border-solid border-[0.0625rem] border-slate-500"
         />
       </header>
-      <section className="grid grid-cols-4">
+      <ul className="grid grid-cols-4">
         {pokemons.map((poke, idx) => (
-          <Link data-pokemon={idx + 1} key={idx} href={`/${poke.name}`}
-            className="h-[25vw] text-center flex flex-col items-center justify-between overflow-hidden relative"
-            style={{ backgroundColor: poke.bgColor }} 
+          <li data-pokemon={idx + 1} key={idx}
+            className="h-[25vw] text-center flex flex-col items-center justify-between overflow-hidden relative cursor-pointer"
+            style={{ backgroundColor: poke.bgColor, border: (select.value === poke.id ? '0.0625rem solid gold' : '') }}
+            onClick={() => select.onSelectCard(poke.id)}
           >
             <img className="block w-full transition-all hover:drop-shadow-xl hover:rotate-6 hover:scale-110" src={poke.sprite} alt={poke.name} />
             <p className="text-[2rem] uppercase font-[700] absolute bottom-1">{poke.name}</p>
-          </Link>
+          </li>
         ))}
         {isFetching && (
-          <div className="block p-[1rem] mb-[1rem] text-center">
+          <li className="block p-[1rem] mb-[1rem] text-center">
             <Spinner />
-          </div>
+          </li>
         )}
-      </section>
-      <footer className="sticky bottom-[-3rem] mb-[-3rem] p-[6rem]">
-        <button onClick={onChoosePokemon} className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-neutral-100 text-red-600 font-[700] tracking-[0.125rem] shadow-2xl">
-          I Choose You!
-        </button>
-      </footer>
+      </ul>
+      {select.value && (
+        <footer className="sticky bottom-[-3rem] mb-[-3rem] p-[6rem]">
+          <button onClick={onChoosePokemon} className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-neutral-100 text-red-600 font-[700] tracking-[0.125rem] shadow-2xl">
+            I Choose You!
+          </button>
+        </footer>
+      )}
     </main>
   )
 }
