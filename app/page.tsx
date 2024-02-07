@@ -20,8 +20,8 @@ export default function Root() {
         {pokemons.map((poke, idx) => (
           <li data-pokemon={idx + 1} key={idx}
             className="h-[25vw] text-center flex flex-col items-center justify-between overflow-hidden relative cursor-pointer"
-            style={{ backgroundColor: poke.bgColor, border: (select.value === poke.id ? '0.0625rem solid gold' : '') }}
-            onClick={() => select.onSelectCard(poke.id)}
+            style={{ backgroundColor: poke.bgColor, border: (select.value === poke.nameSlug ? '0.0625rem solid gold' : '') }}
+            onClick={() => select.onSelectCard(poke.nameSlug)}
           >
             <img className="block w-full transition-all hover:drop-shadow-xl hover:rotate-6 hover:scale-110" src={poke.sprite} alt={poke.name} />
             <p className="text-[2rem] uppercase font-[700] absolute bottom-1">{poke.name}</p>

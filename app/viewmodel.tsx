@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import PokemonAPIDataSourceImpl from '@/Data/DataSource/API/PokemonAPIDataSource';
 import { PokemonRepositoryImpl } from '@/Data/Repository/PokemonRepositoryImpl';
 import { GetAllPokemon } from '@/Domain/UseCase/Pokemon/GetAllPokemon';
 import { Pokemon } from '@/Domain/Model/Pokemon';
 
 export default function RootViewModel() {
+  const router = useRouter();
   const [listPokemons, setListPokemons] = useState<Pokemon[]>([]);
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
-  const [selected, setSelected] = useState<Pokemon['id']>('');
+  const [selected, setSelected] = useState<Pokemon['nameSlug']>('');
 
   const [observer, setObserver] = useState<IntersectionObserver | null>(null);
   const [indexPage, setIndexPage] = useState(0);
@@ -41,12 +43,13 @@ export default function RootViewModel() {
     }
   };
 
-  const onSelectCard = (id: Pokemon['id']) => {
-    setSelected(id);
+  const onSelectCard = (name: Pokemon['nameSlug']) => {
+    setSelected(name);
   };
 
   const onChoosePokemon = () => {
-    console.log(selected);
+    localStorage.setItem('CHOSEN', selected);
+    router.push(`/${selected}`);
   };
 
   const initializeObserver = () => {
