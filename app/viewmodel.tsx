@@ -102,6 +102,10 @@ export default function RootViewModel() {
   }, [allPokemons]);
 
   useEffect(() => {
+    const chosen = localStorage.getItem('CHOSEN');
+    if (chosen) {
+      router.replace(`/${chosen}`);
+    }
     fetchPokemon(0);
     initializeObserver();
   }, []);
