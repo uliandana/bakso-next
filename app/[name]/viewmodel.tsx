@@ -7,9 +7,12 @@ import { Pokemon } from '@/Domain/Model/Pokemon';
 import { GetBerry } from '@/Domain/UseCase/Berry/GetBerry';
 import { GetPokemonByName } from '@/Domain/UseCase/Pokemon/GetPokemonByName';
 import { ChangeEventHandler, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { getStoredBerry, storeBerry } from './indexeddb';
 
 export default function NameViewModel(name: string) {
+  const router = useRouter();
+
   const [pokemon, setPokemon] = useState<Pokemon>();
   const [evolutions, setEvolutions] = useState<Pokemon[]>([]);
   const [berries, setBerries] = useState<Berry[]>([]);
@@ -105,6 +108,10 @@ export default function NameViewModel(name: string) {
   };
 
   useEffect(() => {
+    const chosen = localStorage.getItem('CHOSEN');
+    if (chosen) {
+      router.replace(`/${chosen}`);
+    }
     fetchPokemon();
     fetchBerry();
   }, []);
