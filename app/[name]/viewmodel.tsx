@@ -107,6 +107,13 @@ export default function NameViewModel(name: string) {
     }
   };
 
+  const onRechoosePokemon = () => {
+    localStorage.removeItem('CHOSEN');
+    setTimeout(() => {
+      router.push('/');
+    }, 500);
+  };
+
   useEffect(() => {
     const chosen = localStorage.getItem('CHOSEN');
     if (chosen) {
@@ -135,6 +142,7 @@ export default function NameViewModel(name: string) {
       selected: selectBerry,
       select: onSelectBerry,
     },
+    onRechoosePokemon,
     onFeedBerry,
     isFetchingPokemon,
     isFetchingEvolution,

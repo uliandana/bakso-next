@@ -42,7 +42,7 @@ const TYPES: { [key: string]: string } = {
 };
 
 export default function PokemonByName({ params }: { params: Params }) {
-  const { pokemon, evolutions, berries, sprite, feed, onFeedBerry, isFetchingPokemon, isFetchingEvolution, isFetchingBerry } = useViewModel(params.name);
+  const { pokemon, evolutions, berries, sprite, feed, onFeedBerry, onRechoosePokemon, isFetchingPokemon, isFetchingEvolution, isFetchingBerry } = useViewModel(params.name);
   const clsSprite = sprite.cardSprite < 0 ?
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flip':
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flipped';
@@ -56,9 +56,9 @@ export default function PokemonByName({ params }: { params: Params }) {
         <>
           <header className="flex items-center justify-center">
             <h1 className="text-[3rem] font-[700] mr-[-3rem] flex-1 text-center">{pokemon?.name}</h1>
-            <Link href="/" className="size-[3rem] p-[0.5rem] rounded-full bg-neutral-100 text-red-600">
+            <button onClick={onRechoosePokemon} className="size-[3rem] p-[0.5rem] rounded-full bg-neutral-100 text-red-600">
               <CloseIcon />
-            </Link>
+            </button>
           </header>
           <div className="relative self-center">
             <div className="relative size-[30vh]">
