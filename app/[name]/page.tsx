@@ -42,7 +42,7 @@ const TYPES: { [key: string]: string } = {
 };
 
 export default function PokemonByName({ params }: { params: Params }) {
-  const { pokemon, evolutions, berries, sprite, feed, onFeedBerry, onRechoosePokemon, isFetchingPokemon, isFetchingEvolution, isFetchingBerry } = useViewModel(params.name);
+  const { pokemon, evolutions, berries, sprite, feed, onFeedBerry, onRechoosePokemon, onEvolvePokemon, isFetchingPokemon, isFetchingEvolution, isFetchingBerry } = useViewModel(params.name);
   const clsSprite = sprite.cardSprite < 0 ?
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flip':
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flipped';
@@ -92,9 +92,9 @@ export default function PokemonByName({ params }: { params: Params }) {
             ))}
           </div>
           {(pokemon.weight >= evolutions[0]?.weight) && (
-            <Link href={`/${evolutions[0].nameSlug}`} className="py-[1rem] px-[3rem] self-center rounded-[3rem] text-[1.5rem] uppercase bg-red-600 text-neutral-100 font-[700] tracking-[0.125rem]">
+            <button onClick={() => onEvolvePokemon(evolutions[0].nameSlug)} className="py-[1rem] px-[3rem] self-center rounded-[3rem] text-[1.5rem] uppercase bg-red-600 text-neutral-100 font-[700] tracking-[0.125rem]">
               Evolve
-            </Link>
+            </button>
           )}
           <table className="text-[1.5rem] w-8/12 mx-auto">
             <tbody>

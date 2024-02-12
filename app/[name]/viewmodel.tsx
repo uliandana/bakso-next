@@ -114,6 +114,11 @@ export default function NameViewModel(name: string) {
     }, 500);
   };
 
+  const onEvolvePokemon = (name: Pokemon['nameSlug']) => {
+    localStorage.setItem('CHOSEN', name);
+    router.replace(`/${name}`);
+  };
+
   useEffect(() => {
     const chosen = localStorage.getItem('CHOSEN');
     if (chosen) {
@@ -143,6 +148,7 @@ export default function NameViewModel(name: string) {
       select: onSelectBerry,
     },
     onRechoosePokemon,
+    onEvolvePokemon,
     onFeedBerry,
     isFetchingPokemon,
     isFetchingEvolution,
