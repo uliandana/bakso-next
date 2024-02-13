@@ -1,7 +1,7 @@
 'use client'
-import Link from 'next/link';
 import CloseIcon from '@/app/.elements/CloseIcon';
 import Spinner from '@/app/.elements/Spinner';
+import { Berry } from '@/Domain/Model/Berry';
 import useViewModel from './viewmodel';
 
 type Params = {
@@ -18,6 +18,14 @@ const STATS: { [key: string]: string } = {
   'attack': 'Attack',
   'defense': 'Defense',
   'speed': 'Speed',
+};
+
+const BERRY_BG: Record<Berry['firmness'], string> = {
+  'very-soft': '#AABB22',
+  'soft': '#775544',
+  'hard': '#7766EE',
+  'very-hard': '#FFCC33',
+  'super-hard': '#FFAAFF',
 };
 
 const TYPES: { [key: string]: string } = {
@@ -116,7 +124,7 @@ export default function PokemonByName({ params }: { params: Params }) {
         {isFetchingBerry ? <Spinner /> : (
           <div className="h-[5rem] mb-[1rem] overflow-y-hidden overflow-x-auto rounded-[1rem] border-solid border-[0.125rem] border-white whitespace-nowrap bg-neutral-100">
             {berries.map(i => i.id && (
-              <label htmlFor={`berry-${i.id}`} key={i.id} className="inline-block rounded-[1rem] cursor-pointer has-[:checked]:bg-cyan-400">
+              <label htmlFor={`berry-${i.id}`} key={i.id} className="inline-block rounded-full mx-[0.5rem] cursor-pointer has-[:checked]:border-solid has-[:checked]:border-[0.125rem] has-[:checked]:border-cyan-400" style={{ backgroundColor: BERRY_BG[i.firmness] || 'white' }}>
                 <input id={`berry-${i.id}`} type="radio" name="berry" value={i.id} className="hidden" onChange={feed.select} />
                 <img src={i.sprite} title={i.name} className="h-[3rem] m-[1rem]" />
               </label>
