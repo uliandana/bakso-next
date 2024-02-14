@@ -93,7 +93,7 @@ export default function RootViewModel() {
 
   useEffect(() => {
     setPokemons([]);
-    setAllPokemons(listPokemons.filter(i => i.name.includes(search)));
+    setAllPokemons(listPokemons.filter(i => i.name.includes(search) || (i.id === search)));
   }, [search]);
 
   useEffect(() => {
