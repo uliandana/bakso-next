@@ -10,6 +10,8 @@ import { ChangeEventHandler, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getStoredBerry, storeBerry } from './indexeddb';
 
+type ModalMode = '' | 'RECHOOSE';
+
 export default function NameViewModel(name: string) {
   const router = useRouter();
 
@@ -21,6 +23,7 @@ export default function NameViewModel(name: string) {
   const [isFetchingBerry, setIsFetchingBerry] = useState<Boolean>(true);
 
   const [cardSprite, setCardSprite] = useState(-1);
+  const [modal, setModal] = useState<ModalMode>('');
 
   const [selectBerry, setSelectBerry] = useState<Berry['id']>('');
   const [firmnessFed, setFirmnessFed] = useState<Berry['firmness']>('');
@@ -83,6 +86,12 @@ export default function NameViewModel(name: string) {
     setCardSprite(cardSprite < 0 ? 0 : -1);
   };
 
+  const modalRechoose = {
+    isOpen: modal === 'RECHOOSE',
+    open: () => setModal('RECHOOSE'),
+    close: () => setModal(''),
+  };
+
   const onSelectBerry:ChangeEventHandler<HTMLInputElement> = e => {
     setSelectBerry(e.target.value);
   };
@@ -139,6 +148,7 @@ export default function NameViewModel(name: string) {
     pokemon,
     evolutions,
     berries,
+    modalRechoose,
     sprite: {
       cardSprite,
       onFlipSprite,

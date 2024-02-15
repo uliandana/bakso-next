@@ -50,7 +50,7 @@ const TYPES: { [key: string]: string } = {
 };
 
 export default function PokemonByName({ params }: { params: Params }) {
-  const { pokemon, evolutions, berries, sprite, feed, onFeedBerry, onRechoosePokemon, onEvolvePokemon, isFetchingPokemon, isFetchingEvolution, isFetchingBerry } = useViewModel(params.name);
+  const { pokemon, evolutions, berries, sprite, feed, modalRechoose, onFeedBerry, onRechoosePokemon, onEvolvePokemon, isFetchingPokemon, isFetchingBerry } = useViewModel(params.name);
   const clsSprite = sprite.cardSprite < 0 ?
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flip':
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flipped';
@@ -64,7 +64,7 @@ export default function PokemonByName({ params }: { params: Params }) {
         <>
           <header className="flex items-center justify-center">
             <h1 className="text-[3rem] font-[700] mr-[-3rem] flex-1 text-center">{pokemon?.name}</h1>
-            <button onClick={onRechoosePokemon} className="size-[3rem] p-[0.5rem] rounded-full bg-neutral-100 text-red-600">
+            <button onClick={modalRechoose.open} className="size-[3rem] p-[0.5rem] rounded-full bg-neutral-100 text-red-600">
               <CloseIcon />
             </button>
           </header>
@@ -135,6 +135,20 @@ export default function PokemonByName({ params }: { params: Params }) {
           Feed Pokemon
         </button>
       </footer>
+      <div className="overlay" style={{ display: modalRechoose.isOpen ? 'block' : 'none' }}>
+        <div className="modal">
+          <h3 className="text-[2rem] font-[700]">Are you sure you want to change your Pokemon?</h3>
+          <p className="text-[1.5rem]">Your progress will reset</p>
+          <footer className="flex items-center justify-between mt-[2rem]">
+            <button onClick={modalRechoose.close} className="flex-1 text-[2rem] font-[700]">
+              No
+            </button>
+            <button onClick={onRechoosePokemon} className="flex-1 text-[2rem] font-[700]">
+              Yes
+            </button>
+          </footer>
+        </div>
+      </div>
     </main>
   )
 }
