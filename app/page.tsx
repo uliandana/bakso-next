@@ -11,6 +11,7 @@ export default function Root() {
         <h1 className="text-[3rem] font-bold text-center mb-[2rem]">Choose Your Pokemon</h1>
         <input
           value={search.value}
+          type="search"
           placeholder="Search pokemon"
           onChange={e => search.setSearch(e.target.value)}
           className="block w-full text-[2rem] text-black p-[1rem] bg-white rounded-[1rem] border-solid border-[0.0625rem] border-slate-500"
