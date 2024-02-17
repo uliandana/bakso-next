@@ -29,6 +29,8 @@ export default function RootViewModel() {
     try {
       if (allPokemons.length) {
         setPokemons([...pokemons, ...allPokemons.slice(offset, offset + 100)]);
+      } else if (search) {
+        setPokemons([]);
       } else {
         setIsFetching(true)
         const data = await getAllPokemonUseCase.invoke();
