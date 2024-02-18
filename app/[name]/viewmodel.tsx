@@ -27,6 +27,7 @@ export default function NameViewModel(name: string) {
 
   const [selectBerry, setSelectBerry] = useState<Berry['id']>('');
   const [firmnessFed, setFirmnessFed] = useState<Berry['firmness']>('');
+  const [berryTaste, setBerryTaste] = useState<'GOOD'|'BAD'|''>('');
 
   const pokemonDataSourceImpl = new PokemonAPIDataSourceImpl();
   const pokemonRepositoryImpl = new PokemonRepositoryImpl(pokemonDataSourceImpl);
@@ -113,6 +114,10 @@ export default function NameViewModel(name: string) {
         weight: newWeight < 0 ? 0 : newWeight,
       });
       setFirmnessFed(firmness);
+      setBerryTaste(firmness === firmnessFed ? 'BAD' : 'GOOD');
+      setTimeout(() => {
+        setBerryTaste('');
+      }, 1100);
     }
   };
 
@@ -156,6 +161,7 @@ export default function NameViewModel(name: string) {
     feed: {
       selected: selectBerry,
       select: onSelectBerry,
+      berryTaste,
     },
     onRechoosePokemon,
     onEvolvePokemon,

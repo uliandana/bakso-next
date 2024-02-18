@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       animation: {
         'fade-out': 'fade-out 3s ease-in-out forwards',
+        'feed-shake': 'feed-shake 1s ease-in-out forwards',
       },
       keyframes: {
         'fade-out': {
@@ -20,6 +21,14 @@ const config: Config = {
           '100%': {
             visibility: 'hidden',
             opacity: '0',
+          },
+        },
+        'feed-shake': {
+          '33%': {
+            transform: 'rotate(5deg)',
+          },
+          '67%': {
+            transform: 'rotate(-5deg)',
           },
         },
       },
