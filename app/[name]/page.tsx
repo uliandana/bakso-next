@@ -57,7 +57,11 @@ export default function PokemonByName({ params }: { params: Params }) {
   const clsSpriteBack = sprite.cardSprite < 0 ?
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flipped':
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flip';
-  const clsSpriteImg = feed.berryTaste === 'GOOD' ? 'animate-feed-shake' : 'animate-none';
+  const clsSpriteImg = ({
+    'GOOD': 'animate-feed-shake',
+    'BAD': 'animate-feed-bounce',
+    '': 'animate-none',
+  })[feed.berryTaste];
   const evolutionProgress = (evolutions[0] && pokemon) ? (pokemon?.weight * 100 / evolutions[0].baseWeight) : 0;
   return (
     <main className="m-auto max-w-screen-md flex flex-col gap-[1rem] h-dvh overflow-y-auto justify-between p-[6rem]">
