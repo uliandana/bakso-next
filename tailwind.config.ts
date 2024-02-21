@@ -11,7 +11,7 @@ const config: Config = {
       animation: {
         'fade-out': 'fade-out 3s ease-in-out forwards',
         'feed-shake': 'feed-shake 1s ease-in-out forwards',
-        'feed-bounce': 'feed-bounce 1s ease-in-out forwards',
+        'feed-sick': 'feed-sick 0.5s ease-in-out forwards',
       },
       keyframes: {
         'fade-out': {
@@ -32,15 +32,19 @@ const config: Config = {
             transform: 'rotate(-2deg)',
           },
         },
-        'feed-bounce': {
+        'feed-sick': {
           '25%': {
             transform: 'translateY(1%)',
           },
           '50%': {
             transform: 'translateY(-1%)',
+            filter: 'grayscale(1) drop-shadow(0 0 0.25rem rgb(var(--background-start-rgb)))',
           },
           '75%': {
             transform: 'translateY(1%)',
+          },
+          '100%': {
+            filter: 'grayscale(0)'
           },
         },
       },

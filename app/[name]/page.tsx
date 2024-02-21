@@ -59,7 +59,7 @@ export default function PokemonByName({ params }: { params: Params }) {
     'bg-neutral-100 rounded-[1rem] h-[30vh] card-flip';
   const clsSpriteImg = ({
     'GOOD': 'animate-feed-shake',
-    'BAD': 'animate-feed-bounce',
+    'BAD': 'animate-feed-sick',
     '': 'animate-none',
   })[feed.berryTaste];
   const evolutionProgress = (evolutions[0] && pokemon) ? (pokemon?.weight * 100 / evolutions[0].baseWeight) : 0;
