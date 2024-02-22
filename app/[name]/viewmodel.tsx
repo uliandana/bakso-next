@@ -9,6 +9,7 @@ import { GetPokemonByName } from '@/Domain/UseCase/Pokemon/GetPokemonByName';
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getStoredBerry, storeBerry } from './indexeddb';
+import useModal from '../.utils/useModal';
 
 type ModalMode = '' | 'RECHOOSE';
 
@@ -23,7 +24,7 @@ export default function NameViewModel(name: string) {
   const [isFetchingBerry, setIsFetchingBerry] = useState<Boolean>(true);
 
   const [cardSprite, setCardSprite] = useState(-1);
-  const [modal, setModal] = useState<ModalMode>('');
+  const [modal, setModal] = useModal<ModalMode>('');
 
   const [selectBerry, setSelectBerry] = useState<Berry['id']>('');
   const [firmnessFed, setFirmnessFed] = useState<Berry['firmness']>('');
@@ -88,7 +89,8 @@ export default function NameViewModel(name: string) {
   };
 
   const modalRechoose = {
-    isOpen: modal === 'RECHOOSE',
+    isOpen: modal === 'RECHOOSE' || modal === '_FADING_',
+    isFading: modal === '_FADING_',
     open: () => setModal('RECHOOSE'),
     close: () => setModal(''),
   };

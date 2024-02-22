@@ -24,6 +24,10 @@
   .modal {
     @apply mt-[50dvh] -translate-y-1/2 p-[2rem] bg-neutral-100 shadow-xl rounded-[1rem] w-[75vw] mx-auto text-neutral-900;
   }
+  .modal.fading {
+    @apply scale-75 opacity-20;
+    transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
+  }
   .card-flip {
     position: absolute;
     backface-visibility: hidden;

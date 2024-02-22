@@ -141,7 +141,7 @@ export default function PokemonByName({ params }: { params: Params }) {
         </button>
       </footer>
       <div className="overlay" style={{ display: modalRechoose.isOpen ? 'block' : 'none' }}>
-        <div className="modal">
+        <div className={modalRechoose.isFading ? 'modal fading' : 'modal'}>
           <h3 className="text-[2rem] font-[700]">Are you sure you want to change your Pokemon?</h3>
           <p className="text-[1.5rem]">Your progress will reset</p>
           <footer className="flex items-center justify-between mt-[2rem]">
