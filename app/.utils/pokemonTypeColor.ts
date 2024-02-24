@@ -1,0 +1,21 @@
+const TYPES: { [key: string]: string } = {
+  bug: '#AABB22',
+  dark: '#775544',
+  dragon: '#7766EE',
+  electric: '#FFCC33',
+  fairy: '#FFAAFF',
+  fighting: '#BB5544',
+  fire: '#FF4422',
+  flying: '#6699FF',
+  ghost: '#6666BB',
+  grass: '#77CC55',
+  ground: '#DDBB55',
+  ice: '#77DDFF',
+  normal: '#BBBBAA',
+  poison: '#AA5599',
+  psychic: '#FF5599',
+  rock: '#BBAA66',
+  steel: '#AAAABB',
+  water: '#3399FF',
+};
+export default TYPES;
