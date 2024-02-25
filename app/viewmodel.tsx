@@ -4,6 +4,7 @@ import PokemonAPIDataSourceImpl from '@/Data/DataSource/API/PokemonAPIDataSource
 import { PokemonRepositoryImpl } from '@/Data/Repository/PokemonRepositoryImpl';
 import { GetAllPokemon } from '@/Domain/UseCase/Pokemon/GetAllPokemon';
 import { Pokemon } from '@/Domain/Model/Pokemon';
+import useInfiniteScroll from './.utils/useInfiniteScroll';
 
 export default function RootViewModel() {
   const router = useRouter();
@@ -13,12 +14,13 @@ export default function RootViewModel() {
 
   const [selected, setSelected] = useState<Pokemon['nameSlug']>('');
 
-  const [observer, setObserver] = useState<IntersectionObserver | null>(null);
   const [indexPage, setIndexPage] = useState(0);
   const [offset, setOffset] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
 
   const [search, setSearch] = useState('');
+
+  const initializeObserver = useInfiniteScroll<Pokemon[]>({ setOffset, data: pokemons, attribute: 'data-pokemon', dynamicAttribute: `[data-pokemon='${(indexPage + 1) * 100}']` });
 
   const pokemonDataSourceImpl = new PokemonAPIDataSourceImpl();
   const pokemonRepositoryImpl = new PokemonRepositoryImpl(pokemonDataSourceImpl);
@@ -54,28 +56,6 @@ export default function RootViewModel() {
     router.push(`/${selected}`);
   };
 
-  const initializeObserver = () => {
-    const options = {
-      threshold: 1,
-    };
-    
-    const fnObs = new IntersectionObserver((e) => {
-      const { isIntersecting, target } = e[0];
-      if (!isIntersecting) {
-        return;
-      }
-
-      const newOffset = parseInt(target.getAttribute('data-pokemon') || '0');
-      if (!newOffset) {
-        return;
-      }
-      
-      setOffset(newOffset);
-    }, options);
-
-    setObserver(fnObs);
-  };
-
   useEffect(() => {
     const nextIndexPage = Math.ceil(offset / 100);
     if (indexPage >= nextIndexPage) {
@@ -85,13 +65,6 @@ export default function RootViewModel() {
     setIndexPage(nextIndexPage);
     fetchPokemon(offset);
   }, [offset]);
-
-  useEffect(() => {
-    const target = document.querySelector(`[data-pokemon='${(indexPage + 1) * 100}']`);
-    if (target && observer) {
-      observer.observe(target);
-    }
-  }, [pokemons]);
 
   useEffect(() => {
     setPokemons([]);
