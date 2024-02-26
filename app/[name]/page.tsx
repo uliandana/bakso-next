@@ -44,7 +44,7 @@ export default function PokemonByName({ params }: { params: Params }) {
   })[feed.berryTaste];
   const evolutionProgress = (evolutions[0] && pokemon) ? (pokemon?.weight * 100 / evolutions[0].baseWeight) : 0;
   return (
-    <main className="m-auto max-w-screen-md flex flex-col gap-[1rem] h-dvh overflow-y-auto justify-between p-[6rem]">
+    <main className="m-auto max-w-screen-md flex flex-col gap-[1rem] h-dvh overflow-y-auto justify-between px-[6rem] pt-[6rem]">
       {(isFetchingPokemon || !pokemon) ? <Spinner /> : (
         <>
           <header className="flex items-center justify-center">
@@ -105,9 +105,9 @@ export default function PokemonByName({ params }: { params: Params }) {
           </table>
         </>
       )}
-      <footer className="sticky bottom-[-3rem] mb-[-3rem]">
+      <footer className="sticky bottom-0 mx-[-6rem] px-[6rem] py-[3rem] rounded-t-[2rem] bg-slate-300 shadow-2xl">
         {isFetchingBerry ? <Spinner /> : (
-          <div className="h-[5rem] mb-[1rem] overflow-y-hidden overflow-x-auto rounded-[1rem] border-solid border-[0.125rem] border-white whitespace-nowrap bg-neutral-100">
+          <div className="h-[5rem] mb-[1rem] overflow-y-hidden overflow-x-auto rounded-[1rem] whitespace-nowrap">
             {berries.map(i => i.id && (
               <label htmlFor={`berry-${i.id}`} key={i.id} className="inline-block rounded-full mx-[0.5rem] cursor-pointer has-[:checked]:border-solid has-[:checked]:border-[0.125rem] has-[:checked]:border-cyan-400" style={{ backgroundColor: BERRY_BG[i.firmness] || 'white' }}>
                 <input id={`berry-${i.id}`} type="radio" name="berry" value={i.id} className="hidden" onChange={feed.select} />
