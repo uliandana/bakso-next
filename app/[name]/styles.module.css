@@ -15,7 +15,7 @@
 }
 
 .spriteSides {
-  @apply bg-neutral-100 rounded-[1rem] size-[30vh];
+  @apply size-[30vh];
 }
 
 .evolutions {
@@ -39,7 +39,7 @@
 }
 
 .main > footer {
-  @apply sticky bottom-0 mx-[-6rem] px-[6rem] py-[3rem] rounded-t-[2rem] bg-slate-300 shadow-2xl;
+  @apply sticky bottom-0 mx-[-6rem] px-[6rem] py-[3rem] rounded-t-[2rem] bg-white shadow-2xl;
 }
 
 .berries {
