@@ -32,8 +32,8 @@ const BERRY_BG: Record<Berry['firmness'], string> = {
 
 export default function PokemonByName({ params }: { params: Params }) {
   const { pokemon, evolutions, berries, sprite, feed, modalRechoose, onFeedBerry, onRechoosePokemon, onEvolvePokemon, isFetchingPokemon, isFetchingBerry } = useViewModel(params.name);
-  const clsSprite = sprite.cardSprite < 0 ? styles.spriteShow: styles.spriteFlipped;
-  const clsSpriteBack = sprite.cardSprite < 0 ? styles.spriteFlipped: styles.spriteShow;
+  const clsSprite = sprite.cardSprite < 0 ? `${styles.spriteShow} card-flip`: `${styles.spriteFlipped} card-flipped`;
+  const clsSpriteBack = sprite.cardSprite < 0 ? `${styles.spriteFlipped} card-flipped`: `${styles.spriteShow} card-flip`;
   const clsSpriteImg = ({
     'GOOD': 'animate-feed-shake',
     'BAD': 'animate-feed-sick',

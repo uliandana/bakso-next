@@ -15,11 +15,11 @@
 }
 
 .spriteShow {
-  @apply bg-neutral-100 rounded-[1rem] h-[30vh] card-flip;
+  @apply bg-neutral-100 rounded-[1rem] h-[30vh];
 }
 
 .spriteFlipped {
-  @apply bg-neutral-100 rounded-[1rem] h-[30vh] card-flipped;
+  @apply bg-neutral-100 rounded-[1rem] h-[30vh];
 }
 
 .types {
