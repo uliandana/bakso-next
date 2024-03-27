@@ -14,12 +14,16 @@
   @apply relative size-[30vh];
 }
 
-.spriteShow {
-  @apply bg-neutral-100 rounded-[1rem] h-[30vh];
+.spriteSides {
+  @apply bg-neutral-100 rounded-[1rem] size-[30vh];
 }
 
-.spriteFlipped {
-  @apply bg-neutral-100 rounded-[1rem] h-[30vh];
+.evolutions {
+  @apply inline-block rounded-[1rem] cursor-pointer has-[:checked]:outline has-[:checked]:outline-[0.125rem] has-[:checked]:outline-cyan-400;
+}
+
+.evolutions > img {
+  @apply size-[10vh];
 }
 
 .types {
@@ -67,12 +71,16 @@
     @apply relative size-[30vw];
   }
 
-  .spriteShow {
-    @apply h-[30vw];
+  .spriteSides {
+    @apply size-[30vw];
   }
   
-  .spriteFlipped {
-    @apply h-[30vw];
+  .evolutions {
+    @apply inline-block cursor-pointer has-[:checked]:outline has-[:checked]:outline-[0.125rem] has-[:checked]:outline-cyan-400;
+  }
+
+  .evolutions > img {
+    @apply size-[10vw];
   }
 
   .types {
@@ -98,7 +106,7 @@
   }
 
   .berries {
-    @apply h-[20vw] m-0 overflow-y-auto overflow-x-hidden rounded-none whitespace-normal flex items-center justify-center flex-wrap gap-[0.5rem];
+    @apply h-[20vw] py-[1rem] m-0 overflow-y-auto overflow-x-hidden rounded-none whitespace-normal flex items-center justify-center flex-wrap gap-[0.5rem];
   }
 
   .berries > label {

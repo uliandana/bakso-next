@@ -31,15 +31,15 @@ const BERRY_BG: Record<Berry['firmness'], string> = {
 };
 
 export default function PokemonByName({ params }: { params: Params }) {
-  const { pokemon, evolutions, berries, sprite, feed, modalRechoose, onFeedBerry, onRechoosePokemon, onEvolvePokemon, isFetchingPokemon, isFetchingBerry } = useViewModel(params.name);
-  const clsSprite = sprite.cardSprite < 0 ? `${styles.spriteShow} card-flip`: `${styles.spriteFlipped} card-flipped`;
-  const clsSpriteBack = sprite.cardSprite < 0 ? `${styles.spriteFlipped} card-flipped`: `${styles.spriteShow} card-flip`;
+  const { pokemon, evolutions, target, berries, sprite, feed, modalRechoose, onFeedBerry, onRechoosePokemon, onEvolvePokemon, isFetchingPokemon, isFetchingBerry } = useViewModel(params.name);
+  const clsSprite = `${styles.spriteSides} ${sprite.cardSprite < 0 ? 'card-flip' : 'card-flipped'}`;
+  const clsSpriteBack = `${styles.spriteSides} ${sprite.cardSprite < 0 ? 'card-flipped' : 'card-flip'}`;
   const clsSpriteImg = ({
     'GOOD': 'animate-feed-shake',
     'BAD': 'animate-feed-sick',
     '': 'animate-none',
   })[feed.berryTaste];
-  const evolutionProgress = (evolutions[0] && pokemon) ? (pokemon?.weight * 100 / evolutions[0].baseWeight) : 0;
+  const evolutionProgress = (target.pokemon && pokemon) ? (pokemon?.weight * 100 / target.pokemon.baseWeight) : 0;
   return (
     <main className={styles.main}>
       {(isFetchingPokemon || !pokemon) ? <Spinner /> : (
@@ -55,9 +55,18 @@ export default function PokemonByName({ params }: { params: Params }) {
               <div className={clsSprite}>
                 <img className={clsSpriteImg} src={pokemon?.sprite} />
               </div>
-              {evolutions[0] && (
+              {evolutions.length && (
                 <div className={clsSpriteBack}>
-                  <img className="silhouette" src={evolutions[0].sprite} />
+                  {evolutions.length === 1 ? (
+                    <img className="silhouette" src={evolutions[0].sprite} />
+                  ): (
+                    evolutions.map(i => (
+                      <label className={styles.evolutions} htmlFor={`evolve-${i.id}`} key={i.id}>
+                        <input id={`evolve-${i.id}`} type="radio" name="evolve" checked={target.pokemon?.id === i.id} value={i.id} className="hidden" onChange={e => target.setTarget(evolutions.filter(i => i.id === e.target.value)[0])} />
+                        <img src={i.sprite} title="?" className="silhouette" />
+                      </label>
+                    ))
+                  )}
                 </div>
               )}
             </div>
@@ -81,8 +90,8 @@ export default function PokemonByName({ params }: { params: Params }) {
               </span>
             ))}
           </div>
-          {(pokemon.weight >= evolutions[0]?.weight) && (
-            <button onClick={() => onEvolvePokemon(evolutions[0].nameSlug)} className={styles.btnEvolve}>
+          {(pokemon.weight >= target.pokemon?.weight!) && (
+            <button onClick={() => onEvolvePokemon(target.pokemon?.nameSlug!)} className={styles.btnEvolve}>
               Evolve
             </button>
           )}

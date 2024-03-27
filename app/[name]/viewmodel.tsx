@@ -18,6 +18,8 @@ export default function NameViewModel(name: string) {
 
   const [pokemon, setPokemon] = useState<Pokemon>();
   const [evolutions, setEvolutions] = useState<Pokemon[]>([]);
+  const [target, setTarget] = useState<Pokemon>();
+
   const [berries, setBerries] = useState<Berry[]>([]);
   const [isFetchingPokemon, setIsFetchingPokemon] = useState<Boolean>(true);
   const [isFetchingEvolution, setIsFetchingEvolution] = useState<Boolean>(true);
@@ -46,6 +48,8 @@ export default function NameViewModel(name: string) {
       const data = await getPokemonUseCase.invoke(name);
       setIsFetchingPokemon(false);
       if (data) {
+        const weight = localStorage.getItem('WEIGHT') || '';
+        data.weight = weight ? parseFloat(weight) : data.weight;
         setPokemon(data);
         fetchEvolutions(data.evolvesTo);
       }
@@ -61,6 +65,7 @@ export default function NameViewModel(name: string) {
       setIsFetchingEvolution(false);
       if (data) {
         setEvolutions(data);
+        setTarget(data[0]);
       }
     } catch(e) {
       setIsFetchingEvolution(false);
@@ -115,6 +120,7 @@ export default function NameViewModel(name: string) {
         ...pokemon,
         weight: newWeight < 0 ? 0 : newWeight,
       });
+      localStorage.setItem('WEIGHT', (newWeight < 0 ? 0 : newWeight).toString());
       setFirmnessFed(firmness);
       setBerryTaste(firmness === firmnessFed ? 'BAD' : 'GOOD');
       setTimeout(() => {
@@ -125,6 +131,7 @@ export default function NameViewModel(name: string) {
 
   const onRechoosePokemon = () => {
     localStorage.removeItem('CHOSEN');
+    localStorage.removeItem('WEIGHT');
     setTimeout(() => {
       router.push('/');
     }, 500);
@@ -154,6 +161,10 @@ export default function NameViewModel(name: string) {
   return {
     pokemon,
     evolutions,
+    target: {
+      pokemon: target,
+      setTarget,
+    },
     berries,
     modalRechoose,
     sprite: {
