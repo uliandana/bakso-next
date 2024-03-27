@@ -4,6 +4,7 @@ import Spinner from '@/app/.elements/Spinner';
 import { Berry } from '@/Domain/Model/Berry';
 import useViewModel from './viewmodel';
 import TYPES from '../.utils/pokemonTypeColor';
+import styles from './styles.module.css';
 
 type Params = {
   name: string,
@@ -31,12 +32,8 @@ const BERRY_BG: Record<Berry['firmness'], string> = {
 
 export default function PokemonByName({ params }: { params: Params }) {
   const { pokemon, evolutions, berries, sprite, feed, modalRechoose, onFeedBerry, onRechoosePokemon, onEvolvePokemon, isFetchingPokemon, isFetchingBerry } = useViewModel(params.name);
-  const clsSprite = sprite.cardSprite < 0 ?
-    'bg-neutral-100 rounded-[1rem] h-[30vh] card-flip':
-    'bg-neutral-100 rounded-[1rem] h-[30vh] card-flipped';
-  const clsSpriteBack = sprite.cardSprite < 0 ?
-    'bg-neutral-100 rounded-[1rem] h-[30vh] card-flipped':
-    'bg-neutral-100 rounded-[1rem] h-[30vh] card-flip';
+  const clsSprite = sprite.cardSprite < 0 ? styles.spriteShow: styles.spriteFlipped;
+  const clsSpriteBack = sprite.cardSprite < 0 ? styles.spriteFlipped: styles.spriteShow;
   const clsSpriteImg = ({
     'GOOD': 'animate-feed-shake',
     'BAD': 'animate-feed-sick',
@@ -44,17 +41,17 @@ export default function PokemonByName({ params }: { params: Params }) {
   })[feed.berryTaste];
   const evolutionProgress = (evolutions[0] && pokemon) ? (pokemon?.weight * 100 / evolutions[0].baseWeight) : 0;
   return (
-    <main className="m-auto max-w-screen-md flex flex-col gap-[1rem] h-dvh overflow-y-auto justify-between px-[6rem] pt-[6rem]">
+    <main className={styles.main}>
       {(isFetchingPokemon || !pokemon) ? <Spinner /> : (
         <>
-          <header className="flex items-center justify-center">
+          <header>
             <h1 className="text-[3rem] font-[700] mr-[-3rem] flex-1 text-center">{pokemon?.name}</h1>
             <button onClick={modalRechoose.open} className="size-[3rem] p-[0.5rem] rounded-full bg-neutral-100 text-red-600">
               <CloseIcon />
             </button>
           </header>
-          <div className="relative self-center">
-            <div className="relative size-[30vh]">
+          <div className={styles.sprite}>
+            <div className={styles.spriteCard}>
               <div className={clsSprite}>
                 <img className={clsSpriteImg} src={pokemon?.sprite} />
               </div>
@@ -77,7 +74,7 @@ export default function PokemonByName({ params }: { params: Params }) {
               <span className="absolute bottom-[-1rem] right-[4.5rem] border-solid border-t-neutral-800 border-t-[1rem] border-x-transparent border-x-[1rem] border-b-0" />
             </p>
           </div>
-          <div className="flex items-center justify-center gap-[1rem]">
+          <div className={styles.types}>
             {pokemon?.types.map(i => (
               <span className="py-[0.25rem] px-[1rem] text-[1.5rem] uppercase rounded-[0.5rem] font-mono" style={{ backgroundColor: TYPES[i] || 'grey' }} key={i}>
                 {i}
@@ -85,11 +82,11 @@ export default function PokemonByName({ params }: { params: Params }) {
             ))}
           </div>
           {(pokemon.weight >= evolutions[0]?.weight) && (
-            <button onClick={() => onEvolvePokemon(evolutions[0].nameSlug)} className="py-[1rem] px-[3rem] self-center rounded-[3rem] text-[1.5rem] uppercase bg-red-600 text-neutral-100 font-[700] tracking-[0.125rem]">
+            <button onClick={() => onEvolvePokemon(evolutions[0].nameSlug)} className={styles.btnEvolve}>
               Evolve
             </button>
           )}
-          <table className="text-[1.5rem] w-8/12 mx-auto">
+          <table>
             <tbody>
               {pokemon?.stats.map((i, idx) => STATS[i.name] && (
                 <tr key={idx}>
@@ -105,11 +102,11 @@ export default function PokemonByName({ params }: { params: Params }) {
           </table>
         </>
       )}
-      <footer className="sticky bottom-0 mx-[-6rem] px-[6rem] py-[3rem] rounded-t-[2rem] bg-slate-300 shadow-2xl">
+      <footer>
         {isFetchingBerry ? <Spinner /> : (
-          <div className="h-[5rem] mb-[1rem] overflow-y-hidden overflow-x-auto rounded-[1rem] whitespace-nowrap">
+          <div className={styles.berries}>
             {berries.map(i => i.id && (
-              <label htmlFor={`berry-${i.id}`} key={i.id} className="inline-block rounded-full mx-[0.5rem] cursor-pointer has-[:checked]:border-solid has-[:checked]:border-[0.125rem] has-[:checked]:border-cyan-400" style={{ backgroundColor: BERRY_BG[i.firmness] || 'white' }}>
+              <label htmlFor={`berry-${i.id}`} key={i.id} style={{ backgroundColor: BERRY_BG[i.firmness] || 'white' }}>
                 <input id={`berry-${i.id}`} type="radio" name="berry" value={i.id} className="hidden" onChange={feed.select} />
                 <img src={i.sprite} title={i.name} className="h-[3rem] m-[1rem]" />
               </label>
