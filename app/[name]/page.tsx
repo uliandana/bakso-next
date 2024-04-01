@@ -117,7 +117,7 @@ export default function PokemonByName({ params }: { params: Params }) {
             {berries.map(i => i.id && (
               <label htmlFor={`berry-${i.id}`} key={i.id} style={{ backgroundColor: BERRY_BG[i.firmness] || 'white' }}>
                 <input id={`berry-${i.id}`} type="radio" name="berry" value={i.id} className="hidden" onChange={feed.select} />
-                <img src={i.sprite} title={i.name} className="h-[3rem] m-[1rem]" />
+                <img src={i.sprite} title={i.name} className="size-[3rem] m-[1rem]" />
               </label>
             ))}
           </div>
