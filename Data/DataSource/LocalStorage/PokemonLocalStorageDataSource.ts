@@ -1,4 +1,4 @@
-import PokemonDataSource from '../PokemonDataSource';
+import PokemonDataSource from '@/data/DataSource/PokemonDataSource';
 
 const KEY_CHOSEN = 'CHOSEN';
 const KEY_WEIGHT = 'WEIGHT';

@@ -1,5 +1,5 @@
-import { Pokemon } from '@/Domain/Model/Pokemon';
-import PokemonDataSource from '../PokemonDataSource';
+import { Pokemon } from '@/domain/Model/Pokemon';
+import PokemonDataSource from '@/data/DataSource/PokemonDataSource';
 
 type PokemonApiListResult = {
   name: string,

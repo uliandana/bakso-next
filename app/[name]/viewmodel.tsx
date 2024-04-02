@@ -1,20 +1,20 @@
-import BerryAPIDataSourceImpl from '@/Data/DataSource/API/BerryAPIDataSource';
-import PokemonAPIDataSourceImpl from '@/Data/DataSource/API/PokemonAPIDataSource';
-import PokemonLocalStorageDataSourceImpl from '@/Data/DataSource/LocalStorage/PokemonLocalStorageDataSource';
-import { BerryRepositoryImpl } from '@/Data/Repository/BerryRepositoryImpl';
-import { PokemonRepositoryImpl } from '@/Data/Repository/PokemonRepositoryImpl';
-import { Berry } from '@/Domain/Model/Berry';
-import { Pokemon } from '@/Domain/Model/Pokemon';
-import { GetBerry } from '@/Domain/UseCase/Berry/GetBerry';
-import { GetPokemonByName } from '@/Domain/UseCase/Pokemon/GetPokemonByName';
+import BerryAPIDataSourceImpl from '@/data/DataSource/API/BerryAPIDataSource';
+import PokemonAPIDataSourceImpl from '@/data/DataSource/API/PokemonAPIDataSource';
+import PokemonLocalStorageDataSourceImpl from '@/data/DataSource/LocalStorage/PokemonLocalStorageDataSource';
+import { BerryRepositoryImpl } from '@/data/Repository/BerryRepositoryImpl';
+import { PokemonRepositoryImpl } from '@/data/Repository/PokemonRepositoryImpl';
+import { Berry } from '@/domain/Model/Berry';
+import { Pokemon } from '@/domain/Model/Pokemon';
+import { GetBerry } from '@/domain/UseCase/Berry/GetBerry';
+import { GetPokemonByName } from '@/domain/UseCase/Pokemon/GetPokemonByName';
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getStoredBerry, storeBerry } from './indexeddb';
 import useModal from '../.utils/useModal';
-import { GetChosenPokemon } from '@/Domain/UseCase/Pokemon/GetChosenPokemon';
-import { SetChosenPokemon } from '@/Domain/UseCase/Pokemon/SetChosenPokemon';
-import { GetWeightProgress } from '@/Domain/UseCase/Pokemon/GetWeightProgress';
-import { SetWeightProgress } from '@/Domain/UseCase/Pokemon/SetWeightProgress';
+import { GetChosenPokemon } from '@/domain/UseCase/Pokemon/GetChosenPokemon';
+import { SetChosenPokemon } from '@/domain/UseCase/Pokemon/SetChosenPokemon';
+import { GetWeightProgress } from '@/domain/UseCase/Pokemon/GetWeightProgress';
+import { SetWeightProgress } from '@/domain/UseCase/Pokemon/SetWeightProgress';
 
 type ModalMode = '' | 'RECHOOSE';
 

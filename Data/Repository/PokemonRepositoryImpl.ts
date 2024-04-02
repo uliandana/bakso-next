@@ -1,6 +1,6 @@
-import { Pokemon } from '@/Domain/Model/Pokemon';
-import { PokemonRepository } from '@/Domain/Repository/PokemonRepository';
-import PokemonDataSource from '../DataSource/PokemonDataSource';
+import { Pokemon } from '@/domain/Model/Pokemon';
+import { PokemonRepository } from '@/domain/Repository/PokemonRepository';
+import PokemonDataSource from '@/data/DataSource/PokemonDataSource';
 
 export class PokemonRepositoryImpl implements PokemonRepository {
   dataSource: PokemonDataSource;

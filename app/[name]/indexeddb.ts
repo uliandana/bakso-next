@@ -1,4 +1,4 @@
-import { Berry } from '@/Domain/Model/Berry';
+import { Berry } from '@/domain/Model/Berry';
 
 const DB_NAME = 'pokeapp';
 const DB_VERSION = 1;

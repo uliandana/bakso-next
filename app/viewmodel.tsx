@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import PokemonAPIDataSourceImpl from '@/Data/DataSource/API/PokemonAPIDataSource';
-import PokemonLocalStorageDataSourceImpl from '@/Data/DataSource/LocalStorage/PokemonLocalStorageDataSource';
-import { PokemonRepositoryImpl } from '@/Data/Repository/PokemonRepositoryImpl';
-import { GetAllPokemon } from '@/Domain/UseCase/Pokemon/GetAllPokemon';
-import { SetChosenPokemon } from '@/Domain/UseCase/Pokemon/SetChosenPokemon';
-import { GetChosenPokemon } from '@/Domain/UseCase/Pokemon/GetChosenPokemon';
-import { Pokemon } from '@/Domain/Model/Pokemon';
+import PokemonAPIDataSourceImpl from '@/data/DataSource/API/PokemonAPIDataSource';
+import PokemonLocalStorageDataSourceImpl from '@/data/DataSource/LocalStorage/PokemonLocalStorageDataSource';
+import { PokemonRepositoryImpl } from '@/data/Repository/PokemonRepositoryImpl';
+import { GetAllPokemon } from '@/domain/UseCase/Pokemon/GetAllPokemon';
+import { SetChosenPokemon } from '@/domain/UseCase/Pokemon/SetChosenPokemon';
+import { GetChosenPokemon } from '@/domain/UseCase/Pokemon/GetChosenPokemon';
+import { Pokemon } from '@/domain/Model/Pokemon';
 import useInfiniteScroll from './.utils/useInfiniteScroll';
 
 export default function RootViewModel() {

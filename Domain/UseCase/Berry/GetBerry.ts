@@ -1,5 +1,5 @@
-import { Berry } from '@/Domain/Model/Berry';
-import { BerryRepository } from '@/Domain/Repository/BerryRepository';
+import { Berry } from '@/domain/Model/Berry';
+import { BerryRepository } from '@/domain/Repository/BerryRepository';
 
 export interface GetBerryUseCase {
   invoke: () => Promise<Berry[]>,

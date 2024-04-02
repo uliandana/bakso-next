@@ -1,4 +1,4 @@
-import { Berry } from '@/Domain/Model/Berry';
+import { Berry } from '@/domain/Model/Berry';
 
 export default interface BerryDataSource {
   getBerry(): Promise<Berry[]>,

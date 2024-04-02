@@ -1,5 +1,5 @@
-import { Pokemon } from '@/Domain/Model/Pokemon';
-import { PokemonRepository } from '@/Domain/Repository/PokemonRepository';
+import { Pokemon } from '@/domain/Model/Pokemon';
+import { PokemonRepository } from '@/domain/Repository/PokemonRepository';
 
 export interface SetWeightProgressUseCase {
   invoke: (name: Pokemon['weight']) => Promise<void>,
