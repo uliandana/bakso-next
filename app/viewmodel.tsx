@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import PokemonAPIDataSourceImpl from '@/Data/DataSource/API/PokemonAPIDataSource';
+import PokemonLocalStorageDataSourceImpl from '@/Data/DataSource/LocalStorage/PokemonLocalStorageDataSource';
 import { PokemonRepositoryImpl } from '@/Data/Repository/PokemonRepositoryImpl';
 import { GetAllPokemon } from '@/Domain/UseCase/Pokemon/GetAllPokemon';
+import { SetChosenPokemon } from '@/Domain/UseCase/Pokemon/SetChosenPokemon';
+import { GetChosenPokemon } from '@/Domain/UseCase/Pokemon/GetChosenPokemon';
 import { Pokemon } from '@/Domain/Model/Pokemon';
 import useInfiniteScroll from './.utils/useInfiniteScroll';
 
@@ -22,10 +25,27 @@ export default function RootViewModel() {
 
   const initializeObserver = useInfiniteScroll<Pokemon[]>({ setOffset, data: pokemons, attribute: 'data-pokemon', dynamicAttribute: `[data-pokemon='${(indexPage + 1) * 100}']` });
 
-  const pokemonDataSourceImpl = new PokemonAPIDataSourceImpl();
-  const pokemonRepositoryImpl = new PokemonRepositoryImpl(pokemonDataSourceImpl);
+  const dataSourceImplAPI = new PokemonAPIDataSourceImpl();
+  const dataSourceImplLocalStorage = new PokemonLocalStorageDataSourceImpl();
+
+  const pokemonRepositoryImpl = new PokemonRepositoryImpl(dataSourceImplAPI);
+  pokemonRepositoryImpl.setChosenPokemon = dataSourceImplLocalStorage.setChosenPokemon;
+  pokemonRepositoryImpl.getChosenPokemon = dataSourceImplLocalStorage.getChosenPokemon;
   
   const getAllPokemonUseCase = new GetAllPokemon(pokemonRepositoryImpl);
+  const getChosenPokemonUseCase = new GetChosenPokemon(pokemonRepositoryImpl);
+  const setChosenPokemonUseCase = new SetChosenPokemon(pokemonRepositoryImpl);
+
+
+  const initialize = async () => {
+    const chosen = await getChosenPokemonUseCase.invoke();
+    if (chosen) {
+      router.replace(`/${chosen}`);
+    } else {
+      fetchPokemon(0);
+      initializeObserver();
+    }
+  };
 
   const fetchPokemon = async (offset: number) => {
     try {
@@ -51,8 +71,8 @@ export default function RootViewModel() {
     setSelected(name);
   };
 
-  const onChoosePokemon = () => {
-    localStorage.setItem('CHOSEN', selected);
+  const onChoosePokemon = async () => {
+    await setChosenPokemonUseCase.invoke(selected);
     router.push(`/${selected}`);
   };
 
@@ -77,12 +97,7 @@ export default function RootViewModel() {
   }, [allPokemons]);
 
   useEffect(() => {
-    const chosen = localStorage.getItem('CHOSEN');
-    if (chosen) {
-      router.replace(`/${chosen}`);
-    }
-    fetchPokemon(0);
-    initializeObserver();
+    initialize();
   }, []);
 
   return {

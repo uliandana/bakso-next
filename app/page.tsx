@@ -25,7 +25,7 @@ export default function Root() {
             onClick={() => select.onSelectCard(poke.nameSlug)}
           >
             <img className="block w-full transition-all hover:drop-shadow-xl hover:rotate-6 hover:scale-110" src={poke.sprite} alt={poke.name} />
-            <p className="text-[2rem] uppercase font-[700] absolute bottom-1">{poke.name}</p>
+            <p className="text-[1.5rem] md:text-[2rem] uppercase font-[700] absolute bottom-1">{poke.name}</p>
           </li>
         ))}
         {isFetching && (

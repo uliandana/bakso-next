@@ -1,8 +1,7 @@
 'use client'
 import CloseIcon from '@/app/.elements/CloseIcon';
 import Spinner from '@/app/.elements/Spinner';
-import { Berry } from '@/Domain/Model/Berry';
-import useViewModel from './viewmodel';
+import useViewModel, { STATS, BERRY_BG } from './viewmodel';
 import TYPES from '../.utils/pokemonTypeColor';
 import styles from './styles.module.css';
 
@@ -10,28 +9,14 @@ type Params = {
   name: string,
 }
 
-const EVOLUTION = [
-  'This pokemon has no evolution',
-  'This pokemon can evolve',
-];
-
-const STATS: { [key: string]: string } = {
-  'hp': 'HP',
-  'attack': 'Attack',
-  'defense': 'Defense',
-  'speed': 'Speed',
-};
-
-const BERRY_BG: Record<Berry['firmness'], string> = {
-  'very-soft': '#AABB22',
-  'soft': '#775544',
-  'hard': '#7766EE',
-  'very-hard': '#FFCC33',
-  'super-hard': '#FFAAFF',
-};
-
 export default function PokemonByName({ params }: { params: Params }) {
   const { pokemon, evolutions, target, berries, sprite, feed, modalRechoose, onFeedBerry, onRechoosePokemon, onEvolvePokemon, isFetchingPokemon, isFetchingBerry } = useViewModel(params.name);
+
+  const EVOLUTION = [
+    'This pokemon has no evolution',
+    'This pokemon can evolve',
+  ];
+
   const clsSprite = `${styles.spriteSides} ${sprite.cardSprite < 0 ? 'card-flip' : 'card-flipped'}`;
   const clsSpriteBack = `${styles.spriteSides} ${sprite.cardSprite < 0 ? 'card-flipped' : 'card-flip'}`;
   const clsSpriteImg = ({
@@ -40,6 +25,7 @@ export default function PokemonByName({ params }: { params: Params }) {
     '': 'animate-none',
   })[feed.berryTaste];
   const evolutionProgress = (target.pokemon && pokemon) ? (pokemon?.weight * 100 / target.pokemon.baseWeight) : 0;
+
   return (
     <main className={styles.main}>
       {(isFetchingPokemon || !pokemon) ? <Spinner /> : (
@@ -109,23 +95,23 @@ export default function PokemonByName({ params }: { params: Params }) {
               </tr>
             </tbody>
           </table>
+          <footer>
+            {isFetchingBerry ? <Spinner /> : (
+              <div className={styles.berries}>
+                {berries.map(i => i.id && (
+                  <label htmlFor={`berry-${i.id}`} key={i.id} style={{ backgroundColor: BERRY_BG[i.firmness] || 'white' }}>
+                    <input id={`berry-${i.id}`} type="radio" name="berry" value={i.id} className="hidden" onChange={feed.select} />
+                    <img src={i.sprite} title={i.name} className="size-[3rem] m-[1rem]" />
+                  </label>
+                ))}
+              </div>
+            )}
+            <button disabled={!feed.selected} onClick={onFeedBerry} className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-red-600 text-white font-[700] tracking-[0.125rem] shadow-2xl">
+              Feed Pokemon
+            </button>
+          </footer>
         </>
       )}
-      <footer>
-        {isFetchingBerry ? <Spinner /> : (
-          <div className={styles.berries}>
-            {berries.map(i => i.id && (
-              <label htmlFor={`berry-${i.id}`} key={i.id} style={{ backgroundColor: BERRY_BG[i.firmness] || 'white' }}>
-                <input id={`berry-${i.id}`} type="radio" name="berry" value={i.id} className="hidden" onChange={feed.select} />
-                <img src={i.sprite} title={i.name} className="size-[3rem] m-[1rem]" />
-              </label>
-            ))}
-          </div>
-        )}
-        <button disabled={!feed.selected} onClick={onFeedBerry} className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-red-600 text-white font-[700] tracking-[0.125rem] shadow-2xl">
-          Feed Pokemon
-        </button>
-      </footer>
       <div className="overlay" style={{ display: modalRechoose.isOpen ? 'block' : 'none' }}>
         <div className={modalRechoose.isFading ? 'modal fading' : 'modal'}>
           <h3 className="text-[2rem] font-[700]">Are you sure you want to change your Pokemon?</h3>

@@ -1,3 +1,4 @@
+import { Pokemon } from '@/Domain/Model/Pokemon';
 import { PokemonRepository } from '@/Domain/Repository/PokemonRepository';
 import PokemonDataSource from '../DataSource/PokemonDataSource';
 
@@ -12,11 +13,27 @@ export class PokemonRepositoryImpl implements PokemonRepository {
     return this.dataSource.getPokemon!(offset);
   }
 
-  async getPokemonByName(name: string, statOnly?: Boolean) {
+  async getPokemonByName(name: Pokemon['nameSlug'], statOnly?: Boolean) {
     return this.dataSource.getPokemonByName!(name, statOnly);
   }
 
   async getAllPokemon() {
     return this.dataSource.getAllPokemon!();
+  }
+
+  async getChosenPokemon() {
+    return this.dataSource.getChosenPokemon!();
+  }
+
+  async setChosenPokemon(name: Pokemon['nameSlug']) {
+    return this.dataSource.setChosenPokemon!(name);
+  }
+
+  async getWeightProgress() {
+    return this.dataSource.getWeightProgress!();
+  }
+
+  async setWeightProgress(weight: Pokemon['weight']) {
+    return this.dataSource.setWeightProgress!(weight);
   }
 }

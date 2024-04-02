@@ -142,8 +142,8 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
         },
         stats: detail.stats.map(i => ({ name: i.stat.name, value: i.base_stat })),
         types: detail.types.map(i => i.type.name),
-        baseWeight: detail.weight,
-        weight: detail.weight,
+        baseWeight: detail.weight / 10,
+        weight: detail.weight / 10,
         evolvesTo,
         bgColor: `hsl(${Math.random() * 360}, ${(Math.random() * 70) + 5}%, ${(Math.random() * 10) + 25}%)`,
       });

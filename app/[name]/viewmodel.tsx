@@ -1,5 +1,6 @@
 import BerryAPIDataSourceImpl from '@/Data/DataSource/API/BerryAPIDataSource';
 import PokemonAPIDataSourceImpl from '@/Data/DataSource/API/PokemonAPIDataSource';
+import PokemonLocalStorageDataSourceImpl from '@/Data/DataSource/LocalStorage/PokemonLocalStorageDataSource';
 import { BerryRepositoryImpl } from '@/Data/Repository/BerryRepositoryImpl';
 import { PokemonRepositoryImpl } from '@/Data/Repository/PokemonRepositoryImpl';
 import { Berry } from '@/Domain/Model/Berry';
@@ -10,8 +11,27 @@ import { ChangeEventHandler, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getStoredBerry, storeBerry } from './indexeddb';
 import useModal from '../.utils/useModal';
+import { GetChosenPokemon } from '@/Domain/UseCase/Pokemon/GetChosenPokemon';
+import { SetChosenPokemon } from '@/Domain/UseCase/Pokemon/SetChosenPokemon';
+import { GetWeightProgress } from '@/Domain/UseCase/Pokemon/GetWeightProgress';
+import { SetWeightProgress } from '@/Domain/UseCase/Pokemon/SetWeightProgress';
 
 type ModalMode = '' | 'RECHOOSE';
+
+export const STATS: { [key: string]: string; } = {
+  'hp': 'HP',
+  'attack': 'Attack',
+  'defense': 'Defense',
+  'speed': 'Speed',
+};
+
+export const BERRY_BG: Record<Berry['firmness'], string> = {
+  'very-soft': '#AABB22',
+  'soft': '#775544',
+  'hard': '#7766EE',
+  'very-hard': '#FFCC33',
+  'super-hard': '#FFAAFF',
+};
 
 export default function NameViewModel(name: string) {
   const router = useRouter();
@@ -32,15 +52,35 @@ export default function NameViewModel(name: string) {
   const [firmnessFed, setFirmnessFed] = useState<Berry['firmness']>('');
   const [berryTaste, setBerryTaste] = useState<'GOOD'|'BAD'|''>('');
 
-  const pokemonDataSourceImpl = new PokemonAPIDataSourceImpl();
-  const pokemonRepositoryImpl = new PokemonRepositoryImpl(pokemonDataSourceImpl);
+  const dataSourceImplAPI = new PokemonAPIDataSourceImpl();
+  const dataSourceImplLocalStorage = new PokemonLocalStorageDataSourceImpl();
+
+  const pokemonRepositoryImpl = new PokemonRepositoryImpl(dataSourceImplAPI);
+  pokemonRepositoryImpl.getChosenPokemon = dataSourceImplLocalStorage.getChosenPokemon;
+  pokemonRepositoryImpl.setChosenPokemon = dataSourceImplLocalStorage.setChosenPokemon;
+  pokemonRepositoryImpl.getWeightProgress = dataSourceImplLocalStorage.getWeightProgress;
+  pokemonRepositoryImpl.setWeightProgress = dataSourceImplLocalStorage.setWeightProgress;
 
   const getPokemonUseCase = new GetPokemonByName(pokemonRepositoryImpl);
+  const getChosenPokemonUseCase = new GetChosenPokemon(pokemonRepositoryImpl);
+  const setChosenPokemonUseCase = new SetChosenPokemon(pokemonRepositoryImpl);
+  const getWeightProgressUseCase = new GetWeightProgress(pokemonRepositoryImpl);
+  const setWeightProgressUseCase = new SetWeightProgress(pokemonRepositoryImpl);
 
   const berryDataSourceImpl = new BerryAPIDataSourceImpl();
   const berryRepositoryImpl = new BerryRepositoryImpl(berryDataSourceImpl);
 
   const getBerryUseCase = new GetBerry(berryRepositoryImpl);
+
+  const initialize = async () => {
+    const chosen = await getChosenPokemonUseCase.invoke();
+    if (chosen !== name) {
+      router.replace(`/${chosen}`);
+    } else {
+      fetchPokemon();
+      fetchBerry();
+    }
+  };
 
   const fetchPokemon = async () => {
     try {
@@ -48,8 +88,7 @@ export default function NameViewModel(name: string) {
       const data = await getPokemonUseCase.invoke(name);
       setIsFetchingPokemon(false);
       if (data) {
-        const weight = localStorage.getItem('WEIGHT') || '';
-        data.weight = weight ? parseFloat(weight) : data.weight;
+        data.weight = await getWeightProgressUseCase.invoke() || data.weight;
         setPokemon(data);
         fetchEvolutions(data.evolvesTo);
       }
@@ -120,7 +159,7 @@ export default function NameViewModel(name: string) {
         ...pokemon,
         weight: newWeight < 0 ? 0 : newWeight,
       });
-      localStorage.setItem('WEIGHT', (newWeight < 0 ? 0 : newWeight).toString());
+      setWeightProgressUseCase.invoke(newWeight < 0 ? 0 : newWeight)
       setFirmnessFed(firmness);
       setBerryTaste(firmness === firmnessFed ? 'BAD' : 'GOOD');
       setTimeout(() => {
@@ -130,25 +169,20 @@ export default function NameViewModel(name: string) {
   };
 
   const onRechoosePokemon = () => {
-    localStorage.removeItem('CHOSEN');
-    localStorage.removeItem('WEIGHT');
+    setChosenPokemonUseCase.invoke('');
+    setWeightProgressUseCase.invoke(0);
     setTimeout(() => {
       router.push('/');
     }, 500);
   };
 
   const onEvolvePokemon = (name: Pokemon['nameSlug']) => {
-    localStorage.setItem('CHOSEN', name);
+    setChosenPokemonUseCase.invoke(name);
     router.replace(`/${name}`);
   };
 
   useEffect(() => {
-    const chosen = localStorage.getItem('CHOSEN');
-    if (chosen) {
-      router.replace(`/${chosen}`);
-    }
-    fetchPokemon();
-    fetchBerry();
+    initialize();
   }, []);
 
   useEffect(() => {
