@@ -1,3 +1,6 @@
+import { ChangeEventHandler, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import useModal from '@/app/.utils/useModal';
 import BerryAPIDataSourceImpl from '@/data/DataSource/API/BerryAPIDataSource';
 import PokemonAPIDataSourceImpl from '@/data/DataSource/API/PokemonAPIDataSource';
 import PokemonLocalStorageDataSourceImpl from '@/data/DataSource/LocalStorage/PokemonLocalStorageDataSource';
@@ -7,10 +10,6 @@ import { Berry } from '@/domain/Model/Berry';
 import { Pokemon } from '@/domain/Model/Pokemon';
 import { GetBerry } from '@/domain/UseCase/Berry/GetBerry';
 import { GetPokemonByName } from '@/domain/UseCase/Pokemon/GetPokemonByName';
-import { ChangeEventHandler, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { getStoredBerry, storeBerry } from './indexeddb';
-import useModal from '../.utils/useModal';
 import { GetChosenPokemon } from '@/domain/UseCase/Pokemon/GetChosenPokemon';
 import { SetChosenPokemon } from '@/domain/UseCase/Pokemon/SetChosenPokemon';
 import { GetWeightProgress } from '@/domain/UseCase/Pokemon/GetWeightProgress';
@@ -118,7 +117,6 @@ export default function NameViewModel(name: string) {
       setIsFetchingBerry(false);
       if (data) {
         setBerries(data);
-        storeBerry(data);
       }
     } catch(e) {
       setIsFetchingBerry(false);
@@ -184,13 +182,6 @@ export default function NameViewModel(name: string) {
   useEffect(() => {
     initialize();
   }, []);
-
-  useEffect(() => {
-    if (berries.length) {
-      const cb: (b:Berry[]) => Berry[] = b => b;
-      getStoredBerry(cb);
-    }
-  }, [berries]);
 
   return {
     pokemon,
