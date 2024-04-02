@@ -1,4 +1,4 @@
-import { Pokemon } from '../Model/Pokemon';
+import { Pokemon } from '@/domain/Model/Pokemon';
 
 export interface PokemonRepository {
   getPokemon(offset: number): Promise<Pokemon[]>,

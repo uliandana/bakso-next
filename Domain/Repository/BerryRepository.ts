@@ -1,4 +1,4 @@
-import { Berry } from '../Model/Berry';
+import { Berry } from '@/domain/Model/Berry';
 
 export interface BerryRepository {
   getBerry(): Promise<Berry[]>,

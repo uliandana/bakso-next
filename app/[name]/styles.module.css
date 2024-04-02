@@ -26,6 +26,10 @@
   @apply size-[10vh];
 }
 
+.evolutionProgress {
+  @apply size-[6rem] rounded-full shadow-xl absolute bottom-[-2rem] right-[-2rem] flex items-center justify-center;
+}
+
 .types {
   @apply flex items-center justify-center gap-[1rem];
 }

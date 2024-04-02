@@ -1,5 +1,5 @@
 import { Berry } from '@/domain/Model/Berry';
-import BerryDataSource from '../BerryDataSource';
+import BerryDataSource from '@/data/DataSource/BerryDataSource';
 
 type BerryApiListResult = {
   name: string,

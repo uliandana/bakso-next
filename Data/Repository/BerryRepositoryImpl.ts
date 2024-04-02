@@ -1,5 +1,5 @@
 import { BerryRepository } from '@/domain/Repository/BerryRepository';
-import BerryDataSource from '../DataSource/BerryDataSource';
+import BerryDataSource from '@/data/DataSource/BerryDataSource';
 
 export class BerryRepositoryImpl implements BerryRepository {
   dataSource: BerryDataSource;

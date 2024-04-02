@@ -2,7 +2,7 @@
 import CloseIcon from '@/app/.elements/CloseIcon';
 import Spinner from '@/app/.elements/Spinner';
 import useViewModel, { STATS, BERRY_BG } from './viewmodel';
-import TYPES from '../.utils/pokemonTypeColor';
+import TYPES from '@/app/.utils/pokemonTypeColor';
 import styles from './styles.module.css';
 
 type Params = {
@@ -41,7 +41,7 @@ export default function PokemonByName({ params }: { params: Params }) {
               <div className={clsSprite}>
                 <img className={clsSpriteImg} src={pokemon?.sprite} />
               </div>
-              {evolutions.length && (
+              {evolutions.length ? (
                 <div className={clsSpriteBack}>
                   {evolutions.length === 1 ? (
                     <img className="silhouette" src={evolutions[0].sprite} />
@@ -54,14 +54,14 @@ export default function PokemonByName({ params }: { params: Params }) {
                     ))
                   )}
                 </div>
-              )}
+              ) : null}
             </div>
             <div
-              className="size-[6rem] rounded-full shadow-xl absolute bottom-[-2rem] right-[-2rem] flex items-center justify-center"
+              className={styles.evolutionProgress}
               style={{ background: `conic-gradient(#84b7f2 0 ${evolutionProgress}%, transparent 0 100%)` }}
             >
-              <button onClick={sprite.onFlipSprite} className="size-[5rem] bg-red-500 text-[2rem] font-[700] rounded-full">
-                {pokemon?.evolvesTo.length}
+              <button onClick={sprite.onFlipSprite} className="flex items-center justify-center size-[5rem] bg-red-500 disabled:bg-red-500/50 text-[2rem] font-[700] rounded-full" disabled={!pokemon?.evolvesTo.length}>
+                {pokemon?.evolvesTo.length ? <img src={target.pokemon?.sprite} className="w-4/6 silhouette" /> : ''}
               </button>
             </div>
             <p className="text-[1.5rem] bg-neutral-800 shadow-xl absolute bottom-[5.25rem] right-[-4rem] py-[0.25rem] px-[1rem] rounded-[0.5rem] animate-fade-out">
