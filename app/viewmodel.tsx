@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import PokemonAPIDataSourceImpl from '@/data/DataSource/API/PokemonAPIDataSource';
-import PokemonLocalStorageDataSourceImpl from '@/data/DataSource/LocalStorage/PokemonLocalStorageDataSource';
+import ProgressLocalStorageDataSourceImpl from '@/data/DataSource/LocalStorage/ProgressLocalStorageDataSource';
 import { PokemonRepositoryImpl } from '@/data/Repository/PokemonRepositoryImpl';
 import { GetAllPokemon } from '@/domain/UseCase/Pokemon/GetAllPokemon';
 import { SetChosenPokemon } from '@/domain/UseCase/Pokemon/SetChosenPokemon';
 import { GetChosenPokemon } from '@/domain/UseCase/Pokemon/GetChosenPokemon';
 import { Pokemon } from '@/domain/Model/Pokemon';
 import useInfiniteScroll from './.utils/useInfiniteScroll';
+import { ProgressRepositoryImpl } from '@/data/Repository/ProgressRepositoryImpl';
 
 export default function RootViewModel() {
   const router = useRouter();
@@ -26,15 +27,14 @@ export default function RootViewModel() {
   const initializeObserver = useInfiniteScroll<Pokemon[]>({ setOffset, data: pokemons, attribute: 'data-pokemon', dynamicAttribute: `[data-pokemon='${(indexPage + 1) * 100}']` });
 
   const dataSourceImplAPI = new PokemonAPIDataSourceImpl();
-  const dataSourceImplLocalStorage = new PokemonLocalStorageDataSourceImpl();
+  const dataSourceImplLocalStorage = new ProgressLocalStorageDataSourceImpl();
 
   const pokemonRepositoryImpl = new PokemonRepositoryImpl(dataSourceImplAPI);
-  pokemonRepositoryImpl.setChosenPokemon = dataSourceImplLocalStorage.setChosenPokemon;
-  pokemonRepositoryImpl.getChosenPokemon = dataSourceImplLocalStorage.getChosenPokemon;
+  const progressRepositoryImpl = new ProgressRepositoryImpl(dataSourceImplLocalStorage);
   
   const getAllPokemonUseCase = new GetAllPokemon(pokemonRepositoryImpl);
-  const getChosenPokemonUseCase = new GetChosenPokemon(pokemonRepositoryImpl);
-  const setChosenPokemonUseCase = new SetChosenPokemon(pokemonRepositoryImpl);
+  const getChosenPokemonUseCase = new GetChosenPokemon(progressRepositoryImpl);
+  const setChosenPokemonUseCase = new SetChosenPokemon(progressRepositoryImpl);
 
 
   const initialize = async () => {

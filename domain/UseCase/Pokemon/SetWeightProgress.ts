@@ -1,14 +1,14 @@
 import { Pokemon } from '@/domain/Model/Pokemon';
-import { PokemonRepository } from '@/domain/Repository/PokemonRepository';
+import { ProgressRepository } from '@/domain/Repository/ProgressRepository';
 
 export interface SetWeightProgressUseCase {
   invoke: (name: Pokemon['weight']) => Promise<void>,
 }
 
 export class SetWeightProgress implements SetWeightProgressUseCase {
-  private pokemonRepo: PokemonRepository;
+  private pokemonRepo: ProgressRepository;
   
-  constructor(_pokemonRepo: PokemonRepository) {
+  constructor(_pokemonRepo: ProgressRepository) {
     this.pokemonRepo = _pokemonRepo;
   }
 

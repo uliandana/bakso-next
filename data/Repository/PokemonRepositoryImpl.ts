@@ -20,20 +20,4 @@ export class PokemonRepositoryImpl implements PokemonRepository {
   async getAllPokemon() {
     return this.dataSource.getAllPokemon!();
   }
-
-  async getChosenPokemon() {
-    return this.dataSource.getChosenPokemon!();
-  }
-
-  async setChosenPokemon(name: Pokemon['nameSlug']) {
-    return this.dataSource.setChosenPokemon!(name);
-  }
-
-  async getWeightProgress() {
-    return this.dataSource.getWeightProgress!();
-  }
-
-  async setWeightProgress(weight: Pokemon['weight']) {
-    return this.dataSource.setWeightProgress!(weight);
-  }
 }

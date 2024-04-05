@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import useModal from '@/app/.utils/useModal';
 import BerryAPIDataSourceImpl from '@/data/DataSource/API/BerryAPIDataSource';
 import PokemonAPIDataSourceImpl from '@/data/DataSource/API/PokemonAPIDataSource';
-import PokemonLocalStorageDataSourceImpl from '@/data/DataSource/LocalStorage/PokemonLocalStorageDataSource';
+import ProgressLocalStorageDataSourceImpl from '@/data/DataSource/LocalStorage/ProgressLocalStorageDataSource';
 import { BerryRepositoryImpl } from '@/data/Repository/BerryRepositoryImpl';
 import { PokemonRepositoryImpl } from '@/data/Repository/PokemonRepositoryImpl';
 import { Berry } from '@/domain/Model/Berry';
@@ -14,6 +14,7 @@ import { GetChosenPokemon } from '@/domain/UseCase/Pokemon/GetChosenPokemon';
 import { SetChosenPokemon } from '@/domain/UseCase/Pokemon/SetChosenPokemon';
 import { GetWeightProgress } from '@/domain/UseCase/Pokemon/GetWeightProgress';
 import { SetWeightProgress } from '@/domain/UseCase/Pokemon/SetWeightProgress';
+import { ProgressRepositoryImpl } from '@/data/Repository/ProgressRepositoryImpl';
 
 type ModalMode = '' | 'RECHOOSE';
 
@@ -52,19 +53,16 @@ export default function NameViewModel(name: string) {
   const [berryTaste, setBerryTaste] = useState<'GOOD'|'BAD'|''>('');
 
   const dataSourceImplAPI = new PokemonAPIDataSourceImpl();
-  const dataSourceImplLocalStorage = new PokemonLocalStorageDataSourceImpl();
+  const dataSourceImplLocalStorage = new ProgressLocalStorageDataSourceImpl();
 
   const pokemonRepositoryImpl = new PokemonRepositoryImpl(dataSourceImplAPI);
-  pokemonRepositoryImpl.getChosenPokemon = dataSourceImplLocalStorage.getChosenPokemon;
-  pokemonRepositoryImpl.setChosenPokemon = dataSourceImplLocalStorage.setChosenPokemon;
-  pokemonRepositoryImpl.getWeightProgress = dataSourceImplLocalStorage.getWeightProgress;
-  pokemonRepositoryImpl.setWeightProgress = dataSourceImplLocalStorage.setWeightProgress;
+  const progressRepositoryImpl = new ProgressRepositoryImpl(dataSourceImplLocalStorage);
 
   const getPokemonUseCase = new GetPokemonByName(pokemonRepositoryImpl);
-  const getChosenPokemonUseCase = new GetChosenPokemon(pokemonRepositoryImpl);
-  const setChosenPokemonUseCase = new SetChosenPokemon(pokemonRepositoryImpl);
-  const getWeightProgressUseCase = new GetWeightProgress(pokemonRepositoryImpl);
-  const setWeightProgressUseCase = new SetWeightProgress(pokemonRepositoryImpl);
+  const getChosenPokemonUseCase = new GetChosenPokemon(progressRepositoryImpl);
+  const setChosenPokemonUseCase = new SetChosenPokemon(progressRepositoryImpl);
+  const getWeightProgressUseCase = new GetWeightProgress(progressRepositoryImpl);
+  const setWeightProgressUseCase = new SetWeightProgress(progressRepositoryImpl);
 
   const berryDataSourceImpl = new BerryAPIDataSourceImpl();
   const berryRepositoryImpl = new BerryRepositoryImpl(berryDataSourceImpl);

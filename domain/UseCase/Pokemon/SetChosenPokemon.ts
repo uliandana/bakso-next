@@ -1,14 +1,14 @@
 import { Pokemon } from '@/domain/Model/Pokemon';
-import { PokemonRepository } from '@/domain/Repository/PokemonRepository';
+import { ProgressRepository } from '@/domain/Repository/ProgressRepository';
 
 export interface SetChosenPokemonUseCase {
   invoke: (name: Pokemon['nameSlug']) => Promise<void>,
 }
 
 export class SetChosenPokemon implements SetChosenPokemonUseCase {
-  private pokemonRepo: PokemonRepository;
+  private pokemonRepo: ProgressRepository;
   
-  constructor(_pokemonRepo: PokemonRepository) {
+  constructor(_pokemonRepo: ProgressRepository) {
     this.pokemonRepo = _pokemonRepo;
   }
 
