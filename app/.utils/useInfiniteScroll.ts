@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 type Param<T> = {
   setOffset: Dispatch<SetStateAction<number>>,
@@ -10,7 +10,7 @@ type Param<T> = {
 export default function useInfiniteScroll<T>(props: Param<T>) {
   const { setOffset, data, attribute, dynamicAttribute } = props;
   const [observer, setObserver] = useState<IntersectionObserver | null>(null);
-  const initializeObserver = () => {
+  const initialize = () => {
     const options = {
       threshold: 1,
     };
@@ -34,10 +34,14 @@ export default function useInfiniteScroll<T>(props: Param<T>) {
 
   useEffect(() => {
     const target = document.querySelector(dynamicAttribute);
+    console.log(target);
     if (target && observer) {
       observer.observe(target);
     }
   }, [data]);
 
-  return initializeObserver;
+  return {
+    initialize,
+    disconnect: observer?.disconnect,
+  };
 }

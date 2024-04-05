@@ -91,7 +91,7 @@ export default function PokemonByName({ params }: { params: Params }) {
               ))}
               <tr>
                 <td className="pr-[2rem]">Weight</td>
-                <td>{pokemon?.weight}</td>
+                <td>{pokemon?.weight} Kg</td>
               </tr>
             </tbody>
           </table>
