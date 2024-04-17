@@ -1,12 +1,13 @@
 'use client'
 import useViewModel from './viewmodel';
+import BackIcon from '@/app/.elements/BackIcon';
 import Spinner from '@/app/.elements/Spinner';
 
 export default function Root() {
-  const { pokemons, select, onChoosePokemon, isFetching, search } = useViewModel();
+  const { pokemons, select, onChoosePokemon, isFetching, search, scrollTop } = useViewModel();
 
   return (
-    <main className="m-auto h-dvh overflow-y-auto">
+    <main className="m-auto h-dvh overflow-y-auto" ref={scrollTop.ref}>
       <header className="p-[2rem] px-[6rem]">
         <h1 className="text-[3rem] font-bold text-center mb-[2rem]">Choose Your Pokemon</h1>
         <input
@@ -19,7 +20,7 @@ export default function Root() {
       </header>
       <ul className="grid grid-cols-4">
         {pokemons.map((poke, idx) => (
-          <li data-pokemon={idx + 1} key={idx}
+          <li data-pokemon={idx + 1} key={poke.id}
             className="h-[25vw] text-center flex flex-col items-center justify-between overflow-hidden relative cursor-pointer"
             style={{ backgroundColor: poke.bgColor, border: (select.value === poke.nameSlug ? '0.0625rem solid gold' : '') }}
             onClick={() => select.onSelectCard(poke.nameSlug)}
@@ -35,12 +36,15 @@ export default function Root() {
         )}
       </ul>
       {select.value && (
-        <footer className="sticky bottom-[-3rem] mb-[-3rem] p-[6rem]">
+        <footer className="sticky bottom-[-3rem] mb-[-3rem] py-[6rem] px-[10rem]">
           <button onClick={onChoosePokemon} className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-neutral-100 text-red-600 font-[700] tracking-[0.125rem] shadow-2xl">
             I Choose You!
           </button>
         </footer>
       )}
+      <button onClick={scrollTop.invoke} className="sticky bottom-[3.5rem] right-[3rem] flex ml-auto p-[0.5rem] size-[4rem] rounded-full uppercase bg-neutral-100 text-red-600 shadow-2xl">
+        <BackIcon className="rotate-90" />
+      </button>
     </main>
   )
 }

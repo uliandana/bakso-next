@@ -34,7 +34,6 @@ export default function useInfiniteScroll<T>(props: Param<T>) {
 
   useEffect(() => {
     const target = document.querySelector(dynamicAttribute);
-    console.log(target);
     if (target && observer) {
       observer.observe(target);
     }

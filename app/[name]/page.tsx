@@ -58,7 +58,7 @@ export default function PokemonByName({ params }: { params: Params }) {
             </div>
             <div
               className={styles.evolutionProgress}
-              style={{ background: `conic-gradient(#84b7f2 0 ${evolutionProgress}%, transparent 0 100%)` }}
+              style={{ background: `conic-gradient(#fff 0 ${evolutionProgress}%, transparent 0 100%)` }}
             >
               <button onClick={sprite.onFlipSprite} className="flex items-center justify-center size-[5rem] bg-red-500 disabled:bg-red-500/50 text-[2rem] font-[700] rounded-full" disabled={!pokemon?.evolvesTo.length}>
                 {pokemon?.evolvesTo.length ? <img src={target.pokemon?.sprite} className="w-4/6 silhouette" /> : ''}

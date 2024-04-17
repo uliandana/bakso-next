@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import PokemonAPIDataSourceImpl from '@/data/DataSource/API/PokemonAPIDataSource';
 import ProgressLocalStorageDataSourceImpl from '@/data/DataSource/LocalStorage/ProgressLocalStorageDataSource';
@@ -23,6 +23,8 @@ export default function RootViewModel() {
   const [isFetching, setIsFetching] = useState(true);
 
   const [search, setSearch] = useState('');
+
+  const mainRef = useRef<HTMLElement>(null);
 
   const observer = useInfiniteScroll<Pokemon[]>({ setOffset, data: pokemons, attribute: 'data-pokemon', dynamicAttribute: `[data-pokemon='${(indexPage + 1) * 100}']` });
 
@@ -65,6 +67,12 @@ export default function RootViewModel() {
     setSelected(name);
   };
 
+  const onScrollTop = () => {
+    if (mainRef?.current) {
+      mainRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const onChoosePokemon = async () => {
     await setChosenPokemonUseCase.invoke(selected);
     router.push(`/${selected}`);
@@ -104,6 +112,10 @@ export default function RootViewModel() {
     select: {
       value: selected,
       onSelectCard,
+    },
+    scrollTop: {
+      invoke: onScrollTop,
+      ref: mainRef,
     },
     onChoosePokemon,
   };
