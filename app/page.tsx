@@ -2,7 +2,6 @@
 import useViewModel from './viewmodel';
 import BackIcon from '@/app/.elements/BackIcon';
 import Spinner from '@/app/.elements/Spinner';
-import Image from 'next/image';
 import styles from './styles.module.css';
 
 export default function Root() {

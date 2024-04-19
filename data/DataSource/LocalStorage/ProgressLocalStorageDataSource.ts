@@ -5,7 +5,7 @@ const KEY_WEIGHT = 'WEIGHT';
 
 export default class ProgressLocalStorageDataSourceImpl implements ProgressDataSource {
   async getChosenPokemon(): Promise<string> {
-    const chosen = localStorage.getItem(KEY_CHOSEN) || '';
+    const chosen = localStorage.getItem(KEY_CHOSEN) ?? '';
     return chosen;
   }
 
@@ -14,7 +14,7 @@ export default class ProgressLocalStorageDataSourceImpl implements ProgressDataS
   }
 
   async getWeightProgress(): Promise<number> {
-    const weight = localStorage.getItem(KEY_WEIGHT) || '0';
+    const weight = localStorage.getItem(KEY_WEIGHT) ?? '0';
     return parseInt(weight);
   }
 

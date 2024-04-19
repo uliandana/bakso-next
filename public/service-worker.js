@@ -2,8 +2,8 @@ const CACHE = 'v1';
 const POKEMON_LIMIT = 30;
 const BERRY_LIMIT = 64;
 
-const pokemonSprites = Array.apply(null, { length: POKEMON_LIMIT });
-const berryData = Array.apply(null, { length: BERRY_LIMIT });
+const pokemonSprites = [...Array(POKEMON_LIMIT).keys()];
+const berryData = [...Array(BERRY_LIMIT).keys()];
 const precachedResources = [
   '/bg-night.jpg',
   '/bg.png',

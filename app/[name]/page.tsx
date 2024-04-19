@@ -11,7 +11,7 @@ type Params = {
   name: string,
 }
 
-export default function PokemonByName({ params }: { params: Params }) {
+export default function PokemonByName({ params }: Readonly<{ params: Params }>) {
   const { pokemon, evolutions, target, berries, sprite, feed, modalRechoose, onFeedBerry, onRechoosePokemon, onEvolvePokemon, isFetchingPokemon, isFetchingBerry } = useViewModel(params.name);
 
   const EVOLUTION = [
@@ -72,8 +72,8 @@ export default function PokemonByName({ params }: { params: Params }) {
           )}
           <table>
             <tbody>
-              {pokemon?.stats.map((i, idx) => STATS[i.name] && (
-                <tr key={idx}>
+              {pokemon?.stats.map(i => STATS[i.name] && (
+                <tr key={i.name}>
                   <td className="pr-[2rem]">{STATS[i.name]}</td>
                   <td>{i.value}</td>
                 </tr>
