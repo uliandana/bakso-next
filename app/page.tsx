@@ -19,25 +19,25 @@ export default function Root() {
           onChange={e => search.setSearch(e.target.value)}
         />
       </header>
-      <ul>
+      <div className={styles.list}>
         {pokemons.map((poke, idx) => (
-          <li data-pokemon={idx + 1} key={poke.id} className={styles.item} role="checkbox" aria-checked={select.value === poke.nameSlug}
+          <label htmlFor={`pokemon-${poke.id}`} data-pokemon={idx + 1} key={poke.id}
             style={{
               backgroundColor: poke.bgColor,
               border: (select.value === poke.nameSlug ? '0.0625rem solid gold' : ''),
             }}
-            onClick={() => select.onSelectCard(poke.nameSlug)}
           >
-            <Image src={poke.sprite} width={475} height={475} alt={poke.name} priority={idx < 100} />
+            <input id={`pokemon-${poke.id}`} type="radio" name="berry" value={poke.nameSlug} className="hidden" onChange={() => select.onSelectCard(poke.nameSlug)} />
+            <img className="block w-full transition-all hover:drop-shadow-xl hover:rotate-6 hover:scale-110" src={poke.sprite} alt={poke.name} />
             <p>{poke.name}</p>
-          </li>
+          </label>
         ))}
         {isFetching && (
-          <li className={styles.loading}>
+          <div className={styles.loading}>
             <Spinner />
-          </li>
+          </div>
         )}
-      </ul>
+      </div>
       {select.value && (
         <footer>
           <button onClick={onChoosePokemon}>

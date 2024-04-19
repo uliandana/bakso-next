@@ -14,19 +14,19 @@
   @apply block w-full text-[2rem] text-black p-[1rem] bg-white rounded-[1rem] border-solid border-[0.0625rem] border-slate-500;
 }
 
-.main > ul {
+.list {
   @apply grid grid-cols-4;
 }
 
-.item {
+.list > label {
   @apply h-[25vw] text-center flex flex-col items-center justify-between overflow-hidden relative cursor-pointer;
 }
 
-.item > img {
+.list > label > img {
   @apply block w-full transition-all hover:drop-shadow-xl hover:rotate-6 hover:scale-110;
 }
 
-.item > p {
+.list > label > p {
   @apply text-[1.5rem] md:text-[2rem] uppercase font-[700] absolute bottom-1;
 }
 
