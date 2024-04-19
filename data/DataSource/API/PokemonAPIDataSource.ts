@@ -47,12 +47,12 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
   async getPokemon(offset: number) {
     const query = offset >= 1000 ? `limit=10&offset=${offset}` : `limit=100&offset=${offset}`
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon-species?${query}`);
-    const resHandle: Promise<Pokemon[]> = new Promise(async resolve => {
+    const resHandle: Promise<Pokemon[]> = (async () => {
       if (!res.ok) {
-        resolve([]);
+        return [];
       }
       const { results }: { results: PokemonApiListResult[]} = await res.json();
-      resolve(results.map(p => ({
+      return results.map(p => ({
         id: p.url.split('/')[6],
         name: p.name,
         nameSlug: p.name,
@@ -65,19 +65,19 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
         weight: 10,
         evolvesTo: [],
         bgColor: `hsl(${Math.random() * 360}, ${(Math.random() * 70) + 5}%, ${(Math.random() * 10) + 25}%)`,
-      })));
-    });
+      }));
+    })();
     return resHandle;
   }
 
   async getAllPokemon() {
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon-species?limit=1500`);
-    const resHandle: Promise<Pokemon[]> = new Promise(async resolve => {
+    const resHandle: Promise<Pokemon[]> = (async () => {
       if (!res.ok) {
-        resolve([]);
+        return [];
       }
       const { results }: { results: PokemonApiListResult[]} = await res.json();
-      resolve(results.map(p => ({
+      return results.map(p => ({
         id: p.url.split('/')[6],
         name: p.name,
         nameSlug: p.name,
@@ -90,8 +90,8 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
         weight: 10,
         evolvesTo: [],
         bgColor: `hsl(${Math.random() * 360}, ${(Math.random() * 70) + 5}%, ${(Math.random() * 10) + 25}%)`,
-      })));
-    });
+      }));
+    })();
     return resHandle;
   }
 
@@ -118,9 +118,9 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
       evolvesTo = rcvEvolution(evolution.chain);
     }
 
-    const resHandle: Promise<Pokemon> = new Promise(async resolve => {
+    const resHandle: Promise<Pokemon> = (async () => {
       if (!resDetail.ok || !resSpecies.ok) {
-        resolve({
+        return {
           id: '',
           name: '',
           nameSlug: '',
@@ -131,9 +131,9 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
           weight: 0,
           evolvesTo: [],
           bgColor: '',
-        });
+        };
       }
-      resolve({
+      return {
         id: species.id.toString(),
         name: species.names.filter(i => i.language.name === 'en')[0].name,
         nameSlug: species.name,
@@ -146,8 +146,8 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
         weight: detail.weight / 10,
         evolvesTo,
         bgColor: `hsl(${Math.random() * 360}, ${(Math.random() * 70) + 5}%, ${(Math.random() * 10) + 25}%)`,
-      });
-    });
+      };
+    })();
     return resHandle;
   }
 }
