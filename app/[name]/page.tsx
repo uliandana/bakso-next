@@ -39,17 +39,17 @@ export default function PokemonByName({ params }: { params: Params }) {
           <div className={styles.sprite}>
             <div className={styles.spriteCard}>
               <div className={clsSprite}>
-                <img className={clsSpriteImg} src={pokemon?.sprite} />
+                <img className={clsSpriteImg} src={pokemon?.sprite} alt={pokemon.name} />
               </div>
               {evolutions.length ? (
                 <div className={clsSpriteBack}>
                   {evolutions.length === 1 ? (
-                    <img className="silhouette" src={evolutions[0].sprite} />
+                    <img className="silhouette" src={evolutions[0].sprite} alt="evolution" />
                   ): (
                     evolutions.map(i => (
                       <label className={styles.evolutions} htmlFor={`evolve-${i.id}`} key={i.id}>
                         <input id={`evolve-${i.id}`} type="radio" name="evolve" checked={target.pokemon?.id === i.id} value={i.id} className="hidden" onChange={e => target.setTarget(evolutions.filter(i => i.id === e.target.value)[0])} />
-                        <img src={i.sprite} title="?" className="silhouette" />
+                        <img src={i.sprite} title="?" className="silhouette" alt="evolution" />
                       </label>
                     ))
                   )}
@@ -61,7 +61,7 @@ export default function PokemonByName({ params }: { params: Params }) {
               style={{ background: `conic-gradient(#fff 0 ${evolutionProgress}%, transparent 0 100%)` }}
             >
               <button onClick={sprite.onFlipSprite} className="flex items-center justify-center size-[5rem] bg-red-500 disabled:bg-red-500/50 text-[2rem] font-[700] rounded-full" disabled={!pokemon?.evolvesTo.length}>
-                {pokemon?.evolvesTo.length ? <img src={target.pokemon?.sprite} className="w-4/6 silhouette" /> : ''}
+                {pokemon?.evolvesTo.length ? <img src={target.pokemon?.sprite} className="w-4/6 silhouette" alt="evolution" /> : ''}
               </button>
             </div>
             <p className="text-[1.5rem] bg-neutral-800 shadow-xl absolute bottom-[5.25rem] right-[-4rem] py-[0.25rem] px-[1rem] rounded-[0.5rem] animate-fade-out">
@@ -101,7 +101,7 @@ export default function PokemonByName({ params }: { params: Params }) {
                 {berries.map(i => i.id && (
                   <label htmlFor={`berry-${i.id}`} key={i.id} style={{ backgroundColor: BERRY_BG[i.firmness] || 'white' }}>
                     <input id={`berry-${i.id}`} type="radio" name="berry" value={i.id} className="hidden" onChange={feed.select} />
-                    <img src={i.sprite} title={i.name} className="size-[3rem] m-[1rem]" />
+                    <img src={i.sprite} title={i.name} alt={i.name} className="size-[3rem] m-[1rem]" />
                   </label>
                 ))}
               </div>

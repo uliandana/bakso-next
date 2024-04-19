@@ -25,24 +25,26 @@ export default class BerryAPIDataSourceImpl implements BerryDataSource {
       if (!res.ok) {
         resolve([]);
       }
-      const { results }: { results: BerryApiListResult[]} = await res.json();
-      const resDetail = await Promise.all(results.map(async i => await fetch(i.url)));
-      resolve(await Promise.all(resDetail.map(async i => {
-        const res: Berry = {
-          id: '',
-          name: '',
-          sprite: '',
-          firmness: '',
-        };
-        if (i.ok) {
-          const detail: BerryApiDetailResult = await i.json();
-          res.id = detail.id.toString();
-          res.name = detail.name;
-          res.sprite = urlSprite(detail.name);
-          res.firmness = detail.firmness.name;
-        }
-        return res;
-      })));
+      res.json().then(({ results }: { results: BerryApiListResult[]}) => {
+        Promise.all(results.map(async i => await fetch(i.url))).then(resDetail => {
+          resolve(Promise.all(resDetail.map(async i => {
+            const res: Berry = {
+              id: '',
+              name: '',
+              sprite: '',
+              firmness: '',
+            };
+            if (i.ok) {
+              const detail: BerryApiDetailResult = await i.json();
+              res.id = detail.id.toString();
+              res.name = detail.name;
+              res.sprite = urlSprite(detail.name);
+              res.firmness = detail.firmness.name;
+            }
+            return res;
+          })));
+        });
+      })
     });
     return resHandle;
   }

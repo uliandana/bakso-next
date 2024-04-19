@@ -1,0 +1,47 @@
+.main {
+  @apply m-auto h-dvh overflow-y-auto;
+}
+
+.main > header {
+  @apply p-[2rem] px-[6rem];
+}
+
+.main > header > h1 {
+  @apply text-[3rem] font-bold text-center mb-[2rem];
+}
+
+.main > header > input {
+  @apply block w-full text-[2rem] text-black p-[1rem] bg-white rounded-[1rem] border-solid border-[0.0625rem] border-slate-500;
+}
+
+.main > ul {
+  @apply grid grid-cols-4;
+}
+
+.item {
+  @apply h-[25vw] text-center flex flex-col items-center justify-between overflow-hidden relative cursor-pointer;
+}
+
+.item > img {
+  @apply block w-full transition-all hover:drop-shadow-xl hover:rotate-6 hover:scale-110;
+}
+
+.item > p {
+  @apply text-[1.5rem] md:text-[2rem] uppercase font-[700] absolute bottom-1;
+}
+
+.loading {
+  @apply block p-[1rem] mb-[1rem] text-center;
+}
+
+.main > footer {
+  @apply sticky bottom-[-3rem] mb-[-3rem] py-[6rem] px-[10rem];
+}
+
+.main > footer > button {
+  @apply w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-neutral-100 text-red-600 font-[700] tracking-[0.125rem] shadow-2xl;
+}
+
+.btnScrollTop {
+  @apply sticky bottom-[3.5rem] right-[3rem] flex ml-auto p-[0.5rem] size-[4rem] rounded-full uppercase bg-neutral-100 text-red-600 shadow-2xl;
+}
