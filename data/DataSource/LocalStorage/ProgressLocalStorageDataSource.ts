@@ -1,7 +1,7 @@
 import ProgressDataSource from '@/data/DataSource/ProgressDataSource';
 
-const KEY_CHOSEN = 'CHOSEN';
-const KEY_WEIGHT = 'WEIGHT';
+export const KEY_CHOSEN = 'CHOSEN';
+export const KEY_WEIGHT = 'WEIGHT';
 
 export default class ProgressLocalStorageDataSourceImpl implements ProgressDataSource {
   async getChosenPokemon(): Promise<string> {
