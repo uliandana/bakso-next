@@ -8,10 +8,6 @@ export class PokemonRepositoryImpl implements PokemonRepository {
   constructor(_dataSource: PokemonDataSource) {
     this.dataSource = _dataSource;
   }
-  
-  async getPokemon(offset: number) {
-    return this.dataSource.getPokemon(offset);
-  }
 
   async getPokemonByName(name: Pokemon['nameSlug'], statOnly?: boolean) {
     return this.dataSource.getPokemonByName(name, statOnly);

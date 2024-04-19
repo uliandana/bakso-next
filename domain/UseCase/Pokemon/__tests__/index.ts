@@ -5,7 +5,6 @@ import { ProgressRepository } from '@/domain/Repository/ProgressRepository';
 
 import { GetAllPokemon } from '../GetAllPokemon';
 import { GetChosenPokemon } from '../GetChosenPokemon';
-import { GetPokemon } from '../GetPokemon';
 import { GetPokemonByName } from '../GetPokemonByName';
 import { GetWeightProgress } from '../GetWeightProgress';
 import { SetChosenPokemon } from '../SetChosenPokemon';
@@ -25,11 +24,9 @@ export const dummyPokemon: Pokemon = {
 };
 
 export const mockPokemonRepository = (pokemon: Pokemon) => {
-  const getPokemon = jest.fn<() => Promise<Pokemon[]>>().mockResolvedValue([pokemon]);
   const getPokemonByName = jest.fn<() => Promise<Pokemon>>().mockResolvedValue(pokemon);
   const getAllPokemon = jest.fn<() => Promise<Pokemon[]>>().mockResolvedValue([pokemon]);
   const pokemonRepository: PokemonRepository = {
-    getPokemon,
     getPokemonByName,
     getAllPokemon,
   };
@@ -65,14 +62,6 @@ describe('./domain/UseCase/Pokemon', () => {
     const getChosenPokemonImplementation = new GetChosenPokemon(progressRepository);
     const result = await getChosenPokemonImplementation.invoke();
     expect(result).toBe(pokemon.nameSlug);
-  });
-
-  test('GetPokemon', async () => {
-    const pokemon = dummyPokemon;
-    const pokemonRepository = mockPokemonRepository(pokemon);
-    const getPokemonImplementation = new GetPokemon(pokemonRepository);
-    const result = await getPokemonImplementation.invoke(1);
-    expect(result[0]).toBe(pokemon);
   });
 
   test('GetPokemonByName', async () => {
