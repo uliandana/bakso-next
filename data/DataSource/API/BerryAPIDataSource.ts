@@ -8,7 +8,7 @@ type BerryApiListResult = {
 
 type BerryApiDetailResult = {
   firmness: {
-    name: 'very-soft' | 'soft' | 'hard' | 'very-hard' | 'super-hard' | string,
+    name: 'very-soft' | 'soft' | 'hard' | 'very-hard' | 'super-hard',
   },
   id: number,
   name: string,
@@ -32,7 +32,7 @@ export default class BerryAPIDataSourceImpl implements BerryDataSource {
           id: '',
           name: '',
           sprite: '',
-          firmness: '',
+          firmness: 'soft',
         };
         if (i.ok) {
           const detail: BerryApiDetailResult = await i.json();

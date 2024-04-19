@@ -2,7 +2,7 @@ import { Pokemon } from '@/domain/Model/Pokemon';
 import { PokemonRepository } from '@/domain/Repository/PokemonRepository';
 
 export interface GetPokemonByNameUseCase {
-  invoke: (name: string, statOnly?: Boolean) => Promise<Pokemon>,
+  invoke: (name: string, statOnly?: boolean) => Promise<Pokemon>,
 }
 
 export class GetPokemonByName implements GetPokemonByNameUseCase {
@@ -12,7 +12,7 @@ export class GetPokemonByName implements GetPokemonByNameUseCase {
     this.pokemonRepo = _pokemonRepo;
   }
 
-  async invoke(name: string, statOnly?: Boolean) {
+  async invoke(name: string, statOnly?: boolean) {
     return this.pokemonRepo.getPokemonByName(name, statOnly);
   }
 }

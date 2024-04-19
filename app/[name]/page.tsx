@@ -1,8 +1,10 @@
 'use client'
 import CloseIcon from '@/app/.elements/CloseIcon';
 import Spinner from '@/app/.elements/Spinner';
-import useViewModel, { STATS, BERRY_BG } from './viewmodel';
 import TYPES from '@/app/.utils/pokemonTypeColor';
+import useViewModel, { STATS } from './viewmodel';
+import Berries from './.components/berries.pokemon';
+import Evolutions from './.components/evolutions.pokemon';
 import styles from './styles.module.css';
 
 type Params = {
@@ -41,20 +43,7 @@ export default function PokemonByName({ params }: { params: Params }) {
               <div className={clsSprite}>
                 <img className={clsSpriteImg} src={pokemon?.sprite} alt={pokemon.name} />
               </div>
-              {evolutions.length ? (
-                <div className={clsSpriteBack}>
-                  {evolutions.length === 1 ? (
-                    <img className="silhouette" src={evolutions[0].sprite} alt="evolution" />
-                  ): (
-                    evolutions.map(i => (
-                      <label className={styles.evolutions} htmlFor={`evolve-${i.id}`} key={i.id}>
-                        <input id={`evolve-${i.id}`} type="radio" name="evolve" checked={target.pokemon?.id === i.id} value={i.id} className="hidden" onChange={e => target.setTarget(evolutions.filter(i => i.id === e.target.value)[0])} />
-                        <img src={i.sprite} title="?" className="silhouette" alt="evolution" />
-                      </label>
-                    ))
-                  )}
-                </div>
-              ) : null}
+              <Evolutions evolutions={evolutions} className={clsSpriteBack} targetId={target.pokemon?.id} onSelect={target.setTarget} />
             </div>
             <div
               className={styles.evolutionProgress}
@@ -77,7 +66,7 @@ export default function PokemonByName({ params }: { params: Params }) {
             ))}
           </div>
           {(pokemon.weight >= target.pokemon?.weight!) && (
-            <button onClick={() => onEvolvePokemon(target.pokemon?.nameSlug!)} className={styles.btnEvolve}>
+            <button onClick={() => onEvolvePokemon(target.pokemon?.nameSlug)} className={styles.btnEvolve}>
               Evolve
             </button>
           )}
@@ -96,16 +85,7 @@ export default function PokemonByName({ params }: { params: Params }) {
             </tbody>
           </table>
           <footer>
-            {isFetchingBerry ? <Spinner /> : (
-              <div className={styles.berries}>
-                {berries.map(i => i.id && (
-                  <label htmlFor={`berry-${i.id}`} key={i.id} style={{ backgroundColor: BERRY_BG[i.firmness] || 'white' }}>
-                    <input id={`berry-${i.id}`} type="radio" name="berry" value={i.id} className="hidden" onChange={feed.select} />
-                    <img src={i.sprite} title={i.name} alt={i.name} className="size-[3rem] m-[1rem]" />
-                  </label>
-                ))}
-              </div>
-            )}
+            <Berries isFetchingBerry={isFetchingBerry} berries={berries} onSelect={feed.select} />
             <button disabled={!feed.selected} onClick={onFeedBerry} className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-red-600 text-white font-[700] tracking-[0.125rem] shadow-2xl">
               Feed Pokemon
             </button>

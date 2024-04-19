@@ -17,7 +17,7 @@ import { SetWeightProgress } from '@/domain/UseCase/Pokemon/SetWeightProgress';
 import { ProgressRepositoryImpl } from '@/data/Repository/ProgressRepositoryImpl';
 
 type ModalMode = '' | 'RECHOOSE';
-
+export type {Berry, Pokemon};
 export const STATS: { [key: string]: string; } = {
   'hp': 'HP',
   'attack': 'Attack',
@@ -41,15 +41,15 @@ export default function NameViewModel(name: string) {
   const [target, setTarget] = useState<Pokemon>();
 
   const [berries, setBerries] = useState<Berry[]>([]);
-  const [isFetchingPokemon, setIsFetchingPokemon] = useState<Boolean>(true);
-  const [isFetchingEvolution, setIsFetchingEvolution] = useState<Boolean>(true);
-  const [isFetchingBerry, setIsFetchingBerry] = useState<Boolean>(true);
+  const [isFetchingPokemon, setIsFetchingPokemon] = useState<boolean>(true);
+  const [isFetchingEvolution, setIsFetchingEvolution] = useState<boolean>(true);
+  const [isFetchingBerry, setIsFetchingBerry] = useState<boolean>(true);
 
   const [cardSprite, setCardSprite] = useState(-1);
   const [modal, setModal] = useModal<ModalMode>('');
 
   const [selectBerry, setSelectBerry] = useState<Berry['id']>('');
-  const [firmnessFed, setFirmnessFed] = useState<Berry['firmness']>('');
+  const [firmnessFed, setFirmnessFed] = useState<Berry['firmness']>('soft');
   const [berryTaste, setBerryTaste] = useState<'GOOD'|'BAD'|''>('');
 
   const dataSourceImplAPI = new PokemonAPIDataSourceImpl();
@@ -172,9 +172,11 @@ export default function NameViewModel(name: string) {
     }, 500);
   };
 
-  const onEvolvePokemon = (name: Pokemon['nameSlug']) => {
-    setChosenPokemonUseCase.invoke(name);
-    router.replace(`/${name}`);
+  const onEvolvePokemon = (name: Pokemon['nameSlug'] | undefined) => {
+    if (name) {
+      setChosenPokemonUseCase.invoke(name);
+      router.replace(`/${name}`);
+    }
   };
 
   useEffect(() => {

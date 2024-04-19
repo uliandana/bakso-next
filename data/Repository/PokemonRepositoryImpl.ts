@@ -10,14 +10,14 @@ export class PokemonRepositoryImpl implements PokemonRepository {
   }
   
   async getPokemon(offset: number) {
-    return this.dataSource.getPokemon!(offset);
+    return this.dataSource.getPokemon(offset);
   }
 
-  async getPokemonByName(name: Pokemon['nameSlug'], statOnly?: Boolean) {
-    return this.dataSource.getPokemonByName!(name, statOnly);
+  async getPokemonByName(name: Pokemon['nameSlug'], statOnly?: boolean) {
+    return this.dataSource.getPokemonByName(name, statOnly);
   }
 
   async getAllPokemon() {
-    return this.dataSource.getAllPokemon!();
+    return this.dataSource.getAllPokemon();
   }
 }
