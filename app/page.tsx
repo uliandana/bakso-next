@@ -21,7 +21,7 @@ export default function Root() {
       </header>
       <ul>
         {pokemons.map((poke, idx) => (
-          <li data-pokemon={idx + 1} key={poke.id} className={styles.item} role="checkbox"
+          <li data-pokemon={idx + 1} key={poke.id} className={styles.item} role="checkbox" aria-checked={select.value === poke.nameSlug}
             style={{
               backgroundColor: poke.bgColor,
               border: (select.value === poke.nameSlug ? '0.0625rem solid gold' : ''),

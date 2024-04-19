@@ -21,31 +21,29 @@ const urlSprite: (name: string) => string = (name) => `
 export default class BerryAPIDataSourceImpl implements BerryDataSource {
   async getBerry() {
     const res = await fetch(`https://pokeapi.co/api/v2/berry?limit=100`);
-    const resHandle: Promise<Berry[]> = new Promise(async resolve => {
+    const resHandle: Promise<Berry[]> = (async () => {
       if (!res.ok) {
-        resolve([]);
+        return [];
       }
-      res.json().then(({ results }: { results: BerryApiListResult[]}) => {
-        Promise.all(results.map(async i => await fetch(i.url))).then(resDetail => {
-          resolve(Promise.all(resDetail.map(async i => {
-            const res: Berry = {
-              id: '',
-              name: '',
-              sprite: '',
-              firmness: '',
-            };
-            if (i.ok) {
-              const detail: BerryApiDetailResult = await i.json();
-              res.id = detail.id.toString();
-              res.name = detail.name;
-              res.sprite = urlSprite(detail.name);
-              res.firmness = detail.firmness.name;
-            }
-            return res;
-          })));
-        });
-      })
-    });
+      const { results }: { results: BerryApiListResult[]} = await res.json();
+      const resDetail = await Promise.all(results.map(async i => await fetch(i.url)));
+      return await Promise.all(resDetail.map(async i => {
+        const res: Berry = {
+          id: '',
+          name: '',
+          sprite: '',
+          firmness: '',
+        };
+        if (i.ok) {
+          const detail: BerryApiDetailResult = await i.json();
+          res.id = detail.id.toString();
+          res.name = detail.name;
+          res.sprite = urlSprite(detail.name);
+          res.firmness = detail.firmness.name;
+        }
+        return res;
+      }));
+    })();
     return resHandle;
   }
 }
