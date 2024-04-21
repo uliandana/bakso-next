@@ -19,7 +19,7 @@ const customJestConfig = {
     '^@/components/(.*)$': '<rootDir>/components/$1',
   },
   globals: {
-    fetch: global.fetch,    
+    fetch: () => {},
   },
 };
 
