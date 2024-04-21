@@ -9,7 +9,7 @@ type BerriesProps = {
   onSelect: ChangeEventHandler,
 };
 
-export default function Berries(props: BerriesProps) {
+export default function Berries(props: Readonly<BerriesProps>) {
   const { isFetchingBerry, berries, onSelect } = props;
   if (isFetchingBerry) {
     return <Spinner />

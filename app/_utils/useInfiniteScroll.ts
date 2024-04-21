@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-type Param<T> = {
+export type Param<T> = {
   setOffset: Dispatch<SetStateAction<number>>,
   data: T,
   attribute: string,
@@ -21,7 +21,7 @@ export default function useInfiniteScroll<T>(props: Param<T>) {
         return;
       }
 
-      const newOffset = parseInt(target.getAttribute(attribute) || '0');
+      const newOffset = parseInt(target.getAttribute(attribute) ?? '0');
       if (!newOffset) {
         return;
       }

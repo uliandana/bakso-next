@@ -9,7 +9,7 @@ type EvolutionsProps = {
   onSelect: Dispatch<SetStateAction<Pokemon | undefined>>,
 };
 
-export default function Evolutions(props: EvolutionsProps) {
+export default function Evolutions(props: Readonly<EvolutionsProps>) {
   const { evolutions, className, targetId, onSelect } = props;
 
   if (!evolutions.length) {

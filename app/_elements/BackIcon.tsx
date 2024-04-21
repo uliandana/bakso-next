@@ -4,7 +4,7 @@ type Props = {
   className?: string,
 };
 
-export default function BackIcon(props: Props) {
+export default function BackIcon(props: Readonly<Props>) {
   const { className } = props;
   const cls = ['w-6 h-6', className].filter(Boolean).join(' ');
   return (
