@@ -31,6 +31,7 @@ export const BERRY_BG: Record<Berry['firmness'], string> = {
   'hard': '#7766EE',
   'very-hard': '#FFCC33',
   'super-hard': '#FFAAFF',
+  '': '',
 };
 
 export default function NameViewModel(name: string) {
@@ -146,6 +147,7 @@ export default function NameViewModel(name: string) {
       'hard': [5, -10],
       'very-hard': [8, -16],
       'super-hard': [10, -20],
+      '': [0, 0],
     };
     const { firmness } = berries.filter(i => i.id === selectBerry)[0];
     if (pokemon && firmness) {
