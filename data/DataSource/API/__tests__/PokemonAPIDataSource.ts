@@ -1,3 +1,6 @@
+/**
+  * @jest-environment node
+*/
 import { describe, expect, jest, test } from '@jest/globals';
 import PokemonAPIDataSourceImpl, { PokemonApiDetailResult, PokemonApiEvolutionResult, PokemonApiListResult, PokemonApiSpeciesResult, urlSprite } from '../PokemonAPIDataSource';
 
