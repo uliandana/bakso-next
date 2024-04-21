@@ -15,6 +15,12 @@ const customJestConfig = {
     'domain/**/*.{js,jsx,ts,tsx}',
     '!**/node_modules/**',
   ],
+  moduleNameMapper: {
+    '^@/components/(.*)$': '<rootDir>/components/$1',
+  },
+  globals: {
+    fetch: global.fetch,    
+  },
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

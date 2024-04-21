@@ -1,12 +1,12 @@
 import { Pokemon } from '@/domain/Model/Pokemon';
 import PokemonDataSource from '@/data/DataSource/PokemonDataSource';
 
-type PokemonApiListResult = {
+export type PokemonApiListResult = {
   name: string,
   url: string,
 };
 
-type PokemonApiDetailResult = {
+export type PokemonApiDetailResult = {
   stats: {
     base_stat: number,
     stat: { name: string },
@@ -17,7 +17,7 @@ type PokemonApiDetailResult = {
   weight: number,
 };
 
-type PokemonApiSpeciesResult = {
+export type PokemonApiSpeciesResult = {
   id: number,
   name: string,
   evolution_chain: { url: string },
@@ -29,7 +29,7 @@ type PokemonApiSpeciesResult = {
   }[],
 };
 
-type PokemonApiEvolutionResult = {
+export type PokemonApiEvolutionResult = {
   chain: {
     evolves_to: PokemonApiEvolutionResult['chain'][],
     species: {
@@ -39,7 +39,7 @@ type PokemonApiEvolutionResult = {
   },
 };
 
-const urlSprite: (id: string) => string = (id) => `
+export const urlSprite: (id: string) => string = (id) => `
   https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png
 `
 
@@ -73,7 +73,7 @@ export default class PokemonAPIDataSourceImpl implements PokemonDataSource {
     const resSpecies = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${name}`);
     const species: PokemonApiSpeciesResult = await resSpecies.json();
 
-    const resDetail = await fetch(`https://pokeapi.co/api/v2/pokemon/${species.id}`);
+    const resDetail = await fetch(`https://pokeapi.co/api/v2/pokemon/${species?.id}`);
     const detail: PokemonApiDetailResult = await resDetail.json();
 
     let evolvesTo: Pokemon['name'][] = [];

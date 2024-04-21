@@ -1,12 +1,12 @@
 import { Berry } from '@/domain/Model/Berry';
 import BerryDataSource from '@/data/DataSource/BerryDataSource';
 
-type BerryApiListResult = {
+export type BerryApiListResult = {
   name: string,
   url: string,
 };
 
-type BerryApiDetailResult = {
+export type BerryApiDetailResult = {
   firmness: {
     name: 'very-soft' | 'soft' | 'hard' | 'very-hard' | 'super-hard',
   },
