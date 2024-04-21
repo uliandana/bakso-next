@@ -27,19 +27,17 @@ describe('./_utils/useInfiniteScroll', () => {
     };
     (React.useState as jest.Mock).mockImplementation(() => [dummyObserver, setObserver]);
 
-    class IntersectionObserverMock {
-      constructor(e: (entry: ObsEntry[]) => void) {
-        const target = {
-          getAttribute: () => '100',
-        };
-        e([{ isIntersecting: true, target }]);
-      }
-    };
+    function IntersectionObserverMock(e: (entry: ObsEntry[]) => void) {
+      const target = {
+        getAttribute: () => '100',
+      };
+      e([{ isIntersecting: true, target }]);
+    }
 
     type MockGlobal = {
-      IntersectionObserver: IntersectionObserverMock,
+      IntersectionObserver: typeof IntersectionObserverMock,
     }
-    (global as MockGlobal).IntersectionObserver = IntersectionObserverMock;
+    (global as unknown as MockGlobal).IntersectionObserver = IntersectionObserverMock;
 
     const props: Param<string> = {
       setOffset: jest.fn(),
@@ -58,19 +56,17 @@ describe('./_utils/useInfiniteScroll', () => {
     jest.spyOn(React, 'useState');
     (React.useState as jest.Mock).mockImplementation(() => ['', jest.fn()]);
 
-    class IntersectionObserverMock {
-      constructor(e: (entry: ObsEntry[]) => void) {
-        const target = {
-          getAttribute: () => '100',
-        };
-        e([{ isIntersecting: false, target }]);
-      }
-    };
+    function IntersectionObserverMock(e: (entry: ObsEntry[]) => void) {
+      const target = {
+        getAttribute: () => '100',
+      };
+      e([{ isIntersecting: false, target }]);
+    }
 
     type MockGlobal = {
-      IntersectionObserver: IntersectionObserverMock,
+      IntersectionObserver: typeof IntersectionObserverMock,
     }
-    (global as MockGlobal).IntersectionObserver = IntersectionObserverMock;
+    (global as unknown as MockGlobal).IntersectionObserver = IntersectionObserverMock;
 
     const props: Param<string> = {
       setOffset: jest.fn(),
@@ -88,19 +84,17 @@ describe('./_utils/useInfiniteScroll', () => {
     jest.spyOn(React, 'useState');
     (React.useState as jest.Mock).mockImplementation(() => ['', jest.fn()]);
 
-    class IntersectionObserverMock {
-      constructor(e: (entry: ObsEntry[]) => void) {
-        const target = {
-          getAttribute: () => null,
-        };
-        e([{ isIntersecting: true, target }]);
-      }
-    };
+    function IntersectionObserverMock(e: (entry: ObsEntry[]) => void) {
+      const target = {
+        getAttribute: () => null,
+      };
+      e([{ isIntersecting: true, target }]);
+    }
 
     type MockGlobal = {
-      IntersectionObserver: IntersectionObserverMock,
+      IntersectionObserver: typeof IntersectionObserverMock,
     }
-    (global as MockGlobal).IntersectionObserver = IntersectionObserverMock;
+    (global as unknown as MockGlobal).IntersectionObserver = IntersectionObserverMock;
 
     const props: Param<string> = {
       setOffset: jest.fn(),
