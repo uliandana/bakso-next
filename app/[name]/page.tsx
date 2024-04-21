@@ -3,8 +3,8 @@ import CloseIcon from '@/app/_elements/CloseIcon';
 import Spinner from '@/app/_elements/Spinner';
 import TYPES from '@/app/_utils/pokemonTypeColor';
 import useViewModel, { STATS } from './viewmodel';
-import Berries from './.components/berries.pokemon';
-import Evolutions from './.components/evolutions.pokemon';
+import Berries from './_components/berries.pokemon';
+import Evolutions from './_components/evolutions.pokemon';
 import styles from './styles.module.css';
 
 type Params = {
