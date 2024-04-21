@@ -8,7 +8,7 @@ import { GetAllPokemon } from '@/domain/UseCase/Pokemon/GetAllPokemon';
 import { SetChosenPokemon } from '@/domain/UseCase/Pokemon/SetChosenPokemon';
 import { GetChosenPokemon } from '@/domain/UseCase/Pokemon/GetChosenPokemon';
 import { Pokemon } from '@/domain/Model/Pokemon';
-import useInfiniteScroll from './.utils/useInfiniteScroll';
+import useInfiniteScroll from '@/app/_utils/useInfiniteScroll';
 
 export default function RootViewModel() {
   const router = useRouter();

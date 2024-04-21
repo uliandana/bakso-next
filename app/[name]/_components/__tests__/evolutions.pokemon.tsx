@@ -1,7 +1,7 @@
 import React from 'react';
 import { describe, expect, jest, test } from '@jest/globals';
 import { Pokemon } from '@/domain/Model/Pokemon';
-import ShallowRenderer from 'react-test-renderer/shallow';
+import { createRenderer } from 'react-test-renderer/shallow';
 import Evolutions from '../evolutions.pokemon';
 
 const dummyPokemon: Pokemon = {
@@ -17,11 +17,10 @@ const dummyPokemon: Pokemon = {
   bgColor: '#fff',
 };
 
-describe('./app/[name]/.components/evolutions.pokemon', () => {
+describe('./app/[name]/_components/evolutions.pokemon', () => {
   test('renders', () => {
-    const shallow = new ShallowRenderer();
     const onSelect = jest.fn();
-    const tree = shallow.render(<Evolutions evolutions={[dummyPokemon]} className="test-class" targetId="01" onSelect={onSelect} />);
+    const tree = createRenderer().render(<Evolutions evolutions={[dummyPokemon]} className="test-class" targetId="01" onSelect={onSelect} />);
     expect(tree).toMatchSnapshot();
   });
 

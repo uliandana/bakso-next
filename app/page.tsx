@@ -1,7 +1,7 @@
 'use client'
 import useViewModel from './viewmodel';
-import BackIcon from '@/app/.elements/BackIcon';
-import Spinner from '@/app/.elements/Spinner';
+import BackIcon from '@/app/_elements/BackIcon';
+import Spinner from '@/app/_elements/Spinner';
 import styles from './styles.module.css';
 
 export default function Root() {

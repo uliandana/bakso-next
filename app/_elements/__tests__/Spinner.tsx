@@ -1,12 +1,11 @@
 import React from 'react';
 import { describe, expect, test } from '@jest/globals';
-import ShallowRenderer from 'react-test-renderer/shallow';
+import { createRenderer } from 'react-test-renderer/shallow';
 import Spinner from '../Spinner';
 
-describe('./elements/Spinner', () => {
+describe('./_elements/Spinner', () => {
   test('renders', () => {
-    const shallow = new ShallowRenderer();
-    const tree = shallow.render(<Spinner />);
+    const tree = createRenderer().render(<Spinner />);
     expect(tree).toMatchSnapshot();
   });
 });

@@ -1,12 +1,11 @@
 import React from 'react';
 import { describe, expect, test } from '@jest/globals';
-import ShallowRenderer from 'react-test-renderer/shallow';
+import { createRenderer } from 'react-test-renderer/shallow';
 import CloseIcon from '../CloseIcon';
 
-describe('./elements/CloseIcon', () => {
+describe('./_elements/CloseIcon', () => {
   test('renders', () => {
-    const shallow = new ShallowRenderer();
-    const tree = shallow.render(<CloseIcon />);
+    const tree = createRenderer().render(<CloseIcon />);
     expect(tree).toMatchSnapshot();
   });
 });

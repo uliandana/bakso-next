@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, expect, jest, test } from '@jest/globals';
 import useModal from '../useModal';
 
-describe('./utils/useModal', () => {
+describe('./_utils/useModal', () => {
   test('return modal value & call intercept function', () => {
     jest.spyOn(React, 'useState');
     const setModal = jest.fn();

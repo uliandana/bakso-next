@@ -1,7 +1,7 @@
 'use client'
-import CloseIcon from '@/app/.elements/CloseIcon';
-import Spinner from '@/app/.elements/Spinner';
-import TYPES from '@/app/.utils/pokemonTypeColor';
+import CloseIcon from '@/app/_elements/CloseIcon';
+import Spinner from '@/app/_elements/Spinner';
+import TYPES from '@/app/_utils/pokemonTypeColor';
 import useViewModel, { STATS } from './viewmodel';
 import Berries from './.components/berries.pokemon';
 import Evolutions from './.components/evolutions.pokemon';

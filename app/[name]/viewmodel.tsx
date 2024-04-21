@@ -1,6 +1,6 @@
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import useModal from '@/app/.utils/useModal';
+import useModal from '@/app/_utils/useModal';
 import BerryAPIDataSourceImpl from '@/data/DataSource/API/BerryAPIDataSource';
 import PokemonAPIDataSourceImpl from '@/data/DataSource/API/PokemonAPIDataSource';
 import ProgressLocalStorageDataSourceImpl from '@/data/DataSource/LocalStorage/ProgressLocalStorageDataSource';

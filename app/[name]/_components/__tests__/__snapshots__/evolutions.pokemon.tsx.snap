@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`./app/[name]/.components/evolutions.pokemon renders 1`] = `
+exports[`./app/[name]/_components/evolutions.pokemon renders 1`] = `
 <div
   className="test-class"
 >

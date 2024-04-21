@@ -1,5 +1,5 @@
 import { ChangeEventHandler } from 'react';
-import Spinner from '@/app/.elements/Spinner';
+import Spinner from '@/app/_elements/Spinner';
 import { BERRY_BG, Berry } from '../viewmodel';
 import styles from '../styles.module.css';
 

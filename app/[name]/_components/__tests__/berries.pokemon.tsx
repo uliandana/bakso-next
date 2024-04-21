@@ -1,8 +1,8 @@
 import React from 'react';
 import { describe, expect, jest, test } from '@jest/globals';
-import Spinner from '@/app/.elements/Spinner';
+import Spinner from '@/app/_elements/Spinner';
 import { Berry } from '@/domain/Model/Berry';
-import ShallowRenderer from 'react-test-renderer/shallow';
+import { createRenderer } from 'react-test-renderer/shallow';
 import Berries from '../berries.pokemon';
 
 const dummyBerry: Berry = {
@@ -12,11 +12,10 @@ const dummyBerry: Berry = {
   firmness: 'soft',
 };
 
-describe('./app/[name]/.components/berries.pokemon', () => {
+describe('./app/[name]/_components/berries.pokemon', () => {
   test('renders', () => {
-    const shallow = new ShallowRenderer();
     const onSelect = jest.fn();
-    const tree = shallow.render(<Berries isFetchingBerry={false} berries={[dummyBerry]} onSelect={onSelect} />);
+    const tree = createRenderer().render(<Berries isFetchingBerry={false} berries={[dummyBerry]} onSelect={onSelect} />);
     expect(tree).toMatchSnapshot();
   });
 
@@ -33,9 +32,13 @@ describe('./app/[name]/.components/berries.pokemon', () => {
 
   test('render bg white', () => {
     const onSelect = jest.fn();
+    const newBerry: Berry = {
+      ...dummyBerry,
+      firmness: '',
+    };
     const props = {
       isFetchingBerry: false,
-      berries: [{ ...dummyBerry, firmness: '' }],
+      berries: [newBerry],
       onSelect,
     };
     const res = Berries(props);
