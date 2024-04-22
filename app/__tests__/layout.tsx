@@ -5,7 +5,11 @@ import Layout, { metadata } from '../layout';
 
 describe('./app/layout', () => {
   test('renders', () => {
-    const tree = createRenderer().render(<Layout children={null} />);
+    const tree = createRenderer().render(
+      <Layout>
+        <div />
+      </Layout>
+    );
     expect(tree).toMatchSnapshot();
     expect(metadata.title).toBe('PokeDiet');
   });

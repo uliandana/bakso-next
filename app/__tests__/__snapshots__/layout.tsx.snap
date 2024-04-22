@@ -6,7 +6,9 @@ exports[`./app/layout renders 1`] = `
 >
   <body
     className="className"
-  />
+  >
+    <div />
+  </body>
   <Script
     src="/sw-install.js"
   />
