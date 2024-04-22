@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`./app/_components/scrolltop.root renders 1`] = `
+<button
+  className="btnScrollTop"
+  onClick={[MockFunction]}
+>
+  <BackIcon
+    className="rotate-90"
+  />
+</button>
+`;

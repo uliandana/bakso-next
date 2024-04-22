@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`./app/layout renders 1`] = `
+<html
+  lang="en"
+>
+  <body
+    className="className"
+  />
+  <Script
+    src="/sw-install.js"
+  />
+</html>
+`;
