@@ -43,5 +43,5 @@
 }
 
 .btnScrollTop {
-  @apply sticky bottom-[3.5rem] right-[3rem] flex ml-auto p-[0.5rem] size-[4rem] rounded-full uppercase bg-neutral-100 text-red-600 shadow-2xl;
+  @apply sticky bottom-[3.5rem] right-[3rem] flex items-center justify-center ml-auto p-[0.5rem] size-[4rem] rounded-full uppercase bg-neutral-100 text-red-600 shadow-2xl;
 }

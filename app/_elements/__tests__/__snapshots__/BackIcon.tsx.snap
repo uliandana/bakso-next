@@ -2,7 +2,6 @@
 
 exports[`./_elements/BackIcon renders 1`] = `
 <svg
-  className="w-6 h-6"
   fill="none"
   stroke="currentColor"
   strokeWidth="1.5"

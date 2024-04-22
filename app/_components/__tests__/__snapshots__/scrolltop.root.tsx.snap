@@ -6,7 +6,7 @@ exports[`./app/_components/scrolltop.root renders 1`] = `
   onClick={[MockFunction]}
 >
   <BackIcon
-    className="rotate-90"
+    className="size-10 rotate-90"
   />
 </button>
 `;

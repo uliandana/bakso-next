@@ -11,7 +11,7 @@ export default function ScrollTop(props: Readonly<ScrollTopProps>) {
   const { scrollTop } = props;
   return (
     <button onClick={scrollTop.invoke} className={styles.btnScrollTop}>
-      <BackIcon className="rotate-90" />
+      <BackIcon className="size-10 rotate-90" />
     </button>
   );
 }

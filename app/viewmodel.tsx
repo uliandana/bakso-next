@@ -14,6 +14,39 @@ export type { Pokemon };
 
 export default function RootViewModel() {
   const router = useRouter();
+  const allStates = useAllStates();
+
+  const observer = useInfiniteScroll<Pokemon[]>({
+    setOffset: allStates.setOffset,
+    data: allStates.pokemons,
+    attribute: 'data-pokemon',
+    dynamicAttribute: `[data-pokemon='${(allStates.indexPage + 1) * 100}']`,
+  });
+
+  const allUseCases = useCases();
+  const allEvents = useAllEvents({ allStates, allUseCases, router, observer });
+  useAllEffects({ allStates, allEvents, observer });
+
+  return {
+    pokemons: allStates.pokemons,
+    isFetching: allStates.isFetching,
+    search: {
+      value: allStates.search,
+      setSearch: allStates.setSearch,
+    },
+    select: {
+      value: allStates.selected,
+      onSelectCard: allEvents.onSelectCard,
+    },
+    scrollTop: {
+      invoke: allEvents.onScrollTop,
+      ref: allStates.mainRef,
+    },
+    onChoosePokemon: allEvents.onChoosePokemon,
+  };
+}
+
+export function useAllStates() {
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
   const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -28,97 +61,117 @@ export default function RootViewModel() {
 
   const mainRef = useRef<HTMLElement>(null);
 
-  const observer = useInfiniteScroll<Pokemon[]>({ setOffset, data: pokemons, attribute: 'data-pokemon', dynamicAttribute: `[data-pokemon='${(indexPage + 1) * 100}']` });
+  return {
+    allPokemons, setAllPokemons,
+    filteredPokemons, setFilteredPokemons,
+    pokemons, setPokemons,
+    selected, setSelected,
+    indexPage, setIndexPage,
+    offset, setOffset,
+    isFetching, setIsFetching,
+    search, setSearch,
+    mainRef,
+  };
+}
 
+export function useCases() {
   const dataSourceImplAPI = new PokemonAPIDataSourceImpl();
   const dataSourceImplLocalStorage = new ProgressLocalStorageDataSourceImpl();
 
   const pokemonRepositoryImpl = new PokemonRepositoryImpl(dataSourceImplAPI);
   const progressRepositoryImpl = new ProgressRepositoryImpl(dataSourceImplLocalStorage);
-  
-  const getAllPokemonUseCase = new GetAllPokemon(pokemonRepositoryImpl);
-  const getChosenPokemonUseCase = new GetChosenPokemon(progressRepositoryImpl);
-  const setChosenPokemonUseCase = new SetChosenPokemon(progressRepositoryImpl);
 
+  return {
+    getAllPokemonUseCase: new GetAllPokemon(pokemonRepositoryImpl),
+    getChosenPokemonUseCase: new GetChosenPokemon(progressRepositoryImpl),
+    setChosenPokemonUseCase: new SetChosenPokemon(progressRepositoryImpl),
+  };
+}
 
+export type UseAllEventsProps = {
+  allStates: ReturnType<typeof useAllStates>,
+  allUseCases: ReturnType<typeof useCases>,
+  router: ReturnType<typeof useRouter>,
+  observer: ReturnType<typeof useInfiniteScroll>,
+};
+
+export function useAllEvents({ allStates, allUseCases, router, observer }: UseAllEventsProps) {
   const initialize = async () => {
-    const chosen = await getChosenPokemonUseCase.invoke();
+    const chosen = await allUseCases.getChosenPokemonUseCase.invoke();
     if (chosen) {
       router.replace(`/${chosen}`);
     } else {
-      fetchPokemon(0);
+      fetchPokemon();
       observer.initialize();
     }
   };
 
-  const fetchPokemon = async (offset: number) => {
+  const fetchPokemon = async () => {
     try {
-      setIsFetching(true)
-      const data = await getAllPokemonUseCase.invoke();
-      setAllPokemons(data);
-      setFilteredPokemons(data);
-      setPokemons(data.slice(0, 100));
-      setIsFetching(false);
+      allStates.setIsFetching(true)
+      const data = await allUseCases.getAllPokemonUseCase.invoke();
+      allStates.setAllPokemons(data);
+      allStates.setFilteredPokemons(data);
+      allStates.setPokemons(data.slice(0, 100));
+      allStates.setIsFetching(false);
     } catch(e) {
-      setPokemons([...pokemons]);
-      setIsFetching(false);
+      allStates.setPokemons([...allStates.pokemons]);
+      allStates.setIsFetching(false);
     }
   };
 
   const onSelectCard = (name: Pokemon['nameSlug']) => {
-    setSelected(name);
+    allStates.setSelected(name);
   };
 
   const onScrollTop = () => {
-    if (mainRef?.current) {
-      mainRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    if (allStates.mainRef?.current) {
+      allStates.mainRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const onChoosePokemon = async () => {
-    await setChosenPokemonUseCase.invoke(selected);
-    router.push(`/${selected}`);
+    await allUseCases.setChosenPokemonUseCase.invoke(allStates.selected);
+    router.push(`/${allStates.selected}`);
   };
 
+  return {
+    initialize,
+    fetchPokemon,
+    onSelectCard,
+    onScrollTop,
+    onChoosePokemon,
+  };
+}
+
+export type UseAllEffectsProps = {
+  allStates: ReturnType<typeof useAllStates>,
+  allEvents:  ReturnType<typeof useAllEvents>,
+  observer: ReturnType<typeof useInfiniteScroll>,
+};
+
+export function useAllEffects({ allStates, allEvents, observer }: UseAllEffectsProps) {
   useEffect(() => {
-    const nextIndexPage = Math.ceil(offset / 100);
-    if (indexPage >= nextIndexPage) {
+    const nextIndexPage = Math.ceil(allStates.offset / 100);
+    if (allStates.indexPage >= nextIndexPage) {
       return;
     }
 
-    setIndexPage(nextIndexPage);
-    setPokemons([...pokemons, ...filteredPokemons.slice(offset, offset + 100)]);
-  }, [offset]);
+    allStates.setIndexPage(nextIndexPage);
+    allStates.setPokemons([...allStates.pokemons, ...allStates.filteredPokemons.slice(allStates.offset, allStates.offset + 100)]);
+  }, [allStates.offset]);
 
   useEffect(() => {
-    setPokemons([]);
-    const filteredByKeyword = allPokemons.filter(i => i.name.includes(search.toLowerCase()) || (i.id === search));
-    setFilteredPokemons(filteredByKeyword);
-    setPokemons(filteredByKeyword.slice(0, 100));
-    setOffset(0);
-    setIndexPage(0);
+    allStates.setPokemons([]);
+    const filteredByKeyword = allStates.allPokemons.filter(i => i.name.includes(allStates.search.toLowerCase()) || (i.id === allStates.search));
+    allStates.setFilteredPokemons(filteredByKeyword);
+    allStates.setPokemons(filteredByKeyword.slice(0, 100));
+    allStates.setOffset(0);
+    allStates.setIndexPage(0);
     observer.initialize();
-  }, [search]);
+  }, [allStates.search]);
 
   useEffect(() => {
-    initialize();
+    allEvents.initialize();
   }, []);
-
-  return {
-    pokemons,
-    isFetching,
-    search: {
-      value: search,
-      setSearch,
-    },
-    select: {
-      value: selected,
-      onSelectCard,
-    },
-    scrollTop: {
-      invoke: onScrollTop,
-      ref: mainRef,
-    },
-    onChoosePokemon,
-  };
 }
