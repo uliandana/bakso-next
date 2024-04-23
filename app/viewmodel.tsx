@@ -4,9 +4,9 @@ import PokemonAPIDataSourceImpl from '@/data/DataSource/API/PokemonAPIDataSource
 import ProgressLocalStorageDataSourceImpl from '@/data/DataSource/LocalStorage/ProgressLocalStorageDataSource';
 import { PokemonRepositoryImpl } from '@/data/Repository/PokemonRepositoryImpl';
 import { ProgressRepositoryImpl } from '@/data/Repository/ProgressRepositoryImpl';
-import { GetAllPokemon } from '@/domain/UseCase/Pokemon/GetAllPokemon';
-import { SetChosenPokemon } from '@/domain/UseCase/Pokemon/SetChosenPokemon';
-import { GetChosenPokemon } from '@/domain/UseCase/Pokemon/GetChosenPokemon';
+import { getAllPokemon } from '@/domain/UseCase/Pokemon/getAllPokemon';
+import { setChosenPokemon } from '@/domain/UseCase/Pokemon/setChosenPokemon';
+import { getChosenPokemon } from '@/domain/UseCase/Pokemon/getChosenPokemon';
 import { Pokemon } from '@/domain/Model/Pokemon';
 import useInfiniteScroll from '@/app/_utils/useInfiniteScroll';
 
@@ -82,9 +82,9 @@ export function useCases() {
   const progressRepositoryImpl = new ProgressRepositoryImpl(dataSourceImplLocalStorage);
 
   return {
-    getAllPokemonUseCase: new GetAllPokemon(pokemonRepositoryImpl),
-    getChosenPokemonUseCase: new GetChosenPokemon(progressRepositoryImpl),
-    setChosenPokemonUseCase: new SetChosenPokemon(progressRepositoryImpl),
+    getAllPokemonUseCase: getAllPokemon(pokemonRepositoryImpl),
+    getChosenPokemonUseCase: getChosenPokemon(progressRepositoryImpl),
+    setChosenPokemonUseCase: setChosenPokemon(progressRepositoryImpl),
   };
 }
 
@@ -108,7 +108,7 @@ export function useAllEvents({ allStates, allUseCases, router, observer }: UseAl
 
   const fetchPokemon = async () => {
     try {
-      allStates.setIsFetching(true)
+      allStates.setIsFetching(true);
       const data = await allUseCases.getAllPokemonUseCase.invoke();
       allStates.setAllPokemons(data);
       allStates.setFilteredPokemons(data);

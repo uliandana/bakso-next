@@ -3,12 +3,12 @@ import { Pokemon } from '@/domain/Model/Pokemon';
 import { PokemonRepository } from '@/domain/Repository/PokemonRepository';
 import { ProgressRepository } from '@/domain/Repository/ProgressRepository';
 
-import { GetAllPokemon } from '../GetAllPokemon';
-import { GetChosenPokemon } from '../GetChosenPokemon';
-import { GetPokemonByName } from '../GetPokemonByName';
-import { GetWeightProgress } from '../GetWeightProgress';
-import { SetChosenPokemon } from '../SetChosenPokemon';
-import { SetWeightProgress } from '../SetWeightProgress';
+import { getAllPokemon } from '../getAllPokemon';
+import { getChosenPokemon } from '../getChosenPokemon';
+import { getPokemonByName } from '../getPokemonByName';
+import { getWeightProgress } from '../getWeightProgress';
+import { setChosenPokemon } from '../setChosenPokemon';
+import { setWeightProgress } from '../setWeightProgress';
 
 export const dummyPokemon: Pokemon = {
   id: '1',
@@ -48,50 +48,50 @@ export const mockProgressRepository = (pokemon: Pokemon) => {
 };
 
 describe('./domain/UseCase/Pokemon', () => {
-  test('GetAllPokemon', async () => {
+  test('getAllPokemon', async () => {
     const pokemon = dummyPokemon;
     const pokemonRepository = mockPokemonRepository(pokemon);
-    const getAllPokemonImplementation = new GetAllPokemon(pokemonRepository);
+    const getAllPokemonImplementation = getAllPokemon(pokemonRepository);
     const result = await getAllPokemonImplementation.invoke();
     expect(result[0]).toBe(pokemon);
   });
 
-  test('GetChosenPokemon', async () => {
+  test('getChosenPokemon', async () => {
     const pokemon = dummyPokemon;
     const progressRepository = mockProgressRepository(pokemon);
-    const getChosenPokemonImplementation = new GetChosenPokemon(progressRepository);
+    const getChosenPokemonImplementation = getChosenPokemon(progressRepository);
     const result = await getChosenPokemonImplementation.invoke();
     expect(result).toBe(pokemon.nameSlug);
   });
 
-  test('GetPokemonByName', async () => {
+  test('getPokemonByName', async () => {
     const pokemon = dummyPokemon;
     const pokemonRepository = mockPokemonRepository(pokemon);
-    const getPokemonByNameImplementation = new GetPokemonByName(pokemonRepository);
+    const getPokemonByNameImplementation = getPokemonByName(pokemonRepository);
     const result = await getPokemonByNameImplementation.invoke('pikachu');
     expect(result).toBe(pokemon);
   });
 
-  test('GetWeightProgress', async () => {
+  test('getWeightProgress', async () => {
     const pokemon = dummyPokemon;
     const progressRepository = mockProgressRepository(pokemon);
-    const getWeightProgressImplementation = new GetWeightProgress(progressRepository);
+    const getWeightProgressImplementation = getWeightProgress(progressRepository);
     const result = await getWeightProgressImplementation.invoke();
     expect(result).toBe(pokemon.weight);
   });
 
-  test('SetChosenPokemon', async () => {
+  test('setChosenPokemon', async () => {
     const pokemon = dummyPokemon;
     const progressRepository = mockProgressRepository(pokemon);
-    const setChosenPokemonImplementation = new SetChosenPokemon(progressRepository);
+    const setChosenPokemonImplementation = setChosenPokemon(progressRepository);
     await setChosenPokemonImplementation.invoke('pikachu');
     expect(progressRepository.setChosenPokemon).toHaveBeenCalledWith('pikachu');
   });
 
-  test('SetWeightProgress', async () => {
+  test('setWeightProgress', async () => {
     const pokemon = dummyPokemon;
     const progressRepository = mockProgressRepository(pokemon);
-    const setWeightProgressImplementation = new SetWeightProgress(progressRepository);
+    const setWeightProgressImplementation = setWeightProgress(progressRepository);
     await setWeightProgressImplementation.invoke(90);
     expect(progressRepository.setWeightProgress).toHaveBeenCalledWith(90);
   });

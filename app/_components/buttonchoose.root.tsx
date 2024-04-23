@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import { Pokemon } from '../viewmodel';
 
 type ButtonChooseProps = {
