@@ -1,7 +1,7 @@
 import React from 'react';
 import { describe, expect, jest, test } from '@jest/globals';
 import useInfiniteScroll from '@/app/_utils/useInfiniteScroll';
-import { useAllStates, useAllEvents, useAllEffects, UseAllEffectsProps, Pokemon } from '../viewmodel';
+import { useAllStates, useAllEvents, useAllEffects, UseAllEffectsProps, Pokemon, useCases } from '../viewmodel';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 const noop = () => {};
@@ -32,6 +32,11 @@ const allStates: ReturnType<typeof useAllStates> = {
     current: null
   },
 };
+const allUseCases: ReturnType<typeof useCases> = {
+  getAllPokemonUseCase: { invoke: async () => [dummyPokemon] },
+  getChosenPokemonUseCase: { invoke: async () => '' },
+  setChosenPokemonUseCase: { invoke: asyncnoop },
+};
 const allEvents:  ReturnType<typeof useAllEvents> = {
   initialize: jest.fn(asyncnoop),
   fetchPokemon: asyncnoop,
@@ -47,7 +52,7 @@ const router: AppRouterInstance = {
   back: noop,
   forward: noop,
   refresh: noop,
-  push: noop,
+  push: jest.fn(),
   replace: noop,
   prefetch: noop,
 };
@@ -64,6 +69,29 @@ describe('./app/viewmodel', () => {
     expect(states).toHaveProperty('pokemons');
     expect(states).toHaveProperty('offset');
     expect(states).toHaveProperty('search');
+  });
+
+  test('useCases', () => {
+    const newUseCases = useCases();
+    expect(newUseCases).toHaveProperty('getAllPokemonUseCase');
+    expect(newUseCases).toHaveProperty('getChosenPokemonUseCase');
+    expect(newUseCases).toHaveProperty('setChosenPokemonUseCase');
+  });
+
+  test('useAllEvents', () => {
+    const newAllStates: ReturnType<typeof useAllStates> = {
+      ...allStates,
+      selected: 'mew',
+      setSelected: jest.fn(),
+    };
+    const newObserver: ReturnType<typeof useInfiniteScroll> = {
+      ...observer,
+      initialize: jest.fn(),
+    };
+    const events = useAllEvents({ allStates: newAllStates, allUseCases, router, observer: newObserver });
+
+    events.onSelectCard('mew');
+    expect(newAllStates.setSelected).lastCalledWith('mew');
   });
 
   test('useAllEffects', () => {

@@ -76,8 +76,6 @@ describe('./app/[name]/viewmodel', () => {
   test('useAllStates', () => {
     jest.spyOn(React, 'useState');
     (React.useState as jest.Mock).mockImplementation(v => [v, jest.fn()]);
-    jest.spyOn(React, 'useRef');
-    (React.useRef as jest.Mock).mockImplementation(() => ({}));
 
     const states = useAllStates();
     expect(states).toHaveProperty('pokemon');
@@ -86,7 +84,7 @@ describe('./app/[name]/viewmodel', () => {
     expect(states).toHaveProperty('modal');
   });
 
-  test('useAllStates', () => {
+  test('useCases', () => {
     const newUseCases = useCases();
     expect(newUseCases).toHaveProperty('getPokemonUseCase');
     expect(newUseCases).toHaveProperty('getChosenPokemonUseCase');
