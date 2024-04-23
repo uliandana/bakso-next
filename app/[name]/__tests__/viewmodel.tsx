@@ -142,6 +142,26 @@ describe('./app/[name]/viewmodel', () => {
     expect(newAllStates.setBerryTaste).toBeCalledWith('');
   });
 
+  test('useAllEvents: onFlipSprite have evolutions', () => {
+    const newAllStates: ReturnType<typeof useAllStates> = {
+      ...allStates,
+      evolutions:[dummyPokemon],
+      cardSprite: 0,
+      setCardSprite: jest.fn(),
+    };
+    const events = useAllEvents({ allStates: newAllStates, allUseCases, router, name: 'pikachu' });
+    events.onFlipSprite();
+    expect(newAllStates.setCardSprite).lastCalledWith(-1);
+
+    const newAllStates2: ReturnType<typeof useAllStates> = {
+      ...newAllStates,
+      cardSprite: -1,
+    };
+    const events2 = useAllEvents({ allStates: newAllStates2, allUseCases, router, name: 'pikachu' });
+    events2.onFlipSprite();
+    expect(newAllStates2.setCardSprite).lastCalledWith(0);
+  });
+
   test('useAllEffects', () => {
     jest.spyOn(React, 'useEffect');
     (React.useEffect as jest.Mock).mockImplementation((e) => (e as typeof noop)());

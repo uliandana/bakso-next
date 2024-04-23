@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`./app/[name]/_components/btnevolve.pokemon renders 1`] = `
+<button
+  className="btnEvolve"
+  onClick={[Function]}
+>
+  Evolve
+</button>
+`;

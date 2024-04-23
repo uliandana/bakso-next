@@ -56,7 +56,7 @@
 
 @media (orientation: landscape) {
   .main {
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 30vw 1fr;
     grid-template-rows: repeat(5, auto);
     @apply m-auto w-dvw grid max-w-none p-[2rem] gap-[2rem];
   }

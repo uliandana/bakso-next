@@ -34,6 +34,19 @@ export const BERRY_BG: Record<Berry['firmness'], string> = {
   '': '',
 };
 
+export const dummyPokemon: Pokemon = {
+  id: '100',
+  name: 'Pikachu',
+  nameSlug: 'pikachu',
+  sprite: 'url',
+  types: [],
+  stats: [],
+  evolvesTo: [],
+  weight: 100,
+  baseWeight: 100,
+  bgColor: '#fff',
+};
+
 export default function NameViewModel(name: string) {
   const router = useRouter();
   const allStates = useAllStates();

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`./app/[name]/_components/btnfeed.pokemon renders 1`] = `
+<button
+  className="w-full py-[1rem] rounded-[3rem] text-[2rem] uppercase bg-red-600 text-white font-[700] tracking-[0.125rem] shadow-2xl"
+  disabled={false}
+  onClick={[MockFunction]}
+>
+  Feed Pokemon
+</button>
+`;
