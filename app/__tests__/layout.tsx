@@ -11,6 +11,6 @@ describe('./app/layout', () => {
       </Layout>
     );
     expect(tree).toMatchSnapshot();
-    expect(metadata.title).toBe('PokeDiet');
+    expect(metadata.title).toBe('Bakso');
   });
 });

@@ -1,16 +1,6 @@
 const CACHE = 'v1';
-const POKEMON_LIMIT = 30;
-const BERRY_LIMIT = 64;
 
-const pokemonSprites = [...Array(POKEMON_LIMIT).keys()];
-const berryData = [...Array(BERRY_LIMIT).keys()];
-const precachedResources = [
-  '/bg-night.jpg',
-  '/bg.png',
-  'https://pokeapi.co/api/v2/pokemon?limit=1500',
-  ...berryData.map((_, idx) => `https://pokeapi.co/api/v2/berry/${idx + 1 }`),
-  ...pokemonSprites.map((_, idx) => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${idx + 1}.png`),
-];
+const precachedResources = [];
 
 const addResourcesToCache = async (resources) => {
   const cache = await caches.open(CACHE);
@@ -26,7 +16,7 @@ self.addEventListener('install', (event) => {
 async function cacheFirst(request) {
   const cachedResponse = await caches.match(request);
   const { host } = new URL(request.url);
-  const isHost = ['pokeapp-next-eta.vercel.app'].includes(host);
+  const isHost = ['bakso-next.vercel.app'].includes(host);
   if (cachedResponse && !isHost) {
     return cachedResponse;
   }
